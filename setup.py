@@ -4,7 +4,7 @@ import warnings
 
 setup(
     name='aws-tagger-uiuc',
-    version='0.6.3',
+    version='0.6.4',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -26,7 +26,7 @@ setup(
     author="Eric L. Epps, modified from v0.6.3 from Patrick Cullen and the WaPo platform tools team",
     author_email="eepps2@illinois.edu",
     url="https://github.com/ericepps-uiuc/aws-tagger",
-    download_url = "https://github.com/ericepps-uiuc/aws-tagger/tarball/v0.6.3",
+    download_url = "https://github.com/ericepps-uiuc/aws-tagger/tarball/v0.6.4",
     keywords = ['tag', 'tagger', 'tagging', 'aws'],
     classifiers = []
 )
