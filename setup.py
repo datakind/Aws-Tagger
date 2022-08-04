@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 import warnings
 
 setup(
-    name='aws-tagger',
+    name='aws-tagger-uiuc',
     version='0.6.3',
     packages=find_packages(),
     include_package_data=True,
@@ -23,10 +23,10 @@ setup(
             "aws-tagger=tagger.cli:cli",
         ]
     },
-    author="Patrick Cullen and the WaPo platform tools team",
-    author_email="opensource@washingtonpost.com",
-    url="https://github.com/washingtonpost/aws-tagger",
-    download_url = "https://github.com/washingtonpost/aws-tagger/tarball/v0.6.3",
+    author="Eric L. Epps, modified from v0.6.3 from Patrick Cullen and the WaPo platform tools team",
+    author_email="eepps2@illinois.edu",
+    url="https://github.com/ericepps-uiuc/aws-tagger",
+    download_url = "https://github.com/ericepps-uiuc/aws-tagger/tarball/v0.6.3",
     keywords = ['tag', 'tagger', 'tagging', 'aws'],
     classifiers = []
 )
