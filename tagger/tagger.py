@@ -219,7 +219,7 @@ class EC2Tagger(object):
                 self._ec2_create_tags(Resources=resource_ids, Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
-                    print("Resource not found: %s" % instance_id)
+                    print("EC2 Resource not found: %s" % instance_id)
                 else:
                     raise exception
 
@@ -249,7 +249,7 @@ class EFSTagger(object):
                 self._efs_create_tags(FileSystemId=file_system_id, Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("EFS Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -272,7 +272,7 @@ class DynamoDBTagger(object):
                 self._dynamodb_tag_resource(ResourceArn=resource_arn, Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['ResourceNotFoundException']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("Dynamo Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -295,7 +295,7 @@ class LambdaTagger(object):
                 self._lambda_tag_resource(Resource=resource_arn, Tags=tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['ResourceNotFoundException']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("Lambda Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -327,7 +327,7 @@ class CloudWatchLogsTagger(object):
                 self._logs_tag_log_group(logGroupName=log_group, tags=tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['ResourceNotFoundException']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("CWL Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -351,7 +351,7 @@ class RDSTagger(object):
                 self._rds_add_tags_to_resource(ResourceName=resource_arn, Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['DBInstanceNotFound']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("RDS Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -380,7 +380,7 @@ class LBTagger(object):
                     self._elb_add_tags(LoadBalancerNames=[elb_name], Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['LoadBalancerNotFound']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("LB Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -407,7 +407,7 @@ class KinesisTagger(object):
                 self._kinesis_add_tags_to_stream(StreamName=stream_name, Tags=tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['ResourceNotFoundException']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("Kinesis Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -430,7 +430,7 @@ class ESTagger(object):
                 self._es_add_tags(ARN=resource_arn, TagList=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['ValidationException']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("ES Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -453,7 +453,7 @@ class ElasticacheTagger(object):
                 self._elasticache_add_tags_to_resource(ResourceName=resource_arn, Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['CacheClusterNotFound']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("Elasticashe Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -476,7 +476,7 @@ class CloudfrontTagger(object):
                 self._cloudfront_tag_resource(Resource=resource_arn, Tags={'Items': aws_tags})
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['NoSuchResource']:
-                    print("Resource not found: %s" % resource_arn)
+                    print("CloudFront Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
@@ -511,7 +511,7 @@ class S3Tagger(object):
                 self._s3_put_bucket_tagging(Bucket=bucket_name, Tagging={'TagSet': aws_tags})
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['NoSuchBucket']:
-                    print("Resource not found: %s" % bucket_name)
+                    print("S3 Resource not found: %s" % bucket_name)
                 else:
                     raise exception
 
