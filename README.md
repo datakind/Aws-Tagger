@@ -8,6 +8,24 @@ cd aws-tagger
 pip install . #To install directly from this repo once cloned
 ```
 
+## AWS credentials
+AWS Tagger uses the standard AWS credential configuration options. 
+
+### Environment variables
+```
+export AWS_REGION="us-east-1"
+export AWS_ACCESS_KEY_ID="aka..."
+export AWS_SECRET_ACCESS_KEY="123..."
+aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
+```
+
+### IAM Roles
+AWS Tagger also supports cross-account role assumption. You will still need to configure the initial AWS credentials using one of the methods above, but the role will be used to call the actuall AWS API.
+
+```
+aws-tagger --role arn:aws:iam::11111111111:role/MyRole --resource i-07a9d0e5 --tag "App:Foobar"
+```
+
 ## Usage
 
 ### Tag individual resource with a single tag
@@ -85,21 +103,4 @@ aws-tagger --resource arn:aws:kinesis:us-east-1:111111111:stream/my-stream --tag
 ```
 aws-tagger --resource arn:aws:cloudfront::1111111111:distribution/E1111111111111 --tag "App:Foobar"  
 ```
-
-## AWS credentials
-AWS Tagger uses the standard AWS credential configuration options. 
-
-### Environment variables
-```
-export AWS_REGION="us-east-1"
-export AWS_ACCESS_KEY_ID="aka..."
-export AWS_SECRET_ACCESS_KEY="123..."
-aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
-```
-
-### IAM Roles
-AWS Tagger also supports cross-account role assumption. You will still need to configure the initial AWS credentials using one of the methods above, but the role will be used to call the actuall AWS API.
-
-```
-aws-tagger --role arn:aws:iam::11111111111:role/MyRole --resource i-07a9d0e5 --tag "App:Foobar"
 
