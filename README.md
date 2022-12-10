@@ -3,7 +3,9 @@ Tagging AWS resources is hard because each resource type has a different API whi
 
 ## Install
 ```
-pip install aws-tagger
+git clone https://github.com/datakind/aws-tagger.git
+cd aws-tagger
+pip install . #To install directly from this repo once cloned
 ```
 
 ## Usage
