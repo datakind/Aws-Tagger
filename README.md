@@ -83,6 +83,11 @@ aws-tagger --resource acl-12345678 --tag "App:Foobar"
 aws-tagger --resource eni-12345678 --tag "App:Foobar"  
 ```
 
+### Route Table
+```
+aws-tagger --resource rtb-12345678 --tag "App:Foobar"  
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  
