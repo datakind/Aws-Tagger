@@ -68,6 +68,11 @@ aws-tagger --resource ami-12345678 --tag "App:Foobar"
 aws-tagger --resource dopt-12345678 --tag "App:Foobar"  
 ```
 
+### Internet Gateway
+```
+aws-tagger --resource igw-12345678 --tag "App:Foobar"  
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  
