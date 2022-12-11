@@ -58,6 +58,11 @@ Any EC2 volumes that are attached to the instance will be automatically tagged.
 aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
 ```
 
+### AMI Images
+```
+aws-tagger --resource ami-12345678 --tag "App:Foobar"  
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  
