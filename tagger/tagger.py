@@ -60,8 +60,7 @@ def _client(name, role, region):
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
         self.taggers = {}
-        # self.taggers['ec2'] = EC2Tagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['ec2'] = EC2Tagger(dryrun, verbose, role=role, region=region)
+        self.taggers['ec2'] = EC2Tagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = AMITagger(dryrun, verbose, role=role, region=region)
         self.taggers['dopt'] = DHCPOTagger(dryrun, verbose, role=role, region=region)
         self.taggers['igw'] = InternetGatewayTagger(dryrun, verbose, role=role, region=region)
@@ -318,10 +317,30 @@ class DHCPOTagger(object):
         self.dryrun = dryrun
         self.verbose = verbose
         self.dopt = _client('ec2', role=role, region=region)
+    
+    def tag(self, instance_id, tags):
+        aws_tags = _dict_to_aws_tags(tags)
+        print(aws_tags)
+        resource_ids = [instance_id]
+        if self.verbose:
+            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._dhcp_create_tags(Resources=resource_ids, Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
+                    print("EC2 DHCP Option Resource not found: %s" % instance_id)
+                else:
+                    raise exception
+
 
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _describe_dhcp_options(self, **kwargs):
         return self.dopt.describe_dhcp_options(**kwargs)
+    
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _dhcp_create_tags(self, **kwargs):
+        return self.dopt.create_tags(**kwargs)
 
 class InternetGatewayTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
