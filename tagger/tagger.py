@@ -60,7 +60,18 @@ def _client(name, role, region):
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
         self.taggers = {}
-        self.taggers['ec2'] = EC2Tagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
+        # self.taggers['ec2'] = EC2Tagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['ec2'] = EC2Tagger(dryrun, verbose, role=role, region=region)
+        self.taggers['ami'] = AMITagger(dryrun, verbose, role=role, region=region)
+        self.taggers['dopt'] = DHCPOTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['igw'] = InternetGatewayTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['acl'] = NetworkAclTagger(dryrun, verbose, role=role, region=region,)
+        self.taggers['igw'] = InternetGatewayTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['eni'] = NetworkInterfaceTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['rtb'] = RouteTableTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['sg'] = SecurityGroupTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['subnet'] = SubnetTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['vpc'] = VPCTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticfilesystem'] = EFSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['rds'] = RDSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticloadbalancing'] = LBTagger(dryrun, verbose, role=role, region=region)
@@ -98,6 +109,46 @@ class SingleResourceTagger(object):
             resource_arn = resource_id
         elif resource_id.startswith('snap-'):
             tagger = self.taggers['ec2']
+            resource_arn = resource_id
+
+        if resource_id.startswith('ami-'):
+            tagger = self.taggers['ami']
+            resource_arn = resource_id
+        
+        if resource_id.startswith('dopt-'):
+            tagger = self.taggers['dopt']
+            resource_arn = resource_id
+
+        if resource_id.startswith('igw-'):
+            tagger = self.taggers['igw']
+            resource_arn = resource_id
+        
+        if resource_id.startswith('acl-'):
+            tagger = self.taggers['acl']
+            resource_arn = resource_id
+
+        if resource_id.startswith('eni-'):
+            tagger = self.taggers['eni']
+            resource_arn = resource_id
+
+        if resource_id.startswith('rtb-'):
+            tagger = self.taggers['rtb']
+            resource_arn = resource_id
+
+        if resource_id.startswith('sg-'):
+            tagger = self.taggers['sg']
+            resource_arn = resource_id
+        
+        if resource_id.startswith('subnet-'):
+            tagger = self.taggers['subnet']
+            resource_arn = resource_id
+
+        if resource_id.startswith('vpc-'):
+            tagger = self.taggers['vpc']
+            resource_arn = resource_id
+
+        if resource_id.startswith('vpc-'):
+            tagger = self.taggers['vpc']
             resource_arn = resource_id
 
         if tagger:
@@ -210,6 +261,7 @@ class EC2Tagger(object):
 
     def tag(self, instance_id, tags):
         aws_tags = _dict_to_aws_tags(tags)
+        print(aws_tags)
         resource_ids = [instance_id]
         resource_ids.extend(self.volume_cache.get(instance_id, []))
         if self.verbose:
@@ -231,6 +283,115 @@ class EC2Tagger(object):
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _ec2_create_tags(self, **kwargs):
         return self.ec2.create_tags(**kwargs)
+
+class AMITagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.ami = _client('ec2', role=role, region=region)
+
+    def tag(self, instance_id, tags):
+        aws_tags = _dict_to_aws_tags(tags)
+        print(aws_tags)
+        resource_ids = [instance_id]
+        if self.verbose:
+            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._ami_create_tags(Resources=resource_ids, Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
+                    print("EC2 AMI Resource not found: %s" % instance_id)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _ami_describe_instances(self, **kwargs):
+        return self.ami.describe_images(**kwargs)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _ami_create_tags(self, **kwargs):
+        return self.ami.create_tags(**kwargs)
+
+class DHCPOTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.dopt = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_dhcp_options(self, **kwargs):
+        return self.dopt.describe_dhcp_options(**kwargs)
+
+class InternetGatewayTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.igw = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_InternetGateway(self, **kwargs):
+        return self.igw.describe_internet_gateways(**kwargs)
+
+class NetworkAclTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.acl = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_NetworkAcl(self, **kwargs):
+        return self.acl.describe_network_acls(**kwargs)
+
+class NetworkInterfaceTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.eni = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_NetworkInterface(self, **kwargs):
+        return self.eni.describe_network_interfaces(**kwargs)
+
+class RouteTableTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.rtb = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_RouteTable(self, **kwargs):
+        return self.rtb.describe_route_tables(**kwargs)
+
+class SecurityGroupTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.sg = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_SecurityGroup(self, **kwargs):
+        return self.sg.describe_security_groups(**kwargs)
+
+class SubnetTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.subnet = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_Subnet(self, **kwargs):
+        return self.subnet.describe_subnets(**kwargs)
+
+class VPCTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.vpc = _client('ec2', role=role, region=region)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_VPC(self, **kwargs):
+        return self.vpc.describe_vpcs(**kwargs)
 
 class EFSTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
