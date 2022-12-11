@@ -88,6 +88,11 @@ aws-tagger --resource eni-12345678 --tag "App:Foobar"
 aws-tagger --resource rtb-12345678 --tag "App:Foobar"  
 ```
 
+### Security Group
+```
+aws-tagger --resource sg-12345678 --tag "App:Foobar"  
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  
