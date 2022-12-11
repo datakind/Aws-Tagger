@@ -63,6 +63,11 @@ aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"
 aws-tagger --resource ami-12345678 --tag "App:Foobar"  
 ```
 
+### DHCP Options
+```
+aws-tagger --resource dopt-12345678 --tag "App:Foobar"  
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  
