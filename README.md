@@ -73,6 +73,11 @@ aws-tagger --resource ami-12345678 --tag "App:Foobar"
 aws-tagger --resource vol-12345678 --tag "App:Foobar"  
 ```
 
+### VPC (Virtual Private Cloud)
+```
+aws-tagger --resource vpc-12345678 --tag "App:Foobar"  
+```
+
 ### DHCP Options
 ```
 aws-tagger --resource dopt-12345678 --tag "App:Foobar"  
