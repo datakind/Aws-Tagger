@@ -78,6 +78,11 @@ aws-tagger --resource igw-12345678 --tag "App:Foobar"
 aws-tagger --resource acl-12345678 --tag "App:Foobar"  
 ```
 
+### Network Interface
+```
+aws-tagger --resource eni-12345678 --tag "App:Foobar"  
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  
