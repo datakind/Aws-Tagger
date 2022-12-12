@@ -21,8 +21,15 @@ def _arn_to_name(resource_arn):
 
 # https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html
 def _name_to_arn(resource_name,service,region,account_id):
-    arnstring = "arn:aws:"+service+":"+region+":"+account_id+":"+resource_name
-    return arnstring
+    if not region == None:
+        arnstring = "arn:aws:"+service+":"+region+":"+account_id+":"+resource_name
+        return arnstring
+    else:
+        arnstring = "arn:aws:"+service+"::"+account_id+":"+resource_name
+    
+        return arnstring
+
+
 
 def resource_finder(resource_name,role,region):
     # check Instance profiles
@@ -45,7 +52,7 @@ def resource_finder(resource_name,role,region):
             if len(instance_profile["Applications"]) != 0:
                 return "elasticbenstalkapp"
             else:
-                print("applications found")
+                return "No Resource Found"
 
 
 
@@ -87,6 +94,30 @@ def _client(name, role, region):
 
     return boto3.client(name, **kwargs)
 
+def resource_finder_by_arn_builder(resourecheck):
+    # Finding ManagedPolicies
+    print(resourecheck)
+    try:
+        region = None
+        accountclient = _client('sts', role=None, region=region)
+        account_id = accountclient.get_caller_identity()["Account"]
+        service = "iam"
+
+        client = _client('iam',role=None, region=None)
+        ManagedPoliciesresourecheck = "policy/"+resourecheck
+        ManagedPoliciesresourecheck = _name_to_arn(resource_name=ManagedPoliciesresourecheck,region=region,service=service,account_id=account_id)
+        client.get_policy(PolicyArn=resourecheck)
+        return "managedpolicy"
+    except Exception as m:
+    # Finding Saml Provider
+        try:
+            SamlProviderresourecheck = "saml-provider/"+resourecheck
+            SamlProviderresourecheck = _name_to_arn(resource_name=SamlProviderresourecheck,region=region,service=service,account_id=account_id)
+            client.get_saml_provider(SAMLProviderArn=SamlProviderresourecheck)
+            return "samlprovider"
+        except Exception as m:
+            print(m)
+    
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
         self.taggers = {}
@@ -107,6 +138,8 @@ class SingleResourceTagger(object):
         self.taggers['elasticbenstalkapp'] = EBSATagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = ElasticacheTagger(dryrun, verbose, role=role, region=region)
         self.taggers['instanceprofile'] = InstanceProfileTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['managedpolicy'] = ManagedPolicyTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['samlprovider'] = SamlProviderTagger(dryrun, verbose, role=role, region=region)
         self.taggers['s3'] = S3Tagger(dryrun, verbose, role=role, region=region)
         self.taggers['es'] = ESTagger(dryrun, verbose, role=role, region=region)
         self.taggers['kinesis'] = KinesisTagger(dryrun, verbose, role=role, region=region)
@@ -183,10 +216,17 @@ class SingleResourceTagger(object):
             resource_arn = resource_id
 
         resourecheck = resource_finder(resource_id,role=role, region=region)
-        if resourecheck != "No Resource Found":
-            # print(resourecheck)
+        if not resourecheck == "No Resource Found":
+            print(resourecheck)
             tagger = self.taggers[resourecheck]
             resource_arn = resource_id
+        else:
+            print("checking by arn builder")
+            resourecheck = resource_finder_by_arn_builder(resource_id)
+            if resourecheck != "No Resource Found":
+                print(resourecheck)
+                tagger = self.taggers[resourecheck]
+                resource_arn = resource_id
 
         if tagger:
             tagger.tag(resource_arn, tags)
@@ -645,6 +685,100 @@ class EBSATagger(object):
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _ebsa_create_tags(self, **kwargs):
         return self.ebsa.update_tags_for_resource(**kwargs)
+
+class InstanceProfileTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.instanceprofile = _client('iam', role=role, region=region)
+
+    def tag(self, instance_id, tags):
+        aws_tags = _dict_to_aws_tags(tags)
+        print(aws_tags)
+        resource_ids = [instance_id]
+        if self.verbose:
+            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._InstanceProfile_create_tags(InstanceProfileName=resource_ids[0], TagsToAdd=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
+                    print("IAM Instance Profile not found: %s" % instance_id)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_InstanceProfile(self, **kwargs):
+        return self.instanceprofile.list_instance_profiles(**kwargs)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _InstanceProfile_create_tags(self, **kwargs):
+        # return self.instanceprofile.tag_instance_profile(**kwargs)
+        return self.instanceprofile.tag_instance_profile(**kwargs)
+
+class ManagedPolicyTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.iam = _client('iam', role=role, region=region)
+
+    def tag(self, resource_arn, tags):
+        region = None
+
+        self.sts = _client('sts', role=None, region=None)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "iam"
+        resource_arn = "policy/"+resource_arn
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+
+        aws_tags = _dict_to_aws_tags(tags)
+
+        if self.verbose:
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._iam_create_tags(PolicyArn=file_system_id, Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
+                    print("IAM Managed Profile not found: %s" % file_system_id)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _iam_create_tags(self, **kwargs):
+        return self.iam.tag_policy(**kwargs)
+
+class SamlProviderTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.samlprovider = _client('iam', role=role, region=region)
+
+    def tag(self, resource_arn, tags):
+        region = None
+
+        self.sts = _client('sts', role=None, region=None)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "iam"
+        resource_arn = "saml-provider/"+resource_arn
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+
+        aws_tags = _dict_to_aws_tags(tags)
+
+        if self.verbose:
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._samlprovider_create_tags(SAMLProviderArn=file_system_id, Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
+                    print("IAM SAML Provider Resource not found: %s" % file_system_id)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _samlprovider_create_tags(self, **kwargs):
+        return self.samlprovider.tag_saml_provider(**kwargs)
 
 class EFSTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
