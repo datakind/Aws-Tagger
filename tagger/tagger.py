@@ -19,6 +19,11 @@ def _arn_to_name(resource_arn):
 
     return name
 
+# https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html
+def _name_to_arn(resource_name,service,region,account_id):
+    arnstring = "arn:aws:"+service+":"+region+":"+account_id+":"+resource_name
+    return arnstring
+
 def resource_finder(resource_name,role,region):
     # check Instance profiles
     resource_checker = boto3.resource('iam')
@@ -33,7 +38,14 @@ def resource_finder(resource_name,role,region):
             resource_checker.describe_file_systems(FileSystemId=resource_name)
             return "elasticfilesystem"
         except Exception as m:
-            print(m)
+    # check elasticbenstalk
+            resource_checker = _client("elasticbeanstalk",role,region)
+
+            instance_profile = resource_checker.describe_applications(ApplicationNames=[resource_name])
+            if len(instance_profile["Applications"]) != 0:
+                return "elasticbenstalkapp"
+            else:
+                print("applications found")
 
 
 
@@ -92,6 +104,7 @@ class SingleResourceTagger(object):
         self.taggers['elasticfilesystem'] = EFSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['rds'] = RDSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticloadbalancing'] = LBTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['elasticbenstalkapp'] = EBSATagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = ElasticacheTagger(dryrun, verbose, role=role, region=region)
         self.taggers['instanceprofile'] = InstanceProfileTagger(dryrun, verbose, role=role, region=region)
         self.taggers['s3'] = S3Tagger(dryrun, verbose, role=role, region=region)
@@ -584,7 +597,7 @@ class InstanceProfileTagger(object):
             print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._InstanceProfile_create_tags(InstanceProfileName=resource_ids[0], Tags=aws_tags)
+                self._InstanceProfile_create_tags(InstanceProfileName=resource_ids[0], TagsToAdd=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
                     print("IAM Instance Profile not found: %s" % instance_id)
@@ -600,12 +613,44 @@ class InstanceProfileTagger(object):
         # return self.instanceprofile.tag_instance_profile(**kwargs)
         return self.instanceprofile.tag_instance_profile(**kwargs)
 
+class EBSATagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.ebsa = _client('elasticbeanstalk', role=role, region=region)
+
+    def tag(self, resource_arn, tags,role=None, region=None):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "elasticbeanstalk"
+        resource_arn = "application/"+resource_arn
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        aws_tags = _dict_to_aws_tags(tags)
+
+        if self.verbose:
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                print(file_system_id)
+                self._ebsa_create_tags(ResourceArn=file_system_id, TagsToAdd=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
+                    print("ElasticBeanStalk App Resource not found: %s" % resource_arn)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _ebsa_create_tags(self, **kwargs):
+        return self.ebsa.update_tags_for_resource(**kwargs)
+
 class EFSTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.efs = _client('efs', role=role, region=region)
-        print("test")
 
     def tag(self, resource_arn, tags):
         file_system_id = _arn_to_name(resource_arn)
