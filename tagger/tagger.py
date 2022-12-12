@@ -19,6 +19,18 @@ def _arn_to_name(resource_arn):
 
     return name
 
+def resource_finder(resource_name,role,region):
+    # check Instance profiles
+    resource_checker = boto3.resource('iam')
+    print(dir(resource_checker))
+    try:
+        resource_checker.InstanceProfile(resource_name).arn
+        return 'instanceprofile'
+    except Exception as m:
+        print(m)
+        return 'instanceprofiler'
+
+
 def _format_dict(tags):
     output = []
     for (key, value) in tags.items():
@@ -75,6 +87,7 @@ class SingleResourceTagger(object):
         self.taggers['rds'] = RDSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticloadbalancing'] = LBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = ElasticacheTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['instanceprofile'] = InstanceProfileTagger(dryrun, verbose, role=role, region=region)
         self.taggers['s3'] = S3Tagger(dryrun, verbose, role=role, region=region)
         self.taggers['es'] = ESTagger(dryrun, verbose, role=role, region=region)
         self.taggers['kinesis'] = KinesisTagger(dryrun, verbose, role=role, region=region)
@@ -83,7 +96,7 @@ class SingleResourceTagger(object):
         self.taggers['dynamodb'] = DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = LambdaTagger(dryrun, verbose, role=role, region=region)
 
-    def tag(self, resource_id, tags):
+    def tag(self, resource_id, tags, role=None, region=None):
         if resource_id == "":
             return
 
@@ -96,8 +109,8 @@ class SingleResourceTagger(object):
             product, resource_id = self._parse_arn(resource_id)
             if product:
                 tagger = self.taggers.get(product)
-        else:
-            tagger = self.taggers['s3']
+        # else:
+        #     tagger = self.taggers['s3']
 
 
         if resource_id.startswith('i-'):
@@ -148,6 +161,12 @@ class SingleResourceTagger(object):
 
         if resource_id.startswith('vpc-'):
             tagger = self.taggers['vpc']
+            resource_arn = resource_id
+
+        resourecheck = resource_finder(resource_id,role=role, region=region)
+        if resourecheck != "No Resource Found":
+            print(resourecheck)
+            tagger = self.taggers[resourecheck]
             resource_arn = resource_id
 
         if tagger:
@@ -544,6 +563,36 @@ class VPCTagger(object):
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _VPC_create_tags(self, **kwargs):
         return self.vpc.create_tags(**kwargs)
+
+class InstanceProfileTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.instanceprofile = _client('iam', role=role, region=region)
+
+    def tag(self, instance_id, tags):
+        aws_tags = _dict_to_aws_tags(tags)
+        print(aws_tags)
+        resource_ids = [instance_id]
+        if self.verbose:
+            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._InstanceProfile_create_tags(InstanceProfileName=resource_ids[0], Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
+                    print("IAM Instance Profile not found: %s" % instance_id)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _describe_InstanceProfile(self, **kwargs):
+        return self.instanceprofile.list_instance_profiles(**kwargs)
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _InstanceProfile_create_tags(self, **kwargs):
+        # return self.instanceprofile.tag_instance_profile(**kwargs)
+        return self.instanceprofile.tag_instance_profile(**kwargs)
 
 class EFSTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
