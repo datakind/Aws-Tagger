@@ -47,12 +47,26 @@ def resource_finder(resource_name,role,region):
         except Exception as m:
     # check elasticbenstalk
             resource_checker = _client("elasticbeanstalk",role,region)
-
             instance_profile = resource_checker.describe_applications(ApplicationNames=[resource_name])
             if len(instance_profile["Applications"]) != 0:
                 return "elasticbenstalkapp"
             else:
-                return "No Resource Found"
+    # check Lambda
+                resource_checker = _client("lambda",role,region)
+                try:
+                    resource_checker.get_function(FunctionName=resource_name)
+                    return "lambda"
+                except Exception as m:
+                    return "No Resource Found"
+    # check KMS Key
+                # try:
+                #     resource_checker = _client("kms",role,region)
+                #     resource_checker.describe_key(KeyId=resource_name)
+                #     return "KMSKey"
+                # except Exception as m:
+                #     print(m)
+                #     return "No Resource Found"
+    
 
 
 
@@ -653,6 +667,7 @@ class InstanceProfileTagger(object):
         # return self.instanceprofile.tag_instance_profile(**kwargs)
         return self.instanceprofile.tag_instance_profile(**kwargs)
 
+
 class EBSATagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
         self.dryrun = dryrun
@@ -720,7 +735,7 @@ class ManagedPolicyTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
-        self.iam = _client('iam', role=role, region=region)
+        self.ManagedPolicy = _client('iam', role=role, region=region)
 
     def tag(self, resource_arn, tags):
         region = None
@@ -737,7 +752,7 @@ class ManagedPolicyTagger(object):
             print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._iam_create_tags(PolicyArn=file_system_id, Tags=aws_tags)
+                self._ManagedPolicy_create_tags(PolicyArn=file_system_id, Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
                     print("IAM Managed Profile not found: %s" % file_system_id)
@@ -745,8 +760,8 @@ class ManagedPolicyTagger(object):
                     raise exception
 
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
-    def _iam_create_tags(self, **kwargs):
-        return self.iam.tag_policy(**kwargs)
+    def _ManagedPolicy_create_tags(self, **kwargs):
+        return self.ManagedPolicy.tag_policy(**kwargs)
 
 class SamlProviderTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
@@ -835,12 +850,24 @@ class LambdaTagger(object):
         self.verbose = verbose
         self.alambda = _client('lambda', role=role, region=region)
 
-    def tag(self, resource_arn, tags):
+    def tag(self, resource_arn, tags,role=None, region=None):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "lambda"
+        resource_arn = "function:"+resource_arn
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        aws_tags = _dict_to_aws_tags(tags)
+
         if self.verbose:
-            print("tagging %s with %s" % (resource_arn, _format_dict(tags)))
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._lambda_tag_resource(Resource=resource_arn, Tags=tags)
+                print(tags)
+                print(aws_tags[0])
+                self._lambda_tag_resource(Resource=file_system_id, Tags=tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['ResourceNotFoundException']:
                     print("Lambda Resource not found: %s" % resource_arn)
