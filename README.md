@@ -49,8 +49,8 @@ echo 'i-22222222,us-east-1,Foobar' >> my-resources.csv
 aws-tagger --csv my-resources.csv
 ```
 
-## AWS Resource Support
-AWS Tagger supports the following AWS resource types. 
+## AWS Resource Support (by identifier's first section string)
+AWS Tagger supports the following AWS resource types using there resource identifier's first section to detmine the type of resource
 
 ### EC2 instances
 Any EC2 volumes that are attached to the instance will be automatically tagged.
@@ -123,6 +123,18 @@ aws-tagger --resource my-bucket --tag "App:Foobar"
 aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar"  
 
 ```
+
+## AWS Resource Support (by searching)
+AWS Tagger supports the following AWS resource types by searching for the type of resource directly
+
+### Instance Profiles
+```
+aws-tagger --resource resourcename --tag "App:Foobar"  
+
+```
+
+## AWS Resource Support (by arn)
+AWS Tagger supports the following AWS resource types using the arn of the resource
 
 ### EFS files systems
 ```
