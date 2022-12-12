@@ -22,13 +22,19 @@ def _arn_to_name(resource_arn):
 def resource_finder(resource_name,role,region):
     # check Instance profiles
     resource_checker = boto3.resource('iam')
-    print(dir(resource_checker))
+    # print(dir(resource_checker))
     try:
         resource_checker.InstanceProfile(resource_name).arn
         return 'instanceprofile'
     except Exception as m:
-        print(m)
-        return 'instanceprofiler'
+    # check efs
+        resource_checker = _client("efs",role,region)
+        try:
+            resource_checker.describe_file_systems(FileSystemId=resource_name)
+            return "elasticfilesystem"
+        except Exception as m:
+            print(m)
+
 
 
 def _format_dict(tags):
@@ -165,7 +171,7 @@ class SingleResourceTagger(object):
 
         resourecheck = resource_finder(resource_id,role=role, region=region)
         if resourecheck != "No Resource Found":
-            print(resourecheck)
+            # print(resourecheck)
             tagger = self.taggers[resourecheck]
             resource_arn = resource_id
 
@@ -599,6 +605,7 @@ class EFSTagger(object):
         self.dryrun = dryrun
         self.verbose = verbose
         self.efs = _client('efs', role=role, region=region)
+        print("test")
 
     def tag(self, resource_arn, tags):
         file_system_id = _arn_to_name(resource_arn)
