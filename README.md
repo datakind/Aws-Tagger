@@ -130,6 +130,8 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Instance Profiles
 ### EFS files systems
 ### ElasticBeanStalk Apps
+### Managed Policies
+### SAML Providers
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
