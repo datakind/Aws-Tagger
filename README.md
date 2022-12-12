@@ -132,6 +132,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### ElasticBeanStalk Apps
 ### Managed Policies
 ### SAML Providers
+### Lambda Functions
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
