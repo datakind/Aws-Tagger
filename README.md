@@ -141,6 +141,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### SAML Providers
 ### Lambda Functions
 ### Redshift Cluster Parameter Groups
+### Route53 Hosted Zone
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
