@@ -58,6 +58,12 @@ Any EC2 volumes that are attached to the instance will be automatically tagged.
 aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
 ```
 
+### Organizations
+Must specificy the organization identifier (which is orgid/accountnumber - Check Tag Editor in aws for details)
+```
+aws-tagger --resource o-1234567890/123456789012 --tag "App:Foobar"  
+```
+
 ### Snapshots
 ```
 aws-tagger --resource snap-12345678 --tag "App:Foobar"  
