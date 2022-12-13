@@ -134,6 +134,7 @@ aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 
 ### Resource Groups
+### SNS Topics
 ### Instance Profiles
 ### EFS files systems
 ### ElasticBeanStalk Apps
