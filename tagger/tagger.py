@@ -136,7 +136,19 @@ def resource_finder_by_arn_builder(resourecheck):
             client.get_saml_provider(SAMLProviderArn=SamlProviderresourecheck)
             return "samlprovider"
         except Exception as m:
-            print(m)
+            # Finding resource group
+            try:
+                service = "resource-groups"
+                client = _client('resource-groups',role=None, region=None)
+
+                my_session = boto3.session.Session()
+                region = my_session.region_name
+                resourcegroupresourecheck = "group/"+resourecheck
+                resourcegroupresourecheck = _name_to_arn(resource_name=resourcegroupresourecheck,region=region,service=service,account_id=account_id)
+                client.get_group(Group=resourcegroupresourecheck)
+                return "resourcegroup"
+            except Exception as m:
+                print(m)
     
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
@@ -157,6 +169,7 @@ class SingleResourceTagger(object):
         self.taggers['rds'] = RDSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticloadbalancing'] = LBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticbenstalkapp'] = EBSATagger(dryrun, verbose, role=role, region=region)
+        self.taggers['resourcegroup'] = ResourceGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = ElasticacheTagger(dryrun, verbose, role=role, region=region)
         self.taggers['instanceprofile'] = InstanceProfileTagger(dryrun, verbose, role=role, region=region)
         self.taggers['managedpolicy'] = ManagedPolicyTagger(dryrun, verbose, role=role, region=region)
@@ -739,6 +752,39 @@ class EBSATagger(object):
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _ebsa_create_tags(self, **kwargs):
         return self.ebsa.update_tags_for_resource(**kwargs)
+
+class ResourceGroupTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.resourcegroup = _client('resource-groups', role=role, region=region)
+
+    def tag(self, resource_arn, tags,role=None, region=None):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "resource-groups"
+        resource_arn = "group/"+resource_arn
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        aws_tags = _dict_to_aws_tags(tags)
+
+        if self.verbose:
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                print(file_system_id)
+                self._resourcegroup_create_tags(Arn=file_system_id, Tags=tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
+                    print("Resource Group Resource not found: %s" % resource_arn)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _resourcegroup_create_tags(self, **kwargs):
+        return self.resourcegroup.tag(**kwargs)
 
 class InstanceProfileTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
