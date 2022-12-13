@@ -145,6 +145,7 @@ class SingleResourceTagger(object):
         self.taggers['rtb'] = RouteTableTagger(dryrun, verbose, role=role, region=region)
         self.taggers['sg'] = SecurityGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['subnet'] = SubnetTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['organization'] = OrganizationTagger(dryrun, verbose, role=role, region=region)
         self.taggers['vpc'] = VPCTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticfilesystem'] = EFSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['rds'] = RDSTagger(dryrun, verbose, role=role, region=region)
@@ -229,18 +230,23 @@ class SingleResourceTagger(object):
             tagger = self.taggers['vpc']
             resource_arn = resource_id
 
-        resourecheck = resource_finder(resource_id,role=role, region=region)
-        if not resourecheck == "No Resource Found":
-            print(resourecheck)
-            tagger = self.taggers[resourecheck]
+        if resource_id.startswith('o-') and "/" in resource_id:
+            tagger = self.taggers['organization']
             resource_arn = resource_id
-        else:
-            print("checking by arn builder")
-            resourecheck = resource_finder_by_arn_builder(resource_id)
-            if resourecheck != "No Resource Found":
+
+        if tagger == None:
+            resourecheck = resource_finder(resource_id,role=role, region=region)
+            if not resourecheck == "No Resource Found":
                 print(resourecheck)
                 tagger = self.taggers[resourecheck]
                 resource_arn = resource_id
+            else:
+                print("checking by arn builder")
+                resourecheck = resource_finder_by_arn_builder(resource_id)
+                if resourecheck != "No Resource Found":
+                    print(resourecheck)
+                    tagger = self.taggers[resourecheck]
+                    resource_arn = resource_id
 
         if tagger:
             tagger.tag(resource_arn, tags)
@@ -636,6 +642,31 @@ class VPCTagger(object):
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _VPC_create_tags(self, **kwargs):
         return self.vpc.create_tags(**kwargs)
+
+class OrganizationTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.org = _client('organizations', role=role, region=region)
+
+    def tag(self, instance_id, tags):
+        aws_tags = _dict_to_aws_tags(tags)
+        print(aws_tags)
+        resource_ids = [instance_id]
+        if self.verbose:
+            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._org_create_tags(ResourceId=resource_ids[0].split("/")[1], Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
+                    print("Org not found: %s" % instance_id)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _org_create_tags(self, **kwargs):
+        return self.org.tag_resource(**kwargs)
 
 class InstanceProfileTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
