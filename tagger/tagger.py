@@ -63,7 +63,13 @@ def resource_finder(resource_name,role,region):
                         resource_checker.describe_cluster_parameter_groups(ParameterGroupName=resource_name)
                         return "redshiftclusergroup"
                     except Exception as m:
-                        return "No Resource Found"
+    # check route53 hosted zone
+                        resource_checker = _client("route53",role,region)
+                        try:
+                            resource_checker.get_hosted_zone(Id=resource_name)
+                            return "route53hostedzone"
+                        except Exception as m:
+                            return "No Resource Found"
     # check KMS Key
                 # try:
                 #     resource_checker = _client("kms",role,region)
@@ -172,6 +178,7 @@ class SingleResourceTagger(object):
         self.taggers['resourcegroup'] = ResourceGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = ElasticacheTagger(dryrun, verbose, role=role, region=region)
         self.taggers['instanceprofile'] = InstanceProfileTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['route53hostedzone'] = Route53HostedZoneTagger(dryrun, verbose, role=role, region=region)
         self.taggers['managedpolicy'] = ManagedPolicyTagger(dryrun, verbose, role=role, region=region)
         self.taggers['samlprovider'] = SamlProviderTagger(dryrun, verbose, role=role, region=region)
         self.taggers['s3'] = S3Tagger(dryrun, verbose, role=role, region=region)
@@ -719,6 +726,31 @@ class InstanceProfileTagger(object):
         # return self.instanceprofile.tag_instance_profile(**kwargs)
         return self.instanceprofile.tag_instance_profile(**kwargs)
 
+class Route53HostedZoneTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.route53hz = _client('route53', role=role, region=region)
+
+    def tag(self, instance_id, tags):
+        aws_tags = _dict_to_aws_tags(tags)
+        print(aws_tags)
+        resource_ids = [instance_id]
+        if self.verbose:
+            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._route53hz_create_tags(ResourceType="hostedzone",ResourceId=instance_id, AddTags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
+                    print("Route53 Hosted Zone not found: %s" % instance_id)
+                else:
+                    raise exception
+
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _route53hz_create_tags(self, **kwargs):
+        return self.route53hz.change_tags_for_resource(**kwargs)
 
 class EBSATagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
@@ -785,36 +817,6 @@ class ResourceGroupTagger(object):
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _resourcegroup_create_tags(self, **kwargs):
         return self.resourcegroup.tag(**kwargs)
-
-class InstanceProfileTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
-        self.dryrun = dryrun
-        self.verbose = verbose
-        self.instanceprofile = _client('iam', role=role, region=region)
-
-    def tag(self, instance_id, tags):
-        aws_tags = _dict_to_aws_tags(tags)
-        print(aws_tags)
-        resource_ids = [instance_id]
-        if self.verbose:
-            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
-        if not self.dryrun:
-            try:
-                self._InstanceProfile_create_tags(InstanceProfileName=resource_ids[0], TagsToAdd=aws_tags)
-            except botocore.exceptions.ClientError as exception:
-                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
-                    print("IAM Instance Profile not found: %s" % instance_id)
-                else:
-                    raise exception
-
-    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
-    def _describe_InstanceProfile(self, **kwargs):
-        return self.instanceprofile.list_instance_profiles(**kwargs)
-
-    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
-    def _InstanceProfile_create_tags(self, **kwargs):
-        # return self.instanceprofile.tag_instance_profile(**kwargs)
-        return self.instanceprofile.tag_instance_profile(**kwargs)
 
 class ManagedPolicyTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
