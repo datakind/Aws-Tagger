@@ -57,7 +57,13 @@ def resource_finder(resource_name,role,region):
                     resource_checker.get_function(FunctionName=resource_name)
                     return "lambda"
                 except Exception as m:
-                    return "No Resource Found"
+    # check redshift cluster group
+                    resource_checker = _client("redshift",role,region)
+                    try:
+                        resource_checker.describe_cluster_parameter_groups(ParameterGroupName=resource_name)
+                        return "redshiftclusergroup"
+                    except Exception as m:
+                        return "No Resource Found"
     # check KMS Key
                 # try:
                 #     resource_checker = _client("kms",role,region)
@@ -162,6 +168,8 @@ class SingleResourceTagger(object):
         self.taggers['logs'] = CloudWatchLogsTagger(dryrun, verbose, role=role, region=region)
         self.taggers['dynamodb'] = DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = LambdaTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['redshiftclusergroup'] = RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
+    
 
     def tag(self, resource_id, tags, role=None, region=None):
         if resource_id == "":
@@ -909,6 +917,37 @@ class LambdaTagger(object):
     def _lambda_tag_resource(self, **kwargs):
         return self.alambda.tag_resource(**kwargs)
 
+class RedshiftclusterGroupTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.redshiftcg = _client('redshift', role=role, region=region)
+
+    def tag(self, resource_arn, tags,role=None, region=None):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "redshift"
+        resource_arn = "parametergroup:"+resource_arn
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        aws_tags = _dict_to_aws_tags(tags)
+
+        if self.verbose:
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._redshiftcg_tag_resource(ResourceName=file_system_id, Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['ResourceNotFoundException']:
+                    print("Redshift Cluster Parameter Group Resource not found: %s" % resource_arn)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _redshiftcg_tag_resource(self, **kwargs):
+        return self.redshiftcg.create_tags(**kwargs)
 
 class CloudWatchLogsTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
