@@ -139,6 +139,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Managed Policies
 ### SAML Providers
 ### Lambda Functions
+### Redshift Cluster Parameter Groups
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
