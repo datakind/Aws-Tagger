@@ -26,7 +26,6 @@ def _name_to_arn(resource_name,service,region,account_id):
         return arnstring
     else:
         arnstring = "arn:aws:"+service+"::"+account_id+":"+resource_name
-    
         return arnstring
 
 
@@ -154,7 +153,19 @@ def resource_finder_by_arn_builder(resourecheck):
                 client.get_group(Group=resourcegroupresourecheck)
                 return "resourcegroup"
             except Exception as m:
-                print(m)
+                # Finding SNS Topic
+                try:
+                    service = "sns"
+                    client = _client('sns',role=None, region=None)
+
+                    my_session = boto3.session.Session()
+                    region = my_session.region_name
+                    resourcegroupresourecheck = _name_to_arn(resource_name=resourecheck,region=region,service=service,account_id=account_id)
+                    client.get_topic_attributes(TopicArn=resourcegroupresourecheck)
+                    return "snstopic"
+                except Exception as m:
+                    print(m)
+    
     
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
@@ -176,6 +187,7 @@ class SingleResourceTagger(object):
         self.taggers['elasticloadbalancing'] = LBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticbenstalkapp'] = EBSATagger(dryrun, verbose, role=role, region=region)
         self.taggers['resourcegroup'] = ResourceGroupTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['snstopic'] = SNSTopicTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = ElasticacheTagger(dryrun, verbose, role=role, region=region)
         self.taggers['instanceprofile'] = InstanceProfileTagger(dryrun, verbose, role=role, region=region)
         self.taggers['route53hostedzone'] = Route53HostedZoneTagger(dryrun, verbose, role=role, region=region)
@@ -817,6 +829,37 @@ class ResourceGroupTagger(object):
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _resourcegroup_create_tags(self, **kwargs):
         return self.resourcegroup.tag(**kwargs)
+
+class SNSTopicTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.snstopic = _client('sns', role=role, region=region)
+
+    def tag(self, resource_arn, tags,role=None, region=None):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "sns"
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        aws_tags = _dict_to_aws_tags(tags)
+
+        if self.verbose:
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                self._resourcegroup_create_tags(ResourceArn=file_system_id, Tags=aws_tags)
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
+                    print("SNS Topic Resource not found: %s" % resource_arn)
+                else:
+                    raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _resourcegroup_create_tags(self, **kwargs):
+        return self.snstopic.tag_resource(**kwargs)
 
 class ManagedPolicyTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
