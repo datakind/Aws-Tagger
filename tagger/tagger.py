@@ -46,35 +46,38 @@ def resource_finder(resource_name,role,region):
         except Exception as m:
     # check elasticbenstalk
             resource_checker = _client("elasticbeanstalk",role,region)
-            instance_profile = resource_checker.describe_applications(ApplicationNames=[resource_name])
-            if len(instance_profile["Applications"]) != 0:
-                return "elasticbenstalkapp"
-            else:
-    # check Lambda
-                resource_checker = _client("lambda",role,region)
-                try:
-                    resource_checker.get_function(FunctionName=resource_name)
-                    return "lambda"
-                except Exception as m:
-    # check redshift cluster group
-                    resource_checker = _client("redshift",role,region)
+            try:
+                instance_profile = resource_checker.describe_applications(ApplicationNames=[resource_name])
+                if len(instance_profile["Applications"]) != 0:
+                    return "elasticbenstalkapp"
+                else:
+                    purposebreak = 1+"purposebreak"
+            except Exception as m:
+        # check Lambda
+                    resource_checker = _client("lambda",role,region)
                     try:
-                        resource_checker.describe_cluster_parameter_groups(ParameterGroupName=resource_name)
-                        return "redshiftclusergroup"
+                        resource_checker.get_function(FunctionName=resource_name)
+                        return "lambda"
                     except Exception as m:
-    # check route53 hosted zone
-                        resource_checker = _client("route53",role,region)
+        # check redshift cluster group
+                        resource_checker = _client("redshift",role,region)
                         try:
-                            resource_checker.get_hosted_zone(Id=resource_name)
-                            return "route53hostedzone"
+                            resource_checker.describe_cluster_parameter_groups(ParameterGroupName=resource_name)
+                            return "redshiftclusergroup"
                         except Exception as m:
-    # check Sagemaker Notebook Instance
-                            resource_checker = _client("sagemaker",role,region)
+        # check route53 hosted zone
+                            resource_checker = _client("route53",role,region)
                             try:
-                                resource_checker.describe_notebook_instance(NotebookInstanceName=resource_name)
-                                return "sagemakernotebookinstance"
+                                resource_checker.get_hosted_zone(Id=resource_name)
+                                return "route53hostedzone"
                             except Exception as m:
-                                return "No Resource Found"
+        # check Sagemaker Notebook Instance
+                                resource_checker = _client("sagemaker",role,region)
+                                try:
+                                    resource_checker.describe_notebook_instance(NotebookInstanceName=resource_name)
+                                    return "sagemakernotebookinstance"
+                                except Exception as m:
+                                    return "No Resource Found"
     # check KMS Key
                 # try:
                 #     resource_checker = _client("kms",role,region)
@@ -183,7 +186,20 @@ def resource_finder_by_arn_builder(resourecheck):
                         client.describe_secret(SecretId=secretmanagersecretresourecheck)
                         return "secretsmanagersecret"
                     except Exception as m:
-                        print(m)
+                        # Finding Cloudformation stack
+                        try:
+                            service = "cloudformation"
+                            client = _client('cloudformation',role=None, region=None)
+
+                            my_session = boto3.session.Session()
+                            region = my_session.region_name
+                            cfstackresourecheck = "stack/"+resourecheck
+                            cfstackresourecheck = _name_to_arn(resource_name=cfstackresourecheck,region=region,service=service,account_id=account_id)
+                            print(cfstackresourecheck)
+                            client.describe_stacks(StackName=cfstackresourecheck)
+                            return "cloudformationstack"
+                        except Exception as m:
+                            print(m)
     
     
 class SingleResourceTagger(object):
@@ -207,6 +223,7 @@ class SingleResourceTagger(object):
         self.taggers['elasticbenstalkapp'] = EBSATagger(dryrun, verbose, role=role, region=region)
         self.taggers['resourcegroup'] = ResourceGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['snstopic'] = SNSTopicTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['cloudformationstack'] = CloudformationStackTagger(dryrun, verbose, role=role, region=region)
         self.taggers['secretsmanagersecret'] = SecretManagerSecretTagger(dryrun, verbose, role=role, region=region)
         self.taggers['sagemakernotebookinstance'] = SagemakerNotebookInstanceTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = ElasticacheTagger(dryrun, verbose, role=role, region=region)
@@ -910,9 +927,49 @@ class SNSTopicTagger(object):
                 else:
                     raise exception
 
+class CloudformationStackTagger(object):
+    def __init__(self, dryrun, verbose, role=None, region=None):
+        self.dryrun = dryrun
+        self.verbose = verbose
+        self.cloudformationstack = _client('cloudformation', role=role, region=region)
+
+    def tag(self, resource_arn, tags,role=None, region=None):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = "cloudformation"
+        resource_arn = "stack/"+resource_arn
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        aws_tags = _dict_to_aws_tags(tags)
+
+        if self.verbose:
+            print("tagging %s with %s" % (file_system_id, _format_dict(tags)))
+        if not self.dryrun:
+            try:
+                stackdata = self.cloudformationstack.describe_stacks(StackName=file_system_id)
+                stacktemplate = self.cloudformationstack.get_template(StackName=file_system_id)
+                stackdata["Stacks"][0]["TemplateBody"] = stacktemplate["TemplateBody"]
+                stackdata["Stacks"][0].pop("StackId", None)
+                stackdata["Stacks"][0].pop("Description", None)
+                stackdata["Stacks"][0].pop("CreationTime", None)
+                stackdata["Stacks"][0].pop("StackStatus", None)
+                stackdata["Stacks"][0].pop("EnableTerminationProtection", None)
+                stackdata["Stacks"][0].pop("DriftInformation", None)
+                if "LastUpdatedTime" in stackdata["Stacks"][0]:
+                    stackdata["Stacks"][0].pop("LastUpdatedTime", None)
+                stackdata["Stacks"][0]["Tags"].append(aws_tags[0])
+                self._cloudformationstack_create_tags(**stackdata["Stacks"][0])
+            except botocore.exceptions.ClientError as exception:
+                if exception.response["Error"]["Code"] in ['FileSystemNotFound']:
+                    print("Cloudformation Stack not found: %s" % resource_arn)
+                else:
+                    raise exception
+
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
-    def _resourcegroup_create_tags(self, **kwargs):
-        return self.snstopic.tag_resource(**kwargs)
+    def _cloudformationstack_create_tags(self, **kwargs):
+        return self.cloudformationstack.update_stack(**kwargs)
 
 class SagemakerNotebookInstanceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
