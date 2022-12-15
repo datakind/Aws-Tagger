@@ -177,7 +177,7 @@ aws-tagger --resource arn:aws:elasticloadbalancing:us-east-1:11111111111:loadbal
 aws-tagger --resource arn:aws:elasticache:us-east-1:111111111:cluster:my-cluster --tag "App:Foobar"  
 ```
 
-### Elasticsearch clusters 
+### Elasticsearch domains 
 ```
 aws-tagger --resource arn:aws:es:us-east-1:111111111:domain/my-domain --tag "App:Foobar"  
 ```
