@@ -124,10 +124,9 @@ aws-tagger --resource subnet-12345678 --tag "App:Foobar"
 aws-tagger --resource my-bucket --tag "App:Foobar"  
 ```
 
-### RDS instances 
+### Cloudformation Stacks
 ```
-aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar"  
-
+aws-tagger --resource mystackname/asdf1234-as12-df34-gh56-qwerty012345 --tag "App:Foobar"  
 ```
 
 ## AWS Resource Support (by searching)
@@ -161,6 +160,11 @@ aws-tagger --resource arn:aws:elasticfilesystem:us-east-1:1111111111:file-system
 ### Elastic Load Balancers
 ```
 aws-tagger --resource arn:aws:elasticloadbalancing:us-east-1:11111111111:loadbalancer/my-elb --tag "App:Foobar"  
+```
+
+### RDS instances 
+```
+aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar"  
 ```
 
 ### Application Load Balancers
