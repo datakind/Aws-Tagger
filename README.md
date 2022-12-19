@@ -3,7 +3,27 @@ Tagging AWS resources is hard because each resource type has a different API whi
 
 ## Install
 ```
-pip install aws-tagger
+git clone https://github.com/datakind/aws-tagger.git
+cd aws-tagger
+pip install . #To install directly from this repo once cloned
+```
+
+## AWS credentials
+AWS Tagger uses the standard AWS credential configuration options. 
+
+### Environment variables
+```
+export AWS_REGION="us-east-1"
+export AWS_ACCESS_KEY_ID="aka..."
+export AWS_SECRET_ACCESS_KEY="123..."
+aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
+```
+
+### IAM Roles
+AWS Tagger also supports cross-account role assumption. You will still need to configure the initial AWS credentials using one of the methods above, but the role will be used to call the actuall AWS API.
+
+```
+aws-tagger --role arn:aws:iam::11111111111:role/MyRole --resource i-07a9d0e5 --tag "App:Foobar"
 ```
 
 ## Usage
@@ -29,8 +49,8 @@ echo 'i-22222222,us-east-1,Foobar' >> my-resources.csv
 aws-tagger --csv my-resources.csv
 ```
 
-## AWS Resource Support
-AWS Tagger supports the following AWS resource types. 
+## AWS Resource Support (by identifier's first section string)
+AWS Tagger supports the following AWS resource types using there resource identifier's first section to detmine the type of resource
 
 ### EC2 instances
 Any EC2 volumes that are attached to the instance will be automatically tagged.
@@ -38,16 +58,99 @@ Any EC2 volumes that are attached to the instance will be automatically tagged.
 aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
 ```
 
+### Organizations
+Must specificy the organization identifier (which is orgid/accountnumber - Check Tag Editor in aws for details)
+```
+aws-tagger --resource o-1234567890/123456789012 --tag "App:Foobar"  
+```
+
+### Snapshots
+```
+aws-tagger --resource snap-12345678 --tag "App:Foobar"  
+```
+
+### AMI Images
+```
+aws-tagger --resource ami-12345678 --tag "App:Foobar"  
+```
+
+### Volume Drive
+```
+aws-tagger --resource vol-12345678 --tag "App:Foobar"  
+```
+
+### VPC (Virtual Private Cloud)
+```
+aws-tagger --resource vpc-12345678 --tag "App:Foobar"  
+```
+
+### DHCP Options
+```
+aws-tagger --resource dopt-12345678 --tag "App:Foobar"  
+```
+
+### Internet Gateway
+```
+aws-tagger --resource igw-12345678 --tag "App:Foobar"  
+```
+
+### Network Acl
+```
+aws-tagger --resource acl-12345678 --tag "App:Foobar"  
+```
+
+### Network Interface
+```
+aws-tagger --resource eni-12345678 --tag "App:Foobar"  
+```
+
+### Route Table
+```
+aws-tagger --resource rtb-12345678 --tag "App:Foobar"  
+```
+
+### Security Group
+```
+aws-tagger --resource sg-12345678 --tag "App:Foobar"  
+```
+
+### Subnet
+```
+aws-tagger --resource subnet-12345678 --tag "App:Foobar"  
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  
 ```
 
-### RDS instances 
+### Cloudformation Stacks
 ```
-aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar"  
+aws-tagger --resource mystackname/asdf1234-as12-df34-gh56-qwerty012345 --tag "App:Foobar"  
+```
+
+## AWS Resource Support (by searching)
+AWS Tagger supports the following AWS resource types by searching for the type of resource directly
+
+### Notebook Instances
+### Resource Groups
+### SNS Topics
+### Instance Profiles
+### EFS files systems
+### ElasticBeanStalk Apps
+### Managed Policies
+### SAML Providers
+### Lambda Functions
+### Redshift Cluster Parameter Groups
+### Route53 Hosted Zone
+### Secret Manager Secrets
+```
+aws-tagger --resource resourcename --tag "App:Foobar"  
 
 ```
+
+## AWS Resource Support (by arn)
+AWS Tagger supports the following AWS resource types using the arn of the resource
 
 ### EFS files systems
 ```
@@ -57,6 +160,11 @@ aws-tagger --resource arn:aws:elasticfilesystem:us-east-1:1111111111:file-system
 ### Elastic Load Balancers
 ```
 aws-tagger --resource arn:aws:elasticloadbalancing:us-east-1:11111111111:loadbalancer/my-elb --tag "App:Foobar"  
+```
+
+### RDS instances 
+```
+aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar"  
 ```
 
 ### Application Load Balancers
@@ -69,7 +177,7 @@ aws-tagger --resource arn:aws:elasticloadbalancing:us-east-1:11111111111:loadbal
 aws-tagger --resource arn:aws:elasticache:us-east-1:111111111:cluster:my-cluster --tag "App:Foobar"  
 ```
 
-### Elasticsearch clusters 
+### Elasticsearch domains 
 ```
 aws-tagger --resource arn:aws:es:us-east-1:111111111:domain/my-domain --tag "App:Foobar"  
 ```
@@ -83,21 +191,4 @@ aws-tagger --resource arn:aws:kinesis:us-east-1:111111111:stream/my-stream --tag
 ```
 aws-tagger --resource arn:aws:cloudfront::1111111111:distribution/E1111111111111 --tag "App:Foobar"  
 ```
-
-## AWS credentials
-AWS Tagger uses the standard AWS credential configuration options. 
-
-### Environment variables
-```
-export AWS_REGION="us-east-1"
-export AWS_ACCESS_KEY_ID="aka..."
-export AWS_SECRET_ACCESS_KEY="123..."
-aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
-```
-
-### IAM Roles
-AWS Tagger also supports cross-account role assumption. You will still need to configure the initial AWS credentials using one of the methods above, but the role will be used to call the actuall AWS API.
-
-```
-aws-tagger --role arn:aws:iam::11111111111:role/MyRole --resource i-07a9d0e5 --tag "App:Foobar"
 
