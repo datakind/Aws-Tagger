@@ -148,6 +148,9 @@ def resource_finder_by_arn_builder(resourecheck):
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
         self.taggers = {}
+        # appstream
+        # self.taggers['ec2'] = tagservices.appstream.service.appstreamTagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
+        
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.AMITagger(dryrun, verbose, role=role, region=region)
         self.taggers['dopt'] = tagservices.ec2.service.DHCPOTagger(dryrun, verbose, role=role, region=region)

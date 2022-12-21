@@ -3,7 +3,7 @@ import botocore
 from retrying import retry
 
 class appstreamTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resource, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.ami = _client('ec2', role=role, region=region)
