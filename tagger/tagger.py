@@ -146,23 +146,21 @@ def resource_finder_by_arn_builder(resourecheck):
     
     
 class SingleResourceTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
+        # print(resourcetype)
         self.taggers = {}
-        # appstream
-        # self.taggers['ec2'] = tagservices.appstream.service.appstreamTagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
-        
-        self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['ami'] = tagservices.ec2.service.AMITagger(dryrun, verbose, role=role, region=region)
-        self.taggers['dopt'] = tagservices.ec2.service.DHCPOTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['igw'] = tagservices.ec2.service.InternetGatewayTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['acl'] = tagservices.ec2.service.NetworkAclTagger(dryrun, verbose, role=role, region=region,)
-        self.taggers['igw'] = tagservices.ec2.service.InternetGatewayTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['eni'] = tagservices.ec2.service.NetworkInterfaceTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['rtb'] = tagservices.ec2.service.RouteTableTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['sg'] = tagservices.ec2.service.SecurityGroupTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['subnet'] = tagservices.ec2.service.SubnetTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, resourcetype, role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['ami'] = tagservices.ec2.service.AMITagger(dryrun, verbose, resourcetype, role=role, region=region)
+        self.taggers['dopt'] = tagservices.ec2.service.DHCPOTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        self.taggers['igw'] = tagservices.ec2.service.InternetGatewayTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        self.taggers['acl'] = tagservices.ec2.service.NetworkAclTagger(dryrun, verbose, resourcetype, role=role, region=region,)
+        self.taggers['igw'] = tagservices.ec2.service.InternetGatewayTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        self.taggers['eni'] = tagservices.ec2.service.NetworkInterfaceTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        self.taggers['rtb'] = tagservices.ec2.service.RouteTableTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        self.taggers['sg'] = tagservices.ec2.service.SecurityGroupTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        self.taggers['subnet'] = tagservices.ec2.service.SubnetTagger(dryrun, verbose, resourcetype, role=role, region=region)
         self.taggers['organization'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['vpc'] = tagservices.ec2.service.VPCTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['vpc'] = tagservices.ec2.service.VPCTagger(dryrun, verbose, resourcetype, role=role, region=region)
         self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticloadbalancing'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, role=role, region=region)
@@ -291,8 +289,10 @@ class SingleResourceTagger(object):
         return product, resource_id
 
 class MultipleResourceTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
-        self.tagger = SingleResourceTagger(dryrun, verbose, role=role, region=region, tag_volumes=tag_volumes)
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
+        # print(resourcetype)
+        # print(verbose)
+        self.tagger = SingleResourceTagger(dryrun, verbose, role=role, region=region, resourcetype=resourcetype, tag_volumes=tag_volumes)
 
     def tag(self, resource_ids, tags):
         for resource_id in resource_ids:

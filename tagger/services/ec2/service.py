@@ -3,9 +3,10 @@ import botocore
 from retrying import retry
 
 class EC2Tagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
         self.dryrun = dryrun
         self.verbose = verbose
+        print(resourcetype)
         self.ec2 = _client('ec2', role=role, region=region)
         self.volume_cache = {}
         if tag_volumes:
@@ -13,6 +14,7 @@ class EC2Tagger(object):
 
     def add_volume_cache(self):
         #TODO implement paging for describe instances
+        print("test")
         reservations = self._ec2_describe_instances(MaxResults=1000)
 
         for reservation in reservations["Reservations"]:
@@ -27,6 +29,7 @@ class EC2Tagger(object):
                         self.volume_cache[instance_id].append(volume_id)
 
     def tag(self, instance_id, tags):
+        print("test")
         aws_tags = _dict_to_aws_tags(tags)
         print(aws_tags)
         resource_ids = [instance_id]
@@ -52,7 +55,7 @@ class EC2Tagger(object):
         return self.ec2.create_tags(**kwargs)
 
 class AMITagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.ami = _client('ec2', role=role, region=region)
@@ -81,7 +84,7 @@ class AMITagger(object):
         return self.ami.create_tags(**kwargs)
 
 class DHCPOTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.dopt = _client('ec2', role=role, region=region)
@@ -111,7 +114,7 @@ class DHCPOTagger(object):
         return self.dopt.create_tags(**kwargs)
 
 class InternetGatewayTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.igw = _client('ec2', role=role, region=region)
@@ -140,7 +143,7 @@ class InternetGatewayTagger(object):
         return self.igw.create_tags(**kwargs)
 
 class NetworkAclTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.acl = _client('ec2', role=role, region=region)
@@ -169,7 +172,7 @@ class NetworkAclTagger(object):
         return self.acl.create_tags(**kwargs)
 
 class NetworkInterfaceTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.eni = _client('ec2', role=role, region=region)
@@ -198,7 +201,7 @@ class NetworkInterfaceTagger(object):
         return self.eni.create_tags(**kwargs)
 
 class RouteTableTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.rtb = _client('ec2', role=role, region=region)
@@ -227,7 +230,7 @@ class RouteTableTagger(object):
         return self.rtb.create_tags(**kwargs)
 
 class SecurityGroupTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.sg = _client('ec2', role=role, region=region)
@@ -256,7 +259,7 @@ class SecurityGroupTagger(object):
         return self.sg.create_tags(**kwargs)
 
 class SubnetTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.subnet = _client('ec2', role=role, region=region)
@@ -285,7 +288,7 @@ class SubnetTagger(object):
         return self.subnet.create_tags(**kwargs)
 
 class VPCTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, resourcetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
         self.vpc = _client('ec2', role=role, region=region)
