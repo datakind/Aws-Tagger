@@ -147,7 +147,6 @@ def resource_finder_by_arn_builder(resourecheck):
     
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
-        # print(resourcetype)
         self.taggers = {}
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, resourcetype, role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.AMITagger(dryrun, verbose, resourcetype, role=role, region=region)
@@ -185,7 +184,7 @@ class SingleResourceTagger(object):
         self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
     
 
-    def tag(self, resource_id, tags, role=None, region=None):
+    def tag(self, resource_id, resourcetype,tags, role=None, region=None):
         if resource_id == "":
             return
 
@@ -193,83 +192,13 @@ class SingleResourceTagger(object):
             return
 
         tagger = None
-        resource_arn = resource_id
-        if resource_id.startswith('arn:'):
-            product, resource_id = self._parse_arn(resource_id)
-            if product:
-                tagger = self.taggers.get(product)
-        # else:
-        #     tagger = self.taggers['s3']
-
-
-        if resource_id.startswith('i-'):
-            tagger = self.taggers['ec2']
-            resource_arn = resource_id
-        elif resource_id.startswith('vol-'):
-            tagger = self.taggers['ec2']
-            resource_arn = resource_id
-        elif resource_id.startswith('snap-'):
-            tagger = self.taggers['ec2']
-            resource_arn = resource_id
-
-        if resource_id.startswith('ami-'):
-            tagger = self.taggers['ami']
-            resource_arn = resource_id
-        
-        if resource_id.startswith('dopt-'):
-            tagger = self.taggers['dopt']
-            resource_arn = resource_id
-
-        if resource_id.startswith('igw-'):
-            tagger = self.taggers['igw']
-            resource_arn = resource_id
-        
-        if resource_id.startswith('acl-'):
-            tagger = self.taggers['acl']
-            resource_arn = resource_id
-
-        if resource_id.startswith('eni-'):
-            tagger = self.taggers['eni']
-            resource_arn = resource_id
-
-        if resource_id.startswith('rtb-'):
-            tagger = self.taggers['rtb']
-            resource_arn = resource_id
-
-        if resource_id.startswith('sg-'):
-            tagger = self.taggers['sg']
-            resource_arn = resource_id
-        
-        if resource_id.startswith('subnet-'):
-            tagger = self.taggers['subnet']
-            resource_arn = resource_id
-
-        if resource_id.startswith('vpc-'):
-            tagger = self.taggers['vpc']
-            resource_arn = resource_id
-
-        if resource_id.startswith('vpc-'):
-            tagger = self.taggers['vpc']
-            resource_arn = resource_id
-
-        if resource_id.startswith('o-') and "/" in resource_id:
-            tagger = self.taggers['organization']
-            resource_arn = resource_id
-
-        if tagger == None:
-            resourecheck = resource_finder(resource_id,role=role, region=region)
-            if not resourecheck == "No Resource Found":
-                print(resourecheck)
-                tagger = self.taggers[resourecheck]
-                resource_arn = resource_id
-            else:
-                print("checking by arn builder")
-                resourecheck = resource_finder_by_arn_builder(resource_id)
-                if resourecheck != "No Resource Found":
-                    print(resourecheck)
-                    tagger = self.taggers[resourecheck]
-                    resource_arn = resource_id
-
+        if resourcetype == None:
+            searchresult = sconfig.resourcesearch(self.taggers,resource_id,role,region)
+            tagger = searchresult[1]
+            resource_arn = searchresult[0]
+        else:
+            # add function for resourcetypechecker
+            pass
         if tagger:
             tagger.tag(resource_arn, tags)
         else:
@@ -290,13 +219,11 @@ class SingleResourceTagger(object):
 
 class MultipleResourceTagger(object):
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
-        # print(resourcetype)
-        # print(verbose)
         self.tagger = SingleResourceTagger(dryrun, verbose, role=role, region=region, resourcetype=resourcetype, tag_volumes=tag_volumes)
 
-    def tag(self, resource_ids, tags):
+    def tag(self, resource_ids, resourcetype, tags):
         for resource_id in resource_ids:
-            self.tagger.tag(resource_id, tags)
+            self.tagger.tag(resource_id, resourcetype, tags)
 
 class CSVResourceTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):

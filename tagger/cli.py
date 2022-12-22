@@ -25,7 +25,7 @@ def cli(dryrun, verbose, region, role, resource, tag, resourcetype, csv):
     else:
         tagger = MultipleResourceTagger(dryrun, verbose, resourcetype, role, region, tag_volumes=True)
         tags = _tag_options_to_dict(tag)
-        tagger.tag(resource, tags)
+        tagger.tag(resource, resourcetype, tags)
 
 def _tag_options_to_dict(tag_options):
     tags = {}

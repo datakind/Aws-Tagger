@@ -6,7 +6,7 @@ class EC2Tagger(object):
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
         self.dryrun = dryrun
         self.verbose = verbose
-        print(resourcetype)
+
         self.ec2 = _client('ec2', role=role, region=region)
         self.volume_cache = {}
         if tag_volumes:
@@ -14,7 +14,6 @@ class EC2Tagger(object):
 
     def add_volume_cache(self):
         #TODO implement paging for describe instances
-        print("test")
         reservations = self._ec2_describe_instances(MaxResults=1000)
 
         for reservation in reservations["Reservations"]:
@@ -29,7 +28,7 @@ class EC2Tagger(object):
                         self.volume_cache[instance_id].append(volume_id)
 
     def tag(self, instance_id, tags):
-        print("test")
+
         aws_tags = _dict_to_aws_tags(tags)
         print(aws_tags)
         resource_ids = [instance_id]
