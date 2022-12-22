@@ -8,159 +8,31 @@ import csv
 from . import sconfig
 
 #tagservices.appstream.service.AppstreamTagger
-
-
-def resource_finder(resource_name,role,region):
-    # check Instance profiles
-    resource_checker = boto3.resource('iam')
-    # print(dir(resource_checker))
-    try:
-        resource_checker.InstanceProfile(resource_name).arn
-        return 'instanceprofile'
-    except Exception as m:
-    # check efs
-        resource_checker = sconfig._client("efs",role,region)
-        try:
-            resource_checker.describe_file_systems(FileSystemId=resource_name)
-            return "elasticfilesystem"
-        except Exception as m:
-    # check elasticbenstalk
-            resource_checker = sconfig._client("elasticbeanstalk",role,region)
-            try:
-                instance_profile = resource_checker.describe_applications(ApplicationNames=[resource_name])
-                if len(instance_profile["Applications"]) != 0:
-                    return "elasticbenstalkapp"
-                else:
-                    purposebreak = 1+"purposebreak"
-            except Exception as m:
-        # check Lambda
-                    resource_checker = sconfig._client("lambda",role,region)
-                    try:
-                        resource_checker.get_function(FunctionName=resource_name)
-                        return "lambda"
-                    except Exception as m:
-        # check redshift cluster group
-                        resource_checker = sconfig._client("redshift",role,region)
-                        try:
-                            resource_checker.describe_cluster_parameter_groups(ParameterGroupName=resource_name)
-                            return "redshiftclusergroup"
-                        except Exception as m:
-        # check route53 hosted zone
-                            resource_checker = sconfig._client("route53",role,region)
-                            try:
-                                resource_checker.get_hosted_zone(Id=resource_name)
-                                return "route53hostedzone"
-                            except Exception as m:
-        # check Sagemaker Notebook Instance
-                                resource_checker = sconfig._client("sagemaker",role,region)
-                                try:
-                                    resource_checker.describe_notebook_instance(NotebookInstanceName=resource_name)
-                                    return "sagemakernotebookinstance"
-                                except Exception as m:
-                                    return "No Resource Found"
-    # check KMS Key
-                # try:
-                #     resource_checker = sconfig._client("kms",role,region)
-                #     resource_checker.describe_key(KeyId=resource_name)
-                #     return "KMSKey"
-                # except Exception as m:
-                #     print(m)
-                #     return "No Resource Found"
-    
-
-
-
-
-def resource_finder_by_arn_builder(resourecheck):
-    # Finding ManagedPolicies
-    print(resourecheck)
-    try:
-        region = None
-        accountclient = sconfig._client('sts', role=None, region=region)
-        account_id = accountclient.get_caller_identity()["Account"]
-        service = "iam"
-
-        client = sconfig._client('iam',role=None, region=None)
-        ManagedPoliciesresourecheck = "policy/"+resourecheck
-        ManagedPoliciesresourecheck = sconfig._name_to_arn(resource_name=ManagedPoliciesresourecheck,region=region,service=service,account_id=account_id)
-        client.get_policy(PolicyArn=resourecheck)
-        return "managedpolicy"
-    except Exception as m:
-    # Finding Saml Provider
-        try:
-            SamlProviderresourecheck = "saml-provider/"+resourecheck
-            SamlProviderresourecheck = sconfig._name_to_arn(resource_name=SamlProviderresourecheck,region=region,service=service,account_id=account_id)
-            client.get_saml_provider(SAMLProviderArn=SamlProviderresourecheck)
-            return "samlprovider"
-        except Exception as m:
-            # Finding resource group
-            try:
-                service = "resource-groups"
-                client = sconfig._client('resource-groups',role=None, region=None)
-
-                my_session = boto3.session.Session()
-                region = my_session.region_name
-                resourcegroupresourecheck = "group/"+resourecheck
-                resourcegroupresourecheck = sconfig._name_to_arn(resource_name=resourcegroupresourecheck,region=region,service=service,account_id=account_id)
-                client.get_group(Group=resourcegroupresourecheck)
-                return "resourcegroup"
-            except Exception as m:
-                # Finding SNS Topic
-                try:
-                    service = "sns"
-                    client = sconfig._client('sns',role=None, region=None)
-
-                    my_session = boto3.session.Session()
-                    region = my_session.region_name
-                    resourcegroupresourecheck = sconfig._name_to_arn(resource_name=resourecheck,region=region,service=service,account_id=account_id)
-                    client.get_topic_attributes(TopicArn=resourcegroupresourecheck)
-                    return "snstopic"
-                except Exception as m:
-                    # Finding Secret Manager Secret
-                    try:
-                        service = "secretsmanager"
-                        client = sconfig._client('secretsmanager',role=None, region=None)
-
-                        my_session = boto3.session.Session()
-                        region = my_session.region_name
-                        secretmanagersecretresourecheck = "secret:"+resourecheck
-                        secretmanagersecretresourecheck = sconfig._name_to_arn(resource_name=secretmanagersecretresourecheck,region=region,service=service,account_id=account_id)
-                        print(secretmanagersecretresourecheck)
-                        client.describe_secret(SecretId=secretmanagersecretresourecheck)
-                        return "secretsmanagersecret"
-                    except Exception as m:
-                        # Finding Cloudformation stack
-                        try:
-                            service = "cloudformation"
-                            client = sconfig._client('cloudformation',role=None, region=None)
-
-                            my_session = boto3.session.Session()
-                            region = my_session.region_name
-                            cfstackresourecheck = "stack/"+resourecheck
-                            cfstackresourecheck = sconfig._name_to_arn(resource_name=cfstackresourecheck,region=region,service=service,account_id=account_id)
-                            print(cfstackresourecheck)
-                            client.describe_stacks(StackName=cfstackresourecheck)
-                            return "cloudformationstack"
-                        except Exception as m:
-                            print(m)
     
     
 class SingleResourceTagger(object):
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
         self.taggers = {}
-        self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, resourcetype, role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['ami'] = tagservices.ec2.service.AMITagger(dryrun, verbose, resourcetype, role=role, region=region)
-        self.taggers['dopt'] = tagservices.ec2.service.DHCPOTagger(dryrun, verbose, resourcetype, role=role, region=region)
-        self.taggers['igw'] = tagservices.ec2.service.InternetGatewayTagger(dryrun, verbose, resourcetype, role=role, region=region)
-        self.taggers['acl'] = tagservices.ec2.service.NetworkAclTagger(dryrun, verbose, resourcetype, role=role, region=region,)
-        self.taggers['igw'] = tagservices.ec2.service.InternetGatewayTagger(dryrun, verbose, resourcetype, role=role, region=region)
-        self.taggers['eni'] = tagservices.ec2.service.NetworkInterfaceTagger(dryrun, verbose, resourcetype, role=role, region=region)
-        self.taggers['rtb'] = tagservices.ec2.service.RouteTableTagger(dryrun, verbose, resourcetype, role=role, region=region)
-        self.taggers['sg'] = tagservices.ec2.service.SecurityGroupTagger(dryrun, verbose, resourcetype, role=role, region=region)
-        self.taggers['subnet'] = tagservices.ec2.service.SubnetTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        # EC2 Resources
+        self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['dopt'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'dopt', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['igw'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'igw', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['acl'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'acl', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['igw'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'igw', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['eni'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'eni', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['rtb'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'rtb', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['sg'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'sg', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['subnet'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'subnet', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['vpc'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'vpc', role=role, region=region, tag_volumes=tag_volumes)
+        
+        # Organization resources
         self.taggers['organization'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['vpc'] = tagservices.ec2.service.VPCTagger(dryrun, verbose, resourcetype, role=role, region=region)
+        
+        # Elastic File System resources
         self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
+
+        # Other resources currently
         self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticloadbalancing'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticbenstalkapp'] = tagservices.elasticbeanstalk.service.EBSATagger(dryrun, verbose, role=role, region=region)
@@ -184,7 +56,7 @@ class SingleResourceTagger(object):
         self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
     
 
-    def tag(self, resource_id, resourcetype,tags, role=None, region=None):
+    def tag(self, resource_id, resourcetype, tags, role=None, region=None):
         if resource_id == "":
             return
 
