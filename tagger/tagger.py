@@ -58,6 +58,7 @@ class SingleResourceTagger(object):
         self.taggers['dynamodb'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = tagservices.awslambda.service.LambdaTagger(dryrun, verbose, role=role, region=region)
         self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['glacier'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)
     
 
     def tag(self, resource_id, resourcetype, tags, role=None, region=None):
