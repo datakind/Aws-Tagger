@@ -102,7 +102,7 @@ def checkresource(resourcetype):
         'IoTEventsDetectorModel',
         'IoTEventsInput',
         'KMSKey',
-        'KafhaCluster',
+        'KafkaCluster',
         'KinesisStream',
         'KinesisAnalyticsApplication',
         'MacieClassificationJob',

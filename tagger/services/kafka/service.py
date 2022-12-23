@@ -2,7 +2,7 @@ from tagger.sconfig import _client, _dict_to_aws_tags, _format_dict, _is_retryab
 import botocore
 from retrying import retry
 
-class kafhaTagger(object):
+class kafkaTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
