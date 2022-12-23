@@ -76,10 +76,13 @@ def _parse_arn( resource_arn):
         return product, resource_id
 
 def resourcesearch(taggers,resource_id, role=None, region=None):
-
+        print(f'Searching for resource with identifier: {resource_id}')
+        tagger = None
         resource_arn = resource_id
         if resource_id.startswith('arn:'):
+            print("Parsing ARN for Resource Type")
             product, resource_id = _parse_arn(resource_id)
+            print(f'Product: ${product}, resource_id: ${resource_id}')
             if product:
                 tagger = taggers.get(product)
         # else:

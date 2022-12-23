@@ -10,6 +10,10 @@ from pprint import pprint
 @click.option('--verbose/--no-verbose', default=False, help='Verbose output.')
 @click.option('--region', help='AWS region.')
 @click.option('--role', help='IAM role to use.')
+# TODO: Perhaps a better description for resource would be 'The unique identifier 
+# associated with your resource, whether that is its name, instance id, etc'. Resource
+# may be too broad a term given that so many different values are associated with any
+#given resource
 @click.option('--resource', multiple=True, help='Resource ID to tag.')
 @click.option('--tag', multiple=True, help='Tag to apply to resource in format "Key:Value".')
 @click.option('--resourcetype', help='Specify the resource type for faster processing')

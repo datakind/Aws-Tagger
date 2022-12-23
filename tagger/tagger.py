@@ -58,10 +58,14 @@ class SingleResourceTagger(object):
         self.taggers['dynamodb'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = tagservices.awslambda.service.LambdaTagger(dryrun, verbose, role=role, region=region)
         self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['glacier'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)
-    
+        self.taggers['GlueRole'] = tagservices.glue.service.glueRoleTagger(dryrun, verbose, role=role, region=region)
 
     def tag(self, resource_id, resourcetype, tags, role=None, region=None):
+        print(
+          f'Resource Identifier: {resource_id}\n' +
+          f'Resource Type: {(resourcetype, "Unknown") [resourcetype == None]}\n' +
+          f'tags: {tags}'
+        )
         if resource_id == "":
             return
 
@@ -74,8 +78,17 @@ class SingleResourceTagger(object):
             tagger = searchresult[1]
             resource_arn = searchresult[0]
         else:
+            print(resourcetype)
+            # TODO: Comment below out if non-functional
             searchresult = tagsearch.checkresource(resourcetype)
-            tagger = self.taggers['GlacierVault']
+            if self.taggers.get(resourcetype) == None:
+              #TODO: Do something if tagger does not exist in code
+              # Perhaps throwing an exception
+              tagger = self.taggers['GlacierVault']
+            else: 
+              tagger = self.taggers[resourcetype]
+            print(searchresult)
+            # tagger = self.taggers['GlacierVault']
             resource_arn = resource_id
             # tagger = searchresult[1]
             # resource_arn = searchresult[0]
