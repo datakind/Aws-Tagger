@@ -6,6 +6,7 @@ import tagger.services as tagservices
 import socket
 import csv
 from . import sconfig
+from . import tagsearch
 
 #tagservices.appstream.service.AppstreamTagger
     
