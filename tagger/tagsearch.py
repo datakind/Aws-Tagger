@@ -1,5 +1,5 @@
 
-def checkresource():
+def checkresource(resourcetype):
     # Define resource list by service+resource
     resourcelist = [
         'amazonmqBroker',
@@ -81,6 +81,7 @@ def checkresource():
         'FraudDetectorModel',
         'FraudDetectorOutcome',
         'FraudDetectorVariable',
+        'GlacierVault',
         'GlueCrawler',
         'GlueJob',
         'GlueTrigger',

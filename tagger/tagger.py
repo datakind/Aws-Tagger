@@ -12,6 +12,8 @@ from . import tagsearch
     
     
 class SingleResourceTagger(object):
+    # Init each tagger lazy
+    # https://zhaoxh.cn/en/post/2018/lazy-load-dict/
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
         self.taggers = {}
         # EC2 Resources
@@ -32,6 +34,7 @@ class SingleResourceTagger(object):
         
         # Elastic File System resources
         self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['GlacierVault'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)
 
         # Other resources currently
         self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
@@ -70,6 +73,11 @@ class SingleResourceTagger(object):
             tagger = searchresult[1]
             resource_arn = searchresult[0]
         else:
+            searchresult = tagsearch.checkresource(resourcetype)
+            tagger = self.taggers['GlacierVault']
+            resource_arn = resource_id
+            # tagger = searchresult[1]
+            # resource_arn = searchresult[0]
             # add function for resourcetypechecker
             pass
         if tagger:
