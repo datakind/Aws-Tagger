@@ -16,7 +16,7 @@ class glacierTagger(object):
             print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._glacier_create_tags(vaultName=resource_ids, Tags=tags)
+                self._glacier_create_tags(vaultName=resource_ids[0], Tags=tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
                     print("Resource not found: %s" % instance_id)
