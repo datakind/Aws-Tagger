@@ -22,7 +22,7 @@ class codecommitTagger(object):
             print("tagging %s with %s" % (", ".join(file_system_id), _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._codecommit_create_tags(Resources=file_system_id, Tags=aws_tags)
+                self._codecommit_create_tags(resourceArn=file_system_id, tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
                     print("Resource not found: %s" % file_system_id)

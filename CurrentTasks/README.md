@@ -114,7 +114,7 @@ Add tags update_project()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codebuild.html#CodeBuild.Client.update_project
 
-## CodeCommit  - Currently working on (JAY) - 12/23/22
+## CodeCommit  - COMPLETED (NOT TESTED)
 ```
 Repository get_repository()
 ```
@@ -124,7 +124,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.tag_resource
 
-## CodeGuruReviewer  - Currently working on (JAY) - 12/23/22
+## CodeGuruReviewer  - COMPLETED (NOT TESTED)
 ```
 RepositoryAssociation describe_repository_association()
 ```
