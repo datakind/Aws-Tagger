@@ -64,6 +64,9 @@ class SingleResourceTagger(object):
         self.taggers['GlueJob'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueJob', role=role, region=region)
         self.taggers['GlueTrigger'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueTrigger', role=role, region=region)
 
+        # Kafka Resources
+        self.taggers['KafkaCluster'] = tagservices.kafka.service.kafkaTagger(dryrun, verbose, role=role, region=region)
+
     def tag(self, resource_id, resourcetype, tags, role=None, region=None):
         print(
           f'Resource Identifier: {resource_id}\n' +

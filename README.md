@@ -129,6 +129,11 @@ aws-tagger --resource my-bucket --tag "App:Foobar"
 aws-tagger --resource mystackname/asdf1234-as12-df34-gh56-qwerty012345 --tag "App:Foobar"  
 ```
 
+### Kafka Cluster
+```
+aws-tagger --resource myclustername/asdf1234-as12-df34-gh56-qwerty012345-1 --tag "App:Foobar"  
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 

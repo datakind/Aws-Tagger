@@ -433,7 +433,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/frauddetector.html#FraudDetector.Client.tag_resource
 
-## Glacier
+## Glacier COMPLETED
 ```
 Vault describe_vault()
 ```
@@ -443,7 +443,7 @@ Add tags add_tags_to_vault()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glacier.html#Glacier.Client.add_tags_to_vault
 
-## Glue
+## Glue COMPLETED
 ```
 Crawler get_crawler()
 ```
@@ -545,7 +545,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kms.html#KMS.Client.tag_resource
 
-## Kafha
+## Kafha COMPLETED
 ```
 Cluster describe_cluster() describe_cluster_v2()
 ```
