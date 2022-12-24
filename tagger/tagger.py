@@ -63,6 +63,10 @@ class SingleResourceTagger(object):
         self.taggers['CognitoIdentityPool'] = tagservices.cognito.service.cognitoTagger(dryrun, verbose, "CognitoIdentityPool", role=role, region=region)
         self.taggers['CognitoUserPool'] = tagservices.cognito.service.cognitoTagger(dryrun, verbose, "CognitoUserPool", role=role, region=region)
 
+        # Comprehend Resources
+        self.taggers['ComprehendDocumentClassifier'] = tagservices.comprehend.service.comprehendTagger(dryrun, verbose, "CognitoIdentityPool", role=role, region=region)
+        self.taggers['ComprehendEntityRecognizer'] = tagservices.comprehend.service.comprehendTagger(dryrun, verbose, "CognitoUserPool", role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)

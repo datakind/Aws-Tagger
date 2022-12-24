@@ -134,7 +134,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguru-reviewer.html#CodeGuruReviewer.Client.tag_resource
 
-## CodePipeline  - COMPLETED
+## CodePipeline  - COMPLETED (NOT TESTED)
 ```
 Pipeline get_pipeline()
 ```
@@ -148,7 +148,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codepipeline.html#CodePipeline.Client.tag_resource
 
-## Cognito  - COMPLETED
+## Cognito  - COMPLETED (NOT TESTED)
 ```
 IdentityPool describe_identity_pool() tag_resource()
 ```
@@ -160,7 +160,7 @@ https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cogni
 
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-identity.html#CognitoIdentity.Client.tag_resource
 
-## Comprehend  - Currently working on (JAY) - 12/23/22
+## Comprehend  - COMPLETED (NOT TESTED)
 ```
 DocumentClassifier describe_document_classifier()
 ```

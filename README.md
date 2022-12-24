@@ -185,6 +185,8 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### CodePipeline Webhook --resouretype "CodePipelineWebhook" (Not tested)
 ### Cognito IdentityPool --resouretype "CognitoIdentityPool" (Not tested)
 ### Cognito UserPool --resouretype "CognitoUserPool" (Not tested)
+### Comprehend Document-Classifier --resouretype "ComprehendDocumentClassifier" (Not tested)
+### Comprehend Entity-Recognizer --resouretype "ComprehendEntityRecognizer" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
