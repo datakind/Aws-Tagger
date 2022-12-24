@@ -41,6 +41,9 @@ class SingleResourceTagger(object):
 
         # CloudTrail Resources
         self.taggers['CloudTrailTrail'] = tagservices.cloudtrail.service.cloudtrailTagger(dryrun, verbose, role=role, region=region)
+        
+        # Cloudwatch Resources
+        self.taggers['CloudWatchAlarm'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, role=role, region=region)
 
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)

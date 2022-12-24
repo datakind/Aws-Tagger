@@ -70,7 +70,7 @@ Add tags tag_resource()
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudfront.html#CloudFront.Client.tag_resource
 ```
 
-## CloudTrail  - COMPLETED
+## CloudTrail  - COMPLETED (NOT TESTED)
 ```
 Trail get_trail()
 ```
@@ -80,7 +80,7 @@ Add tags add_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudtrail.html#CloudTrail.Client.add_tags
 
-## CloudWatch  - Currently working on (JAY) - 12/23/22
+## CloudWatch  - COMPLETED (NOT TESTED)
 ```
 Alarm describe_alarms()
 ```
