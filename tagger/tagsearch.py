@@ -58,7 +58,7 @@ def checkresource(resourcetype):
         'EKSCluster',
         'EMRCluster',
         'EMRContainersVirtualCluster',
-        'ElasticCacheElasticCache',
+        'ElasticCacheCacheCluster',
         'ElasticCacheSnapshot',
         'ElasticBeanstalkApplication',
         'ElasticInferenceElasticInferenceAccelerator',

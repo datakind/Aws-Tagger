@@ -224,6 +224,36 @@ aws-tagger --resource cluster/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Fooba
 aws-tagger --resource task-definition/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DynamoDBTable"
 ```
 
+### EKS Cluster (Not Tested)
+```
+aws-tagger --resource cluster/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "EKSCluster"
+```
+
+### EMR Cluster (Not Tested)
+```
+aws-tagger --resource myclustername --tag "App:Foobar" --resourcetype "EMRCluster"
+```
+
+### EMRContainters Virtual Cluster (Not Tested)
+```
+aws-tagger --resource virtualclusters/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "EMRContainersVirtualCluster"
+```
+
+### ElastiCache Snapshot (Not Tested)
+```
+aws-tagger --resource snapshot:a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "ElasticCacheSnapshot"
+```
+
+### Elasticache clusters
+```
+aws-tagger --resource cluster:my-cluster --tag "App:Foobar" --resourcetype "ElasticCacheSnapshot"
+```
+
+### Elastic Inference Accelerator (Not Tested)
+```
+aws-tagger --resource elastic-inference-accelerator/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "ElasticInferenceElasticInferenceAccelerator"
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 
@@ -289,11 +319,6 @@ aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar
 ### Application Load Balancers
 ```
 aws-tagger --resource arn:aws:elasticloadbalancing:us-east-1:11111111111:loadbalancer/app/nile-content-api-syd-44c45100/f02ac6f33df89ba8 --tag "App:Foobar"  
-```
-
-### Elasticache clusters
-```
-aws-tagger --resource arn:aws:elasticache:us-east-1:111111111:cluster:my-cluster --tag "App:Foobar"  
 ```
 
 ### Elasticsearch domains 

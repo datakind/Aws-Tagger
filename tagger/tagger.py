@@ -84,6 +84,22 @@ class SingleResourceTagger(object):
 
         # DynamoDB Resources
         self.taggers['DynamoDBTable'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
+        
+        # ElastiCache Resources
+        self.taggers['ElasticCacheCacheCluster'] = tagservices.elasticcache.service.ElasticacheTagger(dryrun, verbose, "ElasticCacheCacheCluster", role=role, region=region)
+        self.taggers['ElasticCacheSnapshot'] = tagservices.elasticcache.service.ElasticacheTagger(dryrun, verbose, "ElasticCacheSnapshot", role=role, region=region)
+
+        # Elastic Inference Resources
+        self.taggers['ElasticInferenceElasticInferenceAccelerator'] = tagservices.elasticinference.service.elasticinferenceTagger(dryrun, verbose, role=role, region=region)
+        
+        # EKS Resources
+        self.taggers['EKSCluster'] = tagservices.eks.service.eksTagger(dryrun, verbose, role=role, region=region)
+
+        # EMR Resources
+        self.taggers['EMRCluster'] = tagservices.emr.service.emrTagger(dryrun, verbose, role=role, region=region)
+
+        # EMRContainers Resources
+        self.taggers['EMRContainersVirtualCluster'] = tagservices.emrcontainers.service.emrcontainersTagger(dryrun, verbose, role=role, region=region)
 
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)

@@ -4,24 +4,39 @@ from retrying import retry
 import boto3
 
 class ElasticacheTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, servicetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.servicetype = servicetype
         self.elasticache = _client('elasticache', role=role, region=region)
 
     def tag(self, resource_arn, tags):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=self.role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = 'elasticache'
+        if self.servicetype == 'ElasticCacheCacheCluster':
+            resource_arn = "cluster:"+resource_arn
+
+        if self.servicetype == 'ElasticCacheSnapshot':
+            resource_arn = "snapshot"+resource_arn
+
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
         aws_tags = _dict_to_aws_tags(tags)
+        
         if self.verbose:
-            print("tagging %s with %s" % (resource_arn, _format_dict(tags)))
+            print("tagging %s with %s" % (", ".join(file_system_id), _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._elasticache_add_tags_to_resource(ResourceName=resource_arn, Tags=aws_tags)
+                self._elasticache_create_tags(ResourceName=file_system_id, Tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
-                if exception.response["Error"]["Code"] in ['CacheClusterNotFound']:
-                    print("Elasticashe Resource not found: %s" % resource_arn)
+                if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
+                    print("Resource not found: %s" % file_system_id)
                 else:
                     raise exception
 
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
-    def _elasticache_add_tags_to_resource(self, **kwargs):
+    def _elasticache_create_tags(self, **kwargs):
         return self.elasticache.add_tags_to_resource(**kwargs)

@@ -280,7 +280,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ecs.html#ECS.Client.tag_resource
 
-## EKS
+## EKS COMPLETED (NOT TESTED)
 ```
 Cluster describe_cluster()
 ```
@@ -290,7 +290,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks.html#EKS.Client.tag_resource
 
-## EMR
+## EMR COMPLETED (NOT TESTED)
 ```
 Cluster describe_cluster()
 ```
@@ -300,7 +300,7 @@ Add tags add_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/emr.html#EMR.Client.add_tags
 
-## EMRContainers 
+## EMRContainers COMPLETED (NOT TESTED)
 ```
 VirtualCluster describe_virtual_cluster()
 ```
@@ -310,7 +310,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/emr-containers.html#EMRContainers.Client.tag_resource
 
-## ElasticCache
+## ElasticCache COMPLETED (NOT TESTED)
 ```
 Snapshot describe_snapshots()
 ```
@@ -320,7 +320,7 @@ Add tags add_tags_to_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elasticache.html#ElastiCache.Client.add_tags_to_resource
 
-## ElasticInference
+## ElasticInference COMPLETED (NOT TESTED)
 ```
 ElasticInferenceAccelerator describe_accelerators()
 ```
