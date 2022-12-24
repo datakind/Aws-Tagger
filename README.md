@@ -179,6 +179,11 @@ aws-tagger --resource data-sets/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foo
 aws-tagger --resource pipeline/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataPipelinePipeline"
 ```
 
+### DynamoDB tables (Not Tested)
+```
+aws-tagger --resource table/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DynamoDBTable"
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 

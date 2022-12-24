@@ -226,7 +226,7 @@ Add tags add_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/datapipeline.html#DataPipeline.Client.add_tags
 
-## DynamoDB
+## DynamoDB COMPLETED (NOT TESTED)
 ```
 Table describe_table()
 ```
