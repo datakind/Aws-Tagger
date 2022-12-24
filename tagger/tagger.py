@@ -35,6 +35,10 @@ class SingleResourceTagger(object):
         # Cloud9 Resources
         self.taggers['Cloud9Environment'] = tagservices.cloud9.service.cloud9Tagger(dryrun, verbose, role=role, region=region)
 
+        # Cloudfront Resources
+        self.taggers['CloudFrontDistribution'] = tagservices.cloudfront.service.CloudfrontTagger(dryrun, verbose, 'CloudFrontDistribution', role=role, region=region)
+        self.taggers['CloudFrontStreamingDistribution'] = tagservices.cloudfront.service.CloudfrontTagger(dryrun, verbose, 'CloudFrontStreamingDistribution', role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)
@@ -61,7 +65,6 @@ class SingleResourceTagger(object):
         self.taggers['elasticbenstalkapp'] = tagservices.elasticbeanstalk.service.EBSATagger(dryrun, verbose, role=role, region=region)
         self.taggers['resourcegroup'] = tagservices.resourcegroups.service.ResourceGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['snstopic'] = tagservices.sns.service.SNSTopicTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['cloudformationstack'] = tagservices.cloudformation.service.CloudformationStackTagger(dryrun, verbose, role=role, region=region)
         self.taggers['secretsmanagersecret'] = tagservices.secretsmanager.service.SecretManagerSecretTagger(dryrun, verbose, role=role, region=region)
         self.taggers['sagemakernotebookinstance'] = tagservices.sagemaker.service.SagemakerNotebookInstanceTagger(dryrun, verbose, role=role, region=region)
         self.taggers['elasticache'] = tagservices.elasticcache.service.ElasticacheTagger(dryrun, verbose, role=role, region=region)
@@ -72,11 +75,11 @@ class SingleResourceTagger(object):
         self.taggers['s3'] = tagservices.s3.service.S3Tagger(dryrun, verbose, role=role, region=region)
         self.taggers['es'] = tagservices.es.service.ESTagger(dryrun, verbose, role=role, region=region)
         self.taggers['kinesis'] = tagservices.kinesis.service.KinesisTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['cloudfront'] = tagservices.cloudfront.service.CloudfrontTagger(dryrun, verbose, role=role, region=region)
         self.taggers['logs'] = tagservices.cloudwatch.service.CloudWatchLogsTagger(dryrun, verbose, role=role, region=region)
         self.taggers['dynamodb'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = tagservices.awslambda.service.LambdaTagger(dryrun, verbose, role=role, region=region)
         self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['cloudformationstack'] = tagservices.cloudformation.service.CloudformationStackTagger(dryrun, verbose, role=role, region=region)
 
         # Glue Resources
         self.taggers['GlueCrawler'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueCrawler', role=role, region=region)

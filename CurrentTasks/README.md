@@ -60,13 +60,14 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloud9.html#Cloud9.Client.tag_resource
 
-## CloudFront  - Currently working on (JAY) - 12/23/22
+## CloudFront  - COMPLETED (NOT TESTED)
 ```
 StreamingDistribution get_distribution()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudfront.html#CloudFront.Client.get_distribution
 ```
 Add tags tag_resource()
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudfront.html#CloudFront.Client.tag_resource
 ```
 
 ## CloudTrail  - Currently working on (JAY) - 12/23/22

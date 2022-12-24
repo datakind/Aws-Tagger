@@ -173,6 +173,8 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Appstream ImageStack --resouretype "AppstreamImageStack" (Not tested)
 ### Certificate Manager --resouretype "CertificateManagerCertificate" (Not tested)
 ### Cloud9 Environment --resouretype "Cloud9Environment" (Not tested)
+### CloudFront Distributions --resouretype "CloudFrontDistribution" (Not tested)
+### CloudFront Streaming Distributions --resouretype "CloudFrontStreamingDistribution" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
@@ -216,8 +218,5 @@ aws-tagger --resource arn:aws:es:us-east-1:111111111:domain/my-domain --tag "App
 aws-tagger --resource arn:aws:kinesis:us-east-1:111111111:stream/my-stream --tag "App:Foobar"  
 ```
 
-### Cloudfront distributions
-```
-aws-tagger --resource arn:aws:cloudfront::1111111111:distribution/E1111111111111 --tag "App:Foobar"  
-```
+
 
