@@ -50,7 +50,7 @@ Add tags add_tags_to_certificate()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/acm.html#ACM.Client.add_tags_to_certificate
 
-## Cloud9  - Currently working on (JAY) - 12/23/22
+## Cloud9  - COMPLETED (NOT TESTED)
 ```
 Environment describe_environments()
 ```

@@ -172,6 +172,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Appstream ImageBulder --resouretype "AppstreamImageBulder" (Not tested)
 ### Appstream ImageStack --resouretype "AppstreamImageStack" (Not tested)
 ### Certificate Manager --resouretype "CertificateManagerCertificate" (Not tested)
+### Cloud9 Environment --resouretype "Cloud9Environment" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

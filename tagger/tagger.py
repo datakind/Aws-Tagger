@@ -32,6 +32,9 @@ class SingleResourceTagger(object):
         # Certificate Manager
         self.taggers['CertificateManagerCertificate'] = tagservices.certificatemanager.service.certificatemanagerTagger(dryrun, verbose, role=role, region=region)
 
+        # Cloud9 Resources
+        self.taggers['Cloud9Environment'] = tagservices.cloud9.service.cloud9Tagger(dryrun, verbose, role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)
