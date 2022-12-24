@@ -179,6 +179,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### CloudWatch Alarm --resouretype "CloudWatchAlarm" (Not tested)
 ### CodeArtifact Domain --resouretype "CodeArtifactDomain" (Not tested)
 ### CodeArtifact Repository --resouretype "CodeArtifactRepository" (Not tested)
+### CodeCommit Repository --resouretype "CodeCommitRepository" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

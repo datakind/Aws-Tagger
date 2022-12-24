@@ -104,7 +104,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeartifact.html#CodeArtifact.Client.tag_resource
 
-## CodeBuild  - Currently working on (JAY) - 12/23/22
+## CodeBuild  - HARD - know what to do but will come back. See cloudformation service folder for dict manipulation reference
 ```
 Project batch_get_projects()
 ```
