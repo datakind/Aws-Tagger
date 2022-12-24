@@ -177,6 +177,8 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### CloudFront Streaming Distributions --resouretype "CloudFrontStreamingDistribution" (Not tested)
 ### CloudTrail Trail --resouretype "CloudTrailTrail" (Not tested)
 ### CloudWatch Alarm --resouretype "CloudWatchAlarm" (Not tested)
+### CodeArtifact Domain --resouretype "CodeArtifactDomain" (Not tested)
+### CodeArtifact Repository --resouretype "CodeArtifactRepository" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

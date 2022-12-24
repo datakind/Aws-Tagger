@@ -44,6 +44,10 @@ class SingleResourceTagger(object):
         
         # Cloudwatch Resources
         self.taggers['CloudWatchAlarm'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, role=role, region=region)
+        
+        # CodeArtifact Resources
+        self.taggers['CodeArtifactDomain'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, "CodeArtifactDomain", role=role, region=region)
+        self.taggers['CodeArtifactRepository'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
 
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)

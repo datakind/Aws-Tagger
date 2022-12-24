@@ -1,6 +1,7 @@
-from tagger.sconfig import _client, _dict_to_aws_tags, _format_dict, _is_retryable_exception
+from tagger.sconfig import _client, _dict_to_aws_tags, _format_dict, _is_retryable_exception, _name_to_arn
 import botocore
 from retrying import retry
+import boto3
 
 class Route53HostedZoneTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):

@@ -90,7 +90,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.tag_resource
 
-## CodeArtifact  - Currently working on (JAY) - 12/23/22
+## CodeArtifact  - COMPLETED
 ```
 Domain describe_domain()
 ```

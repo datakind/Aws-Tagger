@@ -148,7 +148,7 @@ def checkresource(resourcetype):
         'StorageGatewayGateway',
         'WorkspacesWorkspace',
     ]
-    if resourcetype in resourcelist:
+    if str(resourcetype).lower() == str(resourcelist).lower():
         return True
     else:
         return False
