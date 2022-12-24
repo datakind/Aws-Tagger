@@ -39,6 +39,9 @@ class SingleResourceTagger(object):
         self.taggers['CloudFrontDistribution'] = tagservices.cloudfront.service.CloudfrontTagger(dryrun, verbose, 'CloudFrontDistribution', role=role, region=region)
         self.taggers['CloudFrontStreamingDistribution'] = tagservices.cloudfront.service.CloudfrontTagger(dryrun, verbose, 'CloudFrontStreamingDistribution', role=role, region=region)
 
+        # CloudTrail Resources
+        self.taggers['CloudTrailTrail'] = tagservices.cloudtrail.service.cloudtrailTagger(dryrun, verbose, role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)
