@@ -148,7 +148,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codepipeline.html#CodePipeline.Client.tag_resource
 
-## Cognito  - Currently working on (JAY) - 12/23/22
+## Cognito  - COMPLETED
 ```
 IdentityPool describe_identity_pool() tag_resource()
 ```
@@ -157,6 +157,8 @@ https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cogni
 UserPool describe_user_pool() tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-idp.html#CognitoIdentityProvider.Client.describe_user_pool
+
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-identity.html#CognitoIdentity.Client.tag_resource
 
 ## Comprehend  - Currently working on (JAY) - 12/23/22
 ```

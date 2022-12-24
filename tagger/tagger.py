@@ -59,6 +59,10 @@ class SingleResourceTagger(object):
         self.taggers['CodePipelinePipeline'] = tagservices.codepipeline.service.codepipelineTagger(dryrun, verbose, "CodeArtifactDomain", role=role, region=region)
         self.taggers['CodePipelineWebhook'] = tagservices.codepipeline.service.codepipelineTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
 
+        # Cognito Resources
+        self.taggers['CognitoIdentityPool'] = tagservices.cognito.service.cognitoTagger(dryrun, verbose, "CognitoIdentityPool", role=role, region=region)
+        self.taggers['CognitoUserPool'] = tagservices.cognito.service.cognitoTagger(dryrun, verbose, "CognitoUserPool", role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)

@@ -183,6 +183,8 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### CodeGuru-Reviewer RepositoryAssociation --resouretype "CodeGuruReviewerRepositoryAssociation" (Not tested)
 ### CodePipeline Pipeline --resouretype "CodePipelinePipeline" (Not tested)
 ### CodePipeline Webhook --resouretype "CodePipelineWebhook" (Not tested)
+### Cognito IdentityPool --resouretype "CognitoIdentityPool" (Not tested)
+### Cognito UserPool --resouretype "CognitoUserPool" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
