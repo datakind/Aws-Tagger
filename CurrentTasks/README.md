@@ -11,7 +11,7 @@ Configuration describe_configuration()
 Add tags create_tags()
 ```
 
-## Appstream - Currently working on (JAY) - 12/23/22
+## Appstream - COMPLETED
 ```
 Fleet describe_fleets()
 ```

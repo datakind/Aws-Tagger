@@ -163,6 +163,9 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Glue Crawlers
 ### Glue Job
 ### Glue Trigger
+### Appstream Fleets
+### Appstream ImageBulder (Not tested)
+### Appstream ImageStack (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
