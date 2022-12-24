@@ -16,6 +16,11 @@ class SingleResourceTagger(object):
     # https://zhaoxh.cn/en/post/2018/lazy-load-dict/
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
         self.taggers = {}
+
+        # Amazon Mq Resources = 
+        self.taggers['AmazonmqBroker'] = tagservices.mq.service.mqTagger(dryrun, verbose, 'AmazonmqBroker', role=role, region=region)
+        self.taggers['AmazonmqConfiguration'] = tagservices.mq.service.mqTagger(dryrun, verbose, 'AmazonmqConfiguration', role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)

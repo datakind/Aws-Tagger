@@ -2,8 +2,8 @@
 def checkresource(resourcetype):
     # Define resource list by service+resource
     resourcelist = [
-        'amazonmqBroker',
-        'amazonmqConfiguration',
+        'AmazonmqBroker',
+        'AmazonmqConfiguration',
         'AppstreamFleet',
         'AppstreamImageBulder',
         'AppstreamImageStack',

@@ -134,6 +134,16 @@ aws-tagger --resource mystackname/asdf1234-as12-df34-gh56-qwerty012345 --tag "Ap
 aws-tagger --resource myclustername/asdf1234-as12-df34-gh56-qwerty012345-1 --tag "App:Foobar"  
 ```
 
+### Mq Broker
+```
+aws-tagger --resource mybrokername/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar"  
+```
+
+### Mq Configuration (Not Tested)
+```
+aws-tagger --resource mybrokername/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar"  
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 

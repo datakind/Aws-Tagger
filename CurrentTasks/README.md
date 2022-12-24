@@ -1,6 +1,6 @@
 # Here is a list of the current resources that need to be added
 
-## amazon mq - Currently working on (JAY) - 12/23/22
+## amazon mq - COMPLETED
 ```
 Broker describe_broker()
 ```
