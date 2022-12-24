@@ -266,7 +266,7 @@ Add tags create_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2.html#EC2.Client.create_tags
 
-## ECS
+## ECS COMPLETED (NOT TESTED)
 ```
 Cluster describe_clusters()
 ```

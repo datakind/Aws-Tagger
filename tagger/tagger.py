@@ -104,6 +104,13 @@ class SingleResourceTagger(object):
         self.taggers['Ec2SpotInstanceRequest'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2SpotInstanceRequest', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['Ec2VPNConnection'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2VPNConnection', role=role, region=region, tag_volumes=tag_volumes)
         
+        # Comprehend Resources
+        self.taggers['ECSCluster'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSCluster", role=role, region=region)
+        self.taggers['ECSTaskDefinition'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSTaskDefinition", role=role, region=region)
+
+
+
+
         # Organization resources
         self.taggers['organization'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, role=role, region=region)
         

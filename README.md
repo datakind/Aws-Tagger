@@ -214,6 +214,16 @@ aws-tagger --resource pipeline/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foob
 aws-tagger --resource table/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DynamoDBTable"
 ```
 
+### ECS Clusters (Not Tested)
+```
+aws-tagger --resource cluster/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DynamoDBTable"
+```
+
+### ECS Task Definitions (Not Tested)
+```
+aws-tagger --resource task-definition/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DynamoDBTable"
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 
