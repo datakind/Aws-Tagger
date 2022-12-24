@@ -181,6 +181,8 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### CodeArtifact Repository --resouretype "CodeArtifactRepository" (Not tested)
 ### CodeCommit Repository --resouretype "CodeCommitRepository" (Not tested)
 ### CodeGuru-Reviewer RepositoryAssociation --resouretype "CodeGuruReviewerRepositoryAssociation" (Not tested)
+### CodePipeline Pipeline --resouretype "CodePipelinePipeline" (Not tested)
+### CodePipeline Webhook --resouretype "CodePipelineWebhook" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

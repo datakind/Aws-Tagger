@@ -134,7 +134,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguru-reviewer.html#CodeGuruReviewer.Client.tag_resource
 
-## CodePipeline  - Currently working on (JAY) - 12/23/22
+## CodePipeline  - COMPLETED
 ```
 Pipeline get_pipeline()
 ```

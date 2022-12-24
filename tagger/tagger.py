@@ -55,6 +55,10 @@ class SingleResourceTagger(object):
         # CodeCommit Resources
         self.taggers['CodeGuruReviewerRepositoryAssociation'] = tagservices.codegurureviewer.service.codegurureviewerTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
 
+        # CodePipeline Resources
+        self.taggers['CodePipelinePipeline'] = tagservices.codepipeline.service.codepipelineTagger(dryrun, verbose, "CodeArtifactDomain", role=role, region=region)
+        self.taggers['CodePipelineWebhook'] = tagservices.codepipeline.service.codepipelineTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)
