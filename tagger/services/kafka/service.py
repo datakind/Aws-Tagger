@@ -3,8 +3,6 @@ import botocore
 from retrying import retry
 import boto3
 
-# NOTE: Kafka implementation is not finished
-
 class kafkaTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
         self.dryrun = dryrun

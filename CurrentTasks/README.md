@@ -174,7 +174,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/comprehend.html#Comprehend.Client.tag_resource
 
-## Config  - Currently working on (JAY) - 12/23/22
+## Config  - COMPLETED (NOT TESTED)
 ```
 ConfigRule describe_config_rules()
 ```

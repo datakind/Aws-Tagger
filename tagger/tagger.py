@@ -50,10 +50,10 @@ class SingleResourceTagger(object):
         self.taggers['CodeArtifactRepository'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
 
         # CodeCommit Resources
-        self.taggers['CodeCommitRepository'] = tagservices.codecommit.service.codecommitTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
+        self.taggers['CodeCommitRepository'] = tagservices.codecommit.service.codecommitTagger(dryrun, verbose, role=role, region=region)
         
         # CodeCommit Resources
-        self.taggers['CodeGuruReviewerRepositoryAssociation'] = tagservices.codegurureviewer.service.codegurureviewerTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
+        self.taggers['CodeGuruReviewerRepositoryAssociation'] = tagservices.codegurureviewer.service.codegurureviewerTagger(dryrun, verbose, role=role, region=region)
 
         # CodePipeline Resources
         self.taggers['CodePipelinePipeline'] = tagservices.codepipeline.service.codepipelineTagger(dryrun, verbose, "CodeArtifactDomain", role=role, region=region)
@@ -66,6 +66,9 @@ class SingleResourceTagger(object):
         # Comprehend Resources
         self.taggers['ComprehendDocumentClassifier'] = tagservices.comprehend.service.comprehendTagger(dryrun, verbose, "CognitoIdentityPool", role=role, region=region)
         self.taggers['ComprehendEntityRecognizer'] = tagservices.comprehend.service.comprehendTagger(dryrun, verbose, "CognitoUserPool", role=role, region=region)
+
+        # CodeCommit Resources
+        self.taggers['ConfigConfigRule'] = tagservices.configservice.service.configserviceTagger(dryrun, verbose, role=role, region=region)
 
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)

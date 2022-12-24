@@ -187,6 +187,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Cognito UserPool --resouretype "CognitoUserPool" (Not tested)
 ### Comprehend Document-Classifier --resouretype "ComprehendDocumentClassifier" (Not tested)
 ### Comprehend Entity-Recognizer --resouretype "ComprehendEntityRecognizer" (Not tested)
+### Config Rules --resouretype "ConfigConfigRule" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
