@@ -149,6 +149,25 @@ aws-tagger --resource mybrokername/a-asdf1234-df34-gh56-qwerty012345 --tag "App:
 aws-tagger --resource device/quantum-simulator/amazon/mytaskname --tag "App:Foobar" --resourcetype "BraketQuatumTask"
 ```
 
+### DataBrew Jobs (Not Tested)
+```
+aws-tagger --resource job/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataBrewJob"
+```
+
+### DataBrew Projects (Not Tested)
+```
+aws-tagger --resource project/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataBrewProject"
+```
+
+### DataBrew Recipes (Not Tested)
+```
+aws-tagger --resource recipe/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataBrewRecipe"
+```
+
+### DataBrew Schedules (Not Tested)
+```
+aws-tagger --resource schedule/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataBrewSchedule"
+```
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 
