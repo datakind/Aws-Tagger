@@ -119,6 +119,36 @@ aws-tagger --resource sg-12345678 --tag "App:Foobar"
 aws-tagger --resource subnet-12345678 --tag "App:Foobar"  
 ```
 
+### EC2 CustomerGateway
+```
+aws-tagger --resource resourceid --tag "App:Foobar" --resourcetype "Ec2CustomerGateway"
+```
+
+### EC2 Elastic IP
+```
+aws-tagger --resource resourceid --tag "App:Foobar" --resourcetype "Ec2EIP"
+```
+
+### EC2 Network Gateway
+```
+aws-tagger --resource resourceid --tag "App:Foobar" --resourcetype "Ec2NatGateway"
+```
+
+### EC2 Reserved Instance
+```
+aws-tagger --resource resourceid --tag "App:Foobar" --resourcetype "Ec2ReservedInstance"
+```
+
+### EC2 Spot Instance Request
+```
+aws-tagger --resource resourceid --tag "App:Foobar" --resourcetype "Ec2SpotInstanceRequest"
+```
+
+### EC2 VPN Connection
+```
+aws-tagger --resource resourceid --tag "App:Foobar" --resourcetype "Ec2VPNConnection"
+```
+
 ### S3 buckets
 ```
 aws-tagger --resource my-bucket --tag "App:Foobar"  

@@ -236,7 +236,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.tag_resource
 
-## EC2
+## EC2 COMPLETED (THESE SPECIFIC ONES HAVE NOT BEEN TESTED BUT OTHERS HAVE)
 ```
 CustomerGateway describe_customer_gateways()
 ```

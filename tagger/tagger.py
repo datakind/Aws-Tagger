@@ -82,6 +82,9 @@ class SingleResourceTagger(object):
         # DataPipeline Resources
         self.taggers['DataPipelinePipeline'] = tagservices.datapipeline.service.datapipelineTagger(dryrun, verbose, role=role, region=region)
 
+        # DynamoDB Resources
+        self.taggers['DynamoDBTable'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)
@@ -94,6 +97,12 @@ class SingleResourceTagger(object):
         self.taggers['sg'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'sg', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['subnet'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'subnet', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['vpc'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'vpc', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['Ec2CustomerGateway'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2CustomerGateway', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['Ec2EIP'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2EIP', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['Ec2NatGateway'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2NatGateway', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['Ec2ReservedInstance'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2ReservedInstance', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['Ec2SpotInstanceRequest'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2SpotInstanceRequest', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['Ec2VPNConnection'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2VPNConnection', role=role, region=region, tag_volumes=tag_volumes)
         
         # Organization resources
         self.taggers['organization'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, role=role, region=region)
