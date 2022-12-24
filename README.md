@@ -144,6 +144,10 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Redshift Cluster Parameter Groups
 ### Route53 Hosted Zone
 ### Secret Manager Secrets
+### Glacier Vaults
+### Glue Crawlers
+### Glue Job
+### Glue Trigger
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

@@ -148,3 +148,7 @@ def checkresource(resourcetype):
         'StorageGatewayGateway',
         'WorkspacesWorkspace',
     ]
+    if resourcetype in resourcelist:
+        return True
+    else:
+        return False

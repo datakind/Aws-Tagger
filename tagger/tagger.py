@@ -58,7 +58,11 @@ class SingleResourceTagger(object):
         self.taggers['dynamodb'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = tagservices.awslambda.service.LambdaTagger(dryrun, verbose, role=role, region=region)
         self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['GlueRole'] = tagservices.glue.service.glueRoleTagger(dryrun, verbose, role=role, region=region)
+
+        # Glue Resources
+        self.taggers['GlueCrawler'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueCrawler', role=role, region=region)
+        self.taggers['GlueJob'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueJob', role=role, region=region)
+        self.taggers['GlueTrigger'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueTrigger', role=role, region=region)
 
     def tag(self, resource_id, resourcetype, tags, role=None, region=None):
         print(
@@ -79,20 +83,14 @@ class SingleResourceTagger(object):
             resource_arn = searchresult[0]
         else:
             print(resourcetype)
-            # TODO: Comment below out if non-functional
             searchresult = tagsearch.checkresource(resourcetype)
-            if self.taggers.get(resourcetype) == None:
-              #TODO: Do something if tagger does not exist in code
-              # Perhaps throwing an exception
-              tagger = self.taggers['GlacierVault']
-            else: 
-              tagger = self.taggers[resourcetype]
-            print(searchresult)
-            # tagger = self.taggers['GlacierVault']
-            resource_arn = resource_id
-            # tagger = searchresult[1]
-            # resource_arn = searchresult[0]
-            # add function for resourcetypechecker
+            if searchresult == True:
+                tagger = self.taggers[resourcetype]
+                resource_arn = resource_id
+
+            # We wont need a catch block here because if there is no
+            # tagger the code will be stopped at line 94.
+            
             pass
         if tagger:
             tagger.tag(resource_arn, tags)
