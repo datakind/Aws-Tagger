@@ -29,6 +29,9 @@ class SingleResourceTagger(object):
         self.taggers['AppstreamImageBulder'] = tagservices.appstream.service.appstreamTagger(dryrun, verbose, 'AppstreamImageBulder', role=role, region=region)
         self.taggers['AppstreamImageStack'] = tagservices.appstream.service.appstreamTagger(dryrun, verbose, 'AppstreamImageStack', role=role, region=region)
 
+        # Certificate Manager
+        self.taggers['CertificateManagerCertificate'] = tagservices.certificatemanager.service.certificatemanagerTagger(dryrun, verbose, role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)

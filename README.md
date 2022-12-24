@@ -171,6 +171,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Appstream Fleets --resouretype "AppstreamFleet"
 ### Appstream ImageBulder --resouretype "AppstreamImageBulder" (Not tested)
 ### Appstream ImageStack --resouretype "AppstreamImageStack" (Not tested)
+### Certificate Manager --resouretype "CertificateManagerCertificate" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

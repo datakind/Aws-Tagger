@@ -39,7 +39,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/braket.html#Braket.Client.tag_resource
 
-## Certificate Manager  - Currently working on (JAY) - 12/23/22
+## Certificate Manager  - COMPLETED (NOT TESTED)
 ```
 Certificate describe_certificate() or get_certificate()
 ```
