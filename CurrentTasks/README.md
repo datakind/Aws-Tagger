@@ -70,7 +70,7 @@ Add tags tag_resource()
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudfront.html#CloudFront.Client.tag_resource
 ```
 
-## CloudTrail  - Currently working on (JAY) - 12/23/22
+## CloudTrail  - COMPLETED
 ```
 Trail get_trail()
 ```

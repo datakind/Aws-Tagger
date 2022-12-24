@@ -175,6 +175,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Cloud9 Environment --resouretype "Cloud9Environment" (Not tested)
 ### CloudFront Distributions --resouretype "CloudFrontDistribution" (Not tested)
 ### CloudFront Streaming Distributions --resouretype "CloudFrontStreamingDistribution" (Not tested)
+### CloudTrail Trail --resouretype "CloudTrailTrail" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
