@@ -7,23 +7,32 @@ class datapipelineTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
-        self.ami = _client('ec2', role=role, region=region)
+        self.role = role
+        self.region = region
+        self.datapipeline = _client('datapipeline', role=role, region=region)
 
-    def tag(self, instance_id, tags):
+    def tag(self, resource_arn, tags):
+        my_session = boto3.session.Session()
+        region = my_session.region_name
+
+        self.sts = _client('sts', role=self.role, region=region)
+        account_id = self.sts.get_caller_identity()["Account"]
+        service = 'datapipeline'
+        resource_arn = f'pipeline/{resource_arn}'
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
         aws_tags = _dict_to_aws_tags(tags)
-        print(aws_tags)
-        resource_ids = [instance_id]
+        
         if self.verbose:
-            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+            print("tagging %s with %s" % (", ".join(file_system_id), _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._ami_create_tags(Resources=resource_ids, Tags=aws_tags)
+                self._datapipeline_create_tags(pipelineId=file_system_id, tags=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
-                    print("Resource not found: %s" % instance_id)
+                    print("Resource not found: %s" % file_system_id)
                 else:
                     raise exception
 
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
-    def _ami_create_tags(self, **kwargs):
-        return self.ami.create_tags(**kwargs)
+    def _datapipeline_create_tags(self, **kwargs):
+        return self.datapipeline.add_tags(**kwargs)

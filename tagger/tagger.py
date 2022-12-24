@@ -79,6 +79,9 @@ class SingleResourceTagger(object):
         # DataExchange Resources
         self.taggers['DataExchangeDataSet'] = tagservices.dataexchange.service.dataexchangeTagger(dryrun, verbose, role=role, region=region)
 
+        # DataPipeline Resources
+        self.taggers['DataPipelinePipeline'] = tagservices.datapipeline.service.datapipelineTagger(dryrun, verbose, role=role, region=region)
+
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)

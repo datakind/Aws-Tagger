@@ -174,6 +174,11 @@ aws-tagger --resource schedule/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foob
 aws-tagger --resource data-sets/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataExchangeDataSet"
 ```
 
+### DataPipeline Pipelines (Not Tested)
+```
+aws-tagger --resource pipeline/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataPipelinePipeline"
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 

@@ -216,7 +216,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dataexchange.html#DataExchange.Client.tag_resource
 
-## DataPipeline
+## DataPipeline COMPLETED (NOT TESTED)
 ```
 Pipeline describe_pipelines()
 ```
