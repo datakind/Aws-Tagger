@@ -1,6 +1,6 @@
 # Here is a list of the current resources that need to be added
 
-## amazon mq
+## amazon mq - Currently working on (JAY) - 12/23/22
 ```
 Broker describe_broker()
 ```
@@ -11,7 +11,7 @@ Configuration describe_configuration()
 Add tags create_tags()
 ```
 
-## Appstream
+## Appstream - Currently working on (JAY) - 12/23/22
 ```
 Fleet describe_fleets()
 ```
@@ -29,7 +29,7 @@ Tag tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appstream.html#AppStream.Client.tag_resource
 
-## Braket
+## Braket  - Currently working on (JAY) - 12/23/22
 ```
 QuantumTask get_quantum_task()
 ```
@@ -39,7 +39,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/braket.html#Braket.Client.tag_resource
 
-## Certificate Manager
+## Certificate Manager  - Currently working on (JAY) - 12/23/22
 ```
 Certificate describe_certificate() or get_certificate()
 ```
@@ -50,7 +50,7 @@ Add tags add_tags_to_certificate()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/acm.html#ACM.Client.add_tags_to_certificate
 
-## Cloud9
+## Cloud9  - Currently working on (JAY) - 12/23/22
 ```
 Environment describe_environments()
 ```
@@ -60,7 +60,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloud9.html#Cloud9.Client.tag_resource
 
-## CloudFront
+## CloudFront  - Currently working on (JAY) - 12/23/22
 ```
 StreamingDistribution get_distribution()
 ```
@@ -69,7 +69,7 @@ https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloud
 Add tags tag_resource()
 ```
 
-## CloudTrail
+## CloudTrail  - Currently working on (JAY) - 12/23/22
 ```
 Trail get_trail()
 ```
@@ -79,7 +79,7 @@ Add tags add_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudtrail.html#CloudTrail.Client.add_tags
 
-## CloudWatch
+## CloudWatch  - Currently working on (JAY) - 12/23/22
 ```
 Alarm describe_alarms()
 ```
@@ -89,7 +89,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html#CloudWatch.Client.tag_resource
 
-## CodeArtifact
+## CodeArtifact  - Currently working on (JAY) - 12/23/22
 ```
 Domain describe_domain()
 ```
@@ -103,7 +103,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeartifact.html#CodeArtifact.Client.tag_resource
 
-## CodeBuild
+## CodeBuild  - Currently working on (JAY) - 12/23/22
 ```
 Project batch_get_projects()
 ```
@@ -113,7 +113,7 @@ Add tags update_project()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codebuild.html#CodeBuild.Client.update_project
 
-## CodeCommit
+## CodeCommit  - Currently working on (JAY) - 12/23/22
 ```
 Repository get_repository()
 ```
@@ -123,7 +123,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.tag_resource
 
-## CodeGuruReviewer
+## CodeGuruReviewer  - Currently working on (JAY) - 12/23/22
 ```
 RepositoryAssociation describe_repository_association()
 ```
@@ -133,7 +133,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguru-reviewer.html#CodeGuruReviewer.Client.tag_resource
 
-## CodePipeline
+## CodePipeline  - Currently working on (JAY) - 12/23/22
 ```
 Pipeline get_pipeline()
 ```
@@ -147,7 +147,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codepipeline.html#CodePipeline.Client.tag_resource
 
-## Cognito
+## Cognito  - Currently working on (JAY) - 12/23/22
 ```
 IdentityPool describe_identity_pool() tag_resource()
 ```
@@ -157,7 +157,7 @@ UserPool describe_user_pool() tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-idp.html#CognitoIdentityProvider.Client.describe_user_pool
 
-## Comprehend
+## Comprehend  - Currently working on (JAY) - 12/23/22
 ```
 DocumentClassifier describe_document_classifier()
 ```
@@ -171,7 +171,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/comprehend.html#Comprehend.Client.tag_resource
 
-## Config
+## Config  - Currently working on (JAY) - 12/23/22
 ```
 ConfigRule describe_config_rules()
 ```
