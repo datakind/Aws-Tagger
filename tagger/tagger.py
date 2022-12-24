@@ -21,6 +21,9 @@ class SingleResourceTagger(object):
         self.taggers['AmazonmqBroker'] = tagservices.mq.service.mqTagger(dryrun, verbose, 'AmazonmqBroker', role=role, region=region)
         self.taggers['AmazonmqConfiguration'] = tagservices.mq.service.mqTagger(dryrun, verbose, 'AmazonmqConfiguration', role=role, region=region)
 
+        # Braket Resources
+        self.taggers['BraketQuantumTask'] = tagservices.braket.service.braketTagger(dryrun, verbose, role=role, region=region)
+
         # Appstream Resources
         self.taggers['AppstreamFleet'] = tagservices.appstream.service.appstreamTagger(dryrun, verbose, 'AppstreamFleet', role=role, region=region)
         self.taggers['AppstreamImageBulder'] = tagservices.appstream.service.appstreamTagger(dryrun, verbose, 'AppstreamImageBulder', role=role, region=region)

@@ -34,7 +34,10 @@ def _name_to_arn(resource_name,service,region,account_id):
         arnstring = "arn:aws:"+service+":"+region+":"+account_id+":"+resource_name
         return arnstring
     else:
-        arnstring = "arn:aws:"+service+"::"+account_id+":"+resource_name
+        if service != "braket":
+            arnstring = "arn:aws:"+service+"::"+account_id+":"+resource_name
+        else:
+            arnstring = "arn:aws:"+service+":::"+resource_name
         return arnstring
 
 def _fetch_temporary_credentials(role):

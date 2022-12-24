@@ -131,17 +131,22 @@ aws-tagger --resource mystackname/asdf1234-as12-df34-gh56-qwerty012345 --tag "Ap
 
 ### Kafka Cluster
 ```
-aws-tagger --resource myclustername/asdf1234-as12-df34-gh56-qwerty012345-1 --tag "App:Foobar"  
+aws-tagger --resource myclustername/asdf1234-as12-df34-gh56-qwerty012345-1 --tag "App:Foobar" --resourcetype "KafkaCluster"
 ```
 
 ### Mq Broker
 ```
-aws-tagger --resource mybrokername/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar"  
+aws-tagger --resource mybrokername/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "AmazonmqBroker"
 ```
 
 ### Mq Configuration (Not Tested)
 ```
-aws-tagger --resource mybrokername/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar"  
+aws-tagger --resource mybrokername/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "AmazonmqConfiguration"
+```
+
+### Braket Task (Not Tested)
+```
+aws-tagger --resource device/quantum-simulator/amazon/mytaskname --tag "App:Foobar" --resourcetype "BraketQuatumTask"
 ```
 
 ## AWS Resource Support (by searching)
@@ -163,9 +168,9 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Glue Crawlers
 ### Glue Job
 ### Glue Trigger
-### Appstream Fleets
-### Appstream ImageBulder (Not tested)
-### Appstream ImageStack (Not tested)
+### Appstream Fleets --resouretype "AppstreamFleet"
+### Appstream ImageBulder --resouretype "AppstreamImageBulder" (Not tested)
+### Appstream ImageStack --resouretype "AppstreamImageStack" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

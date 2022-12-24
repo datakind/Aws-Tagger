@@ -1,7 +1,8 @@
-from tagger.sconfig import _client, _dict_to_aws_tags, _format_dict, _name_to_arn
+from tagger.sconfig import _client, _dict_to_aws_tags, _format_dict, _is_retryable_exception, _name_to_arn
 import botocore
 from retrying import retry
 import boto3
+
 
 class SNSTopicTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
@@ -29,3 +30,7 @@ class SNSTopicTagger(object):
                     print("SNS Topic Resource not found: %s" % resource_arn)
                 else:
                     raise exception
+
+    @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
+    def _resourcegroup_create_tags(self, **kwargs):
+        return self.snstopic.tag_resource(**kwargs)

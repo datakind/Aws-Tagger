@@ -29,7 +29,7 @@ Tag tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appstream.html#AppStream.Client.tag_resource
 
-## Braket  - Currently working on (JAY) - 12/23/22
+## Braket  - COMPLETED (NOT TESTED)
 ```
 QuantumTask get_quantum_task()
 ```
