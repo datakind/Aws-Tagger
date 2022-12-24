@@ -70,11 +70,14 @@ class SingleResourceTagger(object):
         # CodeCommit Resources
         self.taggers['ConfigConfigRule'] = tagservices.configservice.service.configserviceTagger(dryrun, verbose, role=role, region=region)
 
-        # Comprehend Resources
+        # DataBrew Resources
         self.taggers['DataBrewJob'] = tagservices.databrew.service.databrewTagger(dryrun, verbose, "DataBrewJob", role=role, region=region)
         self.taggers['DataBrewProject'] = tagservices.databrew.service.databrewTagger(dryrun, verbose, "DataBrewProject", role=role, region=region)
         self.taggers['DataBrewRecipe'] = tagservices.databrew.service.databrewTagger(dryrun, verbose, "DataBrewRecipe", role=role, region=region)
         self.taggers['DataBrewSchedule'] = tagservices.databrew.service.databrewTagger(dryrun, verbose, "DataBrewSchedule", role=role, region=region)
+
+        # DataExchange Resources
+        self.taggers['DataExchangeDataSet'] = tagservices.dataexchange.service.dataexchangeTagger(dryrun, verbose, role=role, region=region)
 
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)

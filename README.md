@@ -168,6 +168,12 @@ aws-tagger --resource recipe/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar
 ```
 aws-tagger --resource schedule/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataBrewSchedule"
 ```
+
+### DataExchange DataSets (Not Tested)
+```
+aws-tagger --resource data-sets/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "DataExchangeDataSet"
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 

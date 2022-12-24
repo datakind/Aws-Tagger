@@ -206,7 +206,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/databrew.html#GlueDataBrew.Client.tag_resource
 
-## DataExchange
+## DataExchange COMPLETED (NOT TESTED)
 ```
 DataSet get_data_set()
 ```
