@@ -120,11 +120,48 @@ class SingleResourceTagger(object):
         self.taggers['Ec2SpotInstanceRequest'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2SpotInstanceRequest', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['Ec2VPNConnection'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2VPNConnection', role=role, region=region, tag_volumes=tag_volumes)
         
-        # Comprehend Resources
+        # ECS Resources
         self.taggers['ECSCluster'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSCluster", role=role, region=region)
         self.taggers['ECSTaskDefinition'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSTaskDefinition", role=role, region=region)
 
+        # Elasticloadbalancing Resources
+        self.taggers['ElasticLoadBalancingLoadBalancer'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, "ElasticLoadBalancingLoadBalancer", role=role, region=region)
+        self.taggers['ElasticLoadBalancingV2LoadBalancer'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, "ElasticLoadBalancingV2LoadBalancer", role=role, region=region)
+        self.taggers['ElasticLoadBalancingV2TargetGroup'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, "ElasticLoadBalancingV2TargetGroup", role=role, region=region)
 
+        # EventBridge Resources
+        self.taggers['EventsRule'] = tagservices.events.service.eventsTagger(dryrun, verbose, role=role, region=region)
+
+        # Forecast Resources
+        self.taggers['ForecastDataset'] = tagservices.forecast.service.forecastTagger(dryrun, verbose, "ForecastDataset", role=role, region=region)
+        self.taggers['ForecastDatasetGroup'] = tagservices.forecast.service.forecastTagger(dryrun, verbose, "ForecastDatasetGroup", role=role, region=region)
+        self.taggers['ForecastForecast'] = tagservices.forecast.service.forecastTagger(dryrun, verbose, "ForecastForecast", role=role, region=region)
+        self.taggers['ForecastForecastExportJob'] = tagservices.forecast.service.forecastTagger(dryrun, verbose, "ForecastForecastExportJob", role=role, region=region)
+        self.taggers['ForecastPredictor'] = tagservices.forecast.service.forecastTagger(dryrun, verbose, "ForecastPredictor", role=role, region=region)
+        self.taggers['ForecastPredictorBacktestExportJob'] = tagservices.forecast.service.forecastTagger(dryrun, verbose, "ForecastPredictorBacktestExportJob", role=role, region=region)
+
+        # FraudDetector Resources
+        self.taggers['FraudDetectorDetector'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorDetector", role=role, region=region)
+        self.taggers['FraudDetectorEntityType'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorEntityType", role=role, region=region)
+        self.taggers['FraudDetectorEventType'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorEventType", role=role, region=region)
+        self.taggers['FraudDetectorExternalModel'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorExternalModel", role=role, region=region)
+        self.taggers['FraudDetectorLabel'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorLabel", role=role, region=region)
+        self.taggers['FraudDetectorModel'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorModel", role=role, region=region)
+        self.taggers['FraudDetectorOutcome'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorOutcome", role=role, region=region)
+        self.taggers['FraudDetectorVariable'] = tagservices.frauddectector.service.frauddectectorTagger(dryrun, verbose, "FraudDetectorVariable", role=role, region=region)
+
+        # Fsx Resources
+        self.taggers['FSxFileSystem'] = tagservices.fsx.service.fsxTagger(dryrun, verbose, role=role, region=region)
+
+        # GreenGrass Resources
+        self.taggers['GreengrassConnectorDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassConnectorDefinition", role=role, region=region)
+        self.taggers['GreengrassCoreDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassCoreDefinition", role=role, region=region)
+        self.taggers['GreengrassDeviceDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassDeviceDefinition", role=role, region=region)
+        self.taggers['GreengrassFunctionDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassFunctionDefinition", role=role, region=region)
+        self.taggers['GreengrassGroup'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassGroup", role=role, region=region)
+        self.taggers['GreengrassLoggerDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassLoggerDefinition", role=role, region=region)
+        self.taggers['GreengrassResourceDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassResourceDefinition", role=role, region=region)
+        self.taggers['GreengrassSubscriptionDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassSubscriptionDefinition", role=role, region=region)
 
 
         # Organization resources
@@ -136,7 +173,7 @@ class SingleResourceTagger(object):
 
         # Other resources currently
         self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['elasticloadbalancing'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, role=role, region=region)
+        
         self.taggers['elasticbenstalkapp'] = tagservices.elasticbeanstalk.service.EBSATagger(dryrun, verbose, role=role, region=region)
         self.taggers['resourcegroup'] = tagservices.resourcegroups.service.ResourceGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['snstopic'] = tagservices.sns.service.SNSTopicTagger(dryrun, verbose, role=role, region=region)

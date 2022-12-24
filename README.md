@@ -254,6 +254,138 @@ aws-tagger --resource cluster:my-cluster --tag "App:Foobar" --resourcetype "Elas
 aws-tagger --resource elastic-inference-accelerator/a-asdf1234-df34-gh56-qwerty012345 --tag "App:Foobar" --resourcetype "ElasticInferenceElasticInferenceAccelerator"
 ```
 
+### Elastic Load Balancers
+```
+aws-tagger --resource loadbalancer/my-elb --tag "App:Foobar" --resourcetype "ElasticLoadBalancingLoadBalancer"
+
+aws-tagger --resource loadbalancer/app/my-elb --tag "App:Foobar" --resourcetype "ElasticLoadBalancingV2LoadBalancer"
+```
+
+### Event Rules
+```
+aws-tagger --resource rule/myrulename --tag "App:Foobar" --resourcetype "EventsRule"
+```
+
+### FSx File System
+```
+aws-tagger --resource file-system/myfilesystemid --tag "App:Foobar" --resourcetype "FSxFileSystem"
+```
+
+### Forecast Dataset
+```
+aws-tagger --resource dataset/myresourceid --tag "App:Foobar" --resourcetype "ForecastDataset"
+```
+
+### Forecast Dataset Group
+```
+aws-tagger --resource dataset-group/myresourceid --tag "App:Foobar" --resourcetype "ForecastDatasetGroup"
+```
+
+### Forecasts
+```
+aws-tagger --resource forecast/myresourceid --tag "App:Foobar" --resourcetype "ForecastForecast"
+```
+
+### Forecast export jobs
+```
+aws-tagger --resource forecast-export-job/myresourceid --tag "App:Foobar" --resourcetype "ForecastForecastExportJob"
+```
+
+### Forecast Predictor
+```
+aws-tagger --resource what-if-forecast/myresourceid --tag "App:Foobar" --resourcetype "ForecastPredictor"
+```
+
+### Forecast Predictor Backtest Export jobs
+```
+aws-tagger --resource what-if-forecast-export/myresourceid --tag "App:Foobar" --resourcetype "ForecastDataset"
+```
+
+### Forecast Predictor Backtest Export jobs
+```
+aws-tagger --resource what-if-forecast-export/myresourceid --tag "App:Foobar" --resourcetype "ForecastDataset"
+```
+
+### FraudDectector Dectectors
+```
+aws-tagger --resource detector/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorDetector"
+```
+
+### FraudDectector Entity-Types
+```
+aws-tagger --resource entity-type/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorEntityType"
+```
+
+### FraudDectector Event-Types
+```
+aws-tagger --resource event-type/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorEventType"
+```
+
+### FraudDectector External Models
+```
+aws-tagger --resource external-model/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorExternalModel"
+```
+
+### FraudDectector Labels
+```
+aws-tagger --resource label/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorLabel"
+```
+
+### FraudDectector Models
+```
+aws-tagger --resource model/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorModel"
+```
+
+### FraudDectector Outcomes
+```
+aws-tagger --resource outcome/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorOutcome"
+```
+
+### FraudDectector Variables
+```
+aws-tagger --resource variable/myresourcepath --tag "App:Foobar" --resourcetype "FraudDetectorVariable"
+```
+
+### GreenGrass Connector Definitions
+```
+aws-tagger --resource /greengrass/definition/connectors/resourceid --tag "App:Foobar" --resourcetype "GreengrassConnectorDefinition"
+```
+
+### GreenGrass Core Definitions
+```
+aws-tagger --resource /greengrass/definition/cores/resourceid --tag "App:Foobar" --resourcetype "GreengrassCoreDefinition"
+```
+
+### GreenGrass Device Definitions
+```
+aws-tagger --resource /greengrass/definition/devices/resourceid --tag "App:Foobar" --resourcetype "GreengrassDeviceDefinition"
+```
+
+### GreenGrass Function Definitions
+```
+aws-tagger --resource /greengrass/definition/functions/resourceid --tag "App:Foobar" --resourcetype "GreengrassFunctionDefinition"
+```
+
+### GreenGrass Groups
+```
+aws-tagger --resource /greengrass/groups/resourceid --tag "App:Foobar" --resourcetype "GreengrassGroup"
+```
+
+### GreenGrass Logger Definitions
+```
+aws-tagger --resource /greengrass/definition/loggers/resourceid --tag "App:Foobar" --resourcetype "GreengrassLoggerDefinition"
+```
+
+### GreenGrass Resource Definitions
+```
+aws-tagger --resource /greengrass/definition/resources/resourceid --tag "App:Foobar" --resourcetype "GreengrassConnectorDefinition"
+```
+
+### GreenGrass Subscription Definitions
+```
+aws-tagger --resource /greengrass/definition/subscriptions/resourceid --tag "App:Foobar" --resourcetype "GreengrassSubscriptionDefinition"
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 
@@ -304,11 +436,6 @@ AWS Tagger supports the following AWS resource types using the arn of the resour
 ### EFS files systems
 ```
 aws-tagger --resource arn:aws:elasticfilesystem:us-east-1:1111111111:file-system/fs-1111111 --tag "App:Foobar"  
-```
-
-### Elastic Load Balancers
-```
-aws-tagger --resource arn:aws:elasticloadbalancing:us-east-1:11111111111:loadbalancer/my-elb --tag "App:Foobar"  
 ```
 
 ### RDS instances 

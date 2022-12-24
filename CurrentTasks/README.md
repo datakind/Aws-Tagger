@@ -330,7 +330,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elastic-inference.html#ElasticInference.Client.tag_resource
 
-## ElasticLoadBalancingV2
+## ElasticLoadBalancingV2 COMPLETED (NOT TESTED)
 ```
 LoadBalancer describe_load_balancers()
 ```
@@ -344,7 +344,7 @@ Add tags add_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elbv2.html#ElasticLoadBalancingv2.Client.add_tags
 
-## Events
+## Events COMPLETED (NOT TESTED)
 ```
 Rule describe_rule()
 ```
@@ -354,7 +354,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/events.html#EventBridge.Client.tag_resource
 
-## FSx
+## FSx COMPLETED (NOT TESTED)
 ```
 FileSystem describe_file_systems()
 ```
@@ -364,7 +364,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/fsx.html#FSx.Client.tag_resource
 
-## Forecast
+## Forecast COMPLETED (NOT TESTED)
 ```
 Dataset describe_dataset()
 ```
@@ -398,7 +398,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/forecast.html#ForecastService.Client.tag_resource
 
-## FraudDetector
+## FraudDetector COMPLETED (NOT TESTED)
 ```
 Detector describe_detector()
 ```
