@@ -445,6 +445,112 @@ aws-tagger --resource domain/resourceid --tag "App:Foobar" --resourcetype "OpenS
 aws-tagger --resource ledger/resourceid --tag "App:Foobar" --resourcetype "QLDBLedger"
 ```
 
+### RAM Resource Share
+```
+aws-tagger --resource resource-share/resourceid --tag "App:Foobar" --resourcetype "RAMResourceShare"
+```
+
+### RDS DBCluster
+```
+aws-tagger --resource cluster:resourceid --tag "App:Foobar" --resourcetype "RDSDBCluster"
+```
+
+### RDS DBCluster Parameter Group
+```
+aws-tagger --resource cluster-pg:resourceid --tag "App:Foobar" --resourcetype "RDSDBClusterParameterGroup"
+```
+
+### RDS RDSDBCluster Snapshot
+```
+aws-tagger --resource cluster-snapshot:resourceid --tag "App:Foobar" --resourcetype "RDSDBClusterSnapshot"
+```
+
+### RDS DBInstance
+```
+aws-tagger --resource db:resourceid --tag "App:Foobar" --resourcetype "RDSDBInstance"
+```
+
+### RDS Parameter Groups
+```
+aws-tagger --resource pg:resourceid --tag "App:Foobar" --resourcetype "RDSDBParameterGroup"
+```
+
+### RDS DBSecurity Group
+```
+aws-tagger --resource secgrp:resourceid --tag "App:Foobar" --resourcetype "RDSDBSecurityGroup"
+```
+
+### RDS DBSnapshot
+```
+aws-tagger --resource snapshot:resourceid --tag "App:Foobar" --resourcetype "RDSDBSnapshot"
+```
+
+### RDS DBSubnetGroup
+```
+aws-tagger --resource subgrp:resourceid --tag "App:Foobar" --resourcetype "RDSDBSubnetGroup"
+```
+
+### RDS EventSubscription
+```
+aws-tagger --resource es:resourceid --tag "App:Foobar" --resourcetype "RDSEventSubscription"
+```
+
+### RDS DBOption Group
+```
+aws-tagger --resource og:resourceid --tag "App:Foobar" --resourcetype "RDSOptionGroup"
+```
+
+### RDS ReservedDBInstance
+```
+aws-tagger --resource ri:resourceid --tag "App:Foobar" --resourcetype "RDSReservedDBInstance"
+```
+
+### Redshift Cluster
+```
+aws-tagger --resource cluster:resourceid --tag "App:Foobar" --resourcetype "RedshiftCluster"
+```
+
+### Redshift Subnet Group
+```
+aws-tagger --resource subnetgroup:resourceid --tag "App:Foobar" --resourcetype "RedshiftClusterSubnetGroup"
+```
+
+### Redshift Parameter Group
+```
+aws-tagger --resource parametergroup:resourceid --tag "App:Foobar" --resourcetype "RedshiftParameterGroup"
+```
+
+### Redshift HSM Client Certificate
+```
+aws-tagger --resource hsmclientcertificate:resourceid --tag "App:Foobar" --resourcetype "RedshiftHSMClientCertificate"
+```
+
+### RoboMaker Robot Application
+```
+aws-tagger --resource robot-application/resourceid --tag "App:Foobar" --resourcetype "RoboMakerRobotApplication"
+```
+
+### RoboMaker Simulation Job
+```
+aws-tagger --resource simulation-job/resourceid --tag "App:Foobar" --resourcetype "RoboMakerSimuationJob"
+```
+
+### RoboMaker Simulation Application
+```
+aws-tagger --resource simulation-job-application/resourceid --tag "App:Foobar" --resourcetype "RoboMakerSimulationApplication"
+```
+
+### Route53Resolver Endpoint
+```
+aws-tagger --resource resolver-endpoint/resourceid --tag "App:Foobar" --resourcetype "Route53ResolverResolverEndpoint"
+```
+
+### Route53Resolver Rule
+```
+aws-tagger --resource resolver-rule/resourceid --tag "App:Foobar" --resourcetype "Route53ResolverResolverRule"
+```
+
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 
@@ -457,7 +563,6 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Managed Policies
 ### SAML Providers
 ### Lambda Functions
-### Redshift Cluster Parameter Groups
 ### Route53 Hosted Zone
 ### Secret Manager Secrets
 ### Glacier Vaults
@@ -485,6 +590,8 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Comprehend Entity-Recognizer --resouretype "ComprehendEntityRecognizer" (Not tested)
 ### Config Rules --resouretype "ConfigConfigRule" (Not tested)
 ### IAM Server Certificates --resouretype "IAMServerCertificate" (Not tested)
+### Route53 Domains --resouretype "Route53Domain" (Not tested)
+### Route53 HealthCheck --resouretype "Route53HealthCheck" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 
@@ -498,10 +605,6 @@ AWS Tagger supports the following AWS resource types using the arn of the resour
 aws-tagger --resource arn:aws:elasticfilesystem:us-east-1:1111111111:file-system/fs-1111111 --tag "App:Foobar"  
 ```
 
-### RDS instances 
-```
-aws-tagger --resource arn:aws:rds:us-east-1:111111111:db:my-db --tag "App:Foobar"  
-```
 
 ### Application Load Balancers
 ```

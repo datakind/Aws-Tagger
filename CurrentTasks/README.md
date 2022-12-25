@@ -631,7 +631,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ram.html#RAM.Client.tag_resource
 
-## RDS - WILL LOOK INTO JAY 12/24/22
+## RDS COMPLETED (NOT TESTED)
 ```
 DBCluster describe_db_clusters()
 ```

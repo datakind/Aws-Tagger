@@ -198,6 +198,43 @@ class SingleResourceTagger(object):
         # QLDB Resources
         self.taggers['QLDBLedger'] = tagservices.qldb.service.qldbTagger(dryrun, verbose, role=role, region=region)
 
+        # RAM Resources
+        self.taggers['RAMResourceShare'] = tagservices.ram.service.ramTagger(dryrun, verbose, role=role, region=region)
+
+        # RDS resources
+        self.taggers['RDSDBCluster'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBCluster", role=role, region=region)
+        self.taggers['RDSDBClusterParameterGroup'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBClusterParameterGroup", role=role, region=region)
+        self.taggers['RDSDBClusterSnapshot'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBClusterSnapshot", role=role, region=region)
+        self.taggers['RDSDBInstance'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBInstance", role=role, region=region)
+        self.taggers['RDSDBParameterGroup'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBParameterGroup", role=role, region=region)
+        self.taggers['RDSDBSecurityGroup'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBSecurityGroup", role=role, region=region)
+        self.taggers['RDSDBSnapshot'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBSnapshot", role=role, region=region)
+        self.taggers['RDSDBSubnetGroup'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSDBSubnetGroup", role=role, region=region)
+        self.taggers['RDSEventSubscription'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSEventSubscription", role=role, region=region)
+        self.taggers['RDSOptionGroup'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSOptionGroup", role=role, region=region)
+        self.taggers['RDSReservedDBInstance'] = tagservices.rds.service.RDSTagger(dryrun, verbose, "RDSReservedDBInstance", role=role, region=region)
+        
+        # Redshift Resources
+        self.taggers['RedshiftCluster'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, "RedshiftCluster", role=role, region=region)
+        self.taggers['RedshiftClusterSubnetGroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, "RedshiftClusterSubnetGroup", role=role, region=region)
+        self.taggers['RedshiftParameterGroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, "RedshiftParameterGroup", role=role, region=region)
+        self.taggers['RedshiftHSMClientCertificate'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, "RedshiftHSMClientCertificate", role=role, region=region)
+        
+        # Resource Groups Resources
+        self.taggers['resourcegroup'] = tagservices.resourcegroups.service.ResourceGroupTagger(dryrun, verbose, role=role, region=region)
+
+        # RoboMaker Resoureces
+        self.taggers['RoboMakerRobotApplication'] = tagservices.robomaker.service.robomakerTagger(dryrun, verbose, "RoboMakerRobotApplication", role=role, region=region)
+        self.taggers['RoboMakerSimulationApplication'] = tagservices.robomaker.service.robomakerTagger(dryrun, verbose, "RoboMakerSimulationApplication", role=role, region=region)
+        self.taggers['RoboMakerSimuationJob'] = tagservices.robomaker.service.robomakerTagger(dryrun, verbose, "RoboMakerSimuationJob", role=role, region=region)
+
+        # Route53 Resources
+        self.taggers['Route53HealthCheck'] = tagservices.route53.service.Route53Tagger(dryrun, verbose, "route53hostedzone", role=role, region=region)
+        self.taggers['Route53HostedZone'] = tagservices.route53.service.Route53Tagger(dryrun, verbose, "Route53HostedZone", role=role, region=region)
+        
+        # Route53Resolver Resources
+        self.taggers['Route53ResolverResolverEndpoint'] = tagservices.route53resolver.service.route53resolverTagger(dryrun, verbose, "Route53ResolverResolverEndpoint", role=role, region=region)
+        self.taggers['Route53ResolverResolverRule'] = tagservices.route53resolver.service.route53resolverTagger(dryrun, verbose, "Route53ResolverResolverRule", role=role, region=region)
 
 
 
@@ -210,22 +247,20 @@ class SingleResourceTagger(object):
         self.taggers['GlacierVault'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)
 
 
-        # Other resources currently
-        self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
+        # # Other resources currently
+        # self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
         
         self.taggers['elasticbenstalkapp'] = tagservices.elasticbeanstalk.service.EBSATagger(dryrun, verbose, role=role, region=region)
-        self.taggers['resourcegroup'] = tagservices.resourcegroups.service.ResourceGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['snstopic'] = tagservices.sns.service.SNSTopicTagger(dryrun, verbose, role=role, region=region)
         self.taggers['secretsmanagersecret'] = tagservices.secretsmanager.service.SecretManagerSecretTagger(dryrun, verbose, role=role, region=region)
         self.taggers['sagemakernotebookinstance'] = tagservices.sagemaker.service.SagemakerNotebookInstanceTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['route53hostedzone'] = tagservices.route53.service.Route53HostedZoneTagger(dryrun, verbose, role=role, region=region)
         self.taggers['s3'] = tagservices.s3.service.S3Tagger(dryrun, verbose, role=role, region=region)
         self.taggers['es'] = tagservices.es.service.ESTagger(dryrun, verbose, role=role, region=region)
         self.taggers['kinesis'] = tagservices.kinesis.service.KinesisTagger(dryrun, verbose, role=role, region=region)
         self.taggers['logs'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, role=role, region=region)
         self.taggers['dynamodb'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = tagservices.awslambda.service.LambdaTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
+    
         self.taggers['cloudformationstack'] = tagservices.cloudformation.service.CloudformationStackTagger(dryrun, verbose, role=role, region=region)
 
         # Glue Resources
