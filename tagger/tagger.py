@@ -363,7 +363,7 @@ class CSVResourceTagger(object):
         self.role = role
         self.region = region
         self.regional_tagger = {}
-        self.resource_id_column = 'Id'
+        self.resource_id_column = 'Identifier'
         self.region_column = 'Region'
 
     def tag(self, filename):
@@ -375,8 +375,11 @@ class CSVResourceTagger(object):
             for row in reader:
                 if header_row:
                     header_row = False
+                    
                     tag_index = self._parse_header(row)
+                    tag_index = { k.replace('Tag: ', ''): v for k, v in tag_index.items() }
                 else:
+                    print(tag_index, row)
                     self._tag_resource(tag_index, row)
 
     def _parse_header(self, header_row):
@@ -391,11 +394,16 @@ class CSVResourceTagger(object):
         tags = {}
         for (key, index) in tag_index.items():
             value = row[index]
-            if key != self.resource_id_column and key != self.region_column and value != "":
+            if key != self.resource_id_column and \
+                key != self.region_column and \
+                value != "" and \
+                value != "(not tagged)":
                 tags[key] = value
-
+        print(tags)
+                
+        resourcetype = None #for now
         tagger = self._lookup_tagger(tag_index, row)
-        tagger.tag(resource_id, tags)
+        tagger.tag(resource_id, resourcetype, tags)
 
     def _lookup_tagger(self, tag_index, row):
         region = self.region
@@ -408,7 +416,8 @@ class CSVResourceTagger(object):
 
         tagger = self.regional_tagger.get(region)
         if tagger is None:
-            tagger = SingleResourceTagger(self.dryrun, self.verbose, role=self.role, region=region, tag_volumes=self.tag_volumes)
+            resourcetype = None #for now
+            tagger = SingleResourceTagger(self.dryrun, self.verbose, resourcetype, role=self.role, region=region, tag_volumes=self.tag_volumes)
             self.regional_tagger[region] = tagger
 
         return tagger
