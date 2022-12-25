@@ -10,160 +10,13 @@ from . import tagsearch
 from typing import Dict, Literal, Any
 
 #tagservices.appstream.service.AppstreamTagger
-    
-ResourceList = Literal[
-        'AmazonmqBroker',
-        'AmazonmqConfiguration',
-        'AppstreamFleet',
-        'AppstreamImageBulder',
-        'AppstreamImageStack',
-        'BraketQuantumTask',
-        'CertificateManagerCertificate',
-        'Cloud9Environment',
-        'CloudFrontStreamingDistribution',
-        'CloudFrontDistribution',
-        'CloudTrailTrail',
-        'CloudWatchAlarm',
-        'CodeArtifactDomain',
-        'CodeArtifactRepository',
-        'CodeBuildProject',
-        'CodeCommitRepository',
-        'CodeGuruReviewerRepositoryAssociation',
-        'CodePipelinePipeline',
-        'CodePipelineWebhook',
-        'CognitoIdentityPool',
-        'CognitoUserPool',
-        'ComprehendDocumentClassifier',
-        'ComprehendEntityRecognizer',
-        'ConfigConfigRule',
-        'DataBrewJob',
-        'DataBrewProject',
-        'DataBrewRecipe',
-        'DataBrewSchedule',
-        'DataExchangeDataSet',
-        'DataPipelinePipeline',
-        'DynamoDBTable',
-        'Ec2CustomerGateway',
-        'Ec2DHCPOptions',
-        'Ec2Image',
-        'Ec2InternetGateway',
-        'Ec2NetworkInterface',
-        'Ec2ReservedInstance',
-        'Ec2NatGateway',
-        'Ec2NetworkAcl',
-        'Ec2RouteTable',
-        'Ec2EIP',
-        'Ec2SecurityGroup',
-        'Ec2Subnet',
-        'Ec2Instance',
-        'Ec2Snapshot',
-        'Ec2SpotInstanceRequest',
-        'Ec2VPC',
-        'Ec2VPNConnection',
-        'Ec2VPNGateway',
-        'Ec2Volume',
-        'ECSCluster',
-        'ECSTaskDefinition',
-        'EFSFileSystem',
-        'EKSCluster',
-        'EMRCluster',
-        'EMRContainersVirtualCluster',
-        'ElasticCacheCacheCluster',
-        'ElasticCacheSnapshot',
-        'ElasticBeanstalkApplication',
-        'ElasticInferenceElasticInferenceAccelerator',
-        'ElasticLoadBalancingLoadBalancer',
-        'ElasticLoadBalancingV2LoadBalancer',
-        'ElasticLoadBalancingV2TargetGroup',
-        'EventsRule',
-        'FSxFileSystem',
-        'ForecastDataset',
-        'ForecastDatasetGroup',
-        'ForecastForecast',
-        'ForecastForecastExportJob',
-        'ForecastPredictor',
-        'ForecastPredictorBacktestExportJob',
-        'FraudDetectorDetector',
-        'FraudDetectorEntityType',
-        'FraudDetectorEventType',
-        'FraudDetectorExternalModel',
-        'FraudDetectorLabel',
-        'FraudDetectorModel',
-        'FraudDetectorOutcome',
-        'FraudDetectorVariable',
-        'GlacierVault',
-        'GlueCrawler',
-        'GlueJob',
-        'GlueTrigger',
-        'GreengrassConnectorDefinition',
-        'GreengrassCoreDefinition',
-        'GreengrassDeviceDefinition',
-        'GreengrassFunctionDefinition',
-        'GreengrassGroup',
-        'GreengrassLoggerDefinition',
-        'GreengrassResourceDefinition',
-        'GreengrassSubscriptionDefinition',
-        'IAMInstanceProfile',
-        'IAMManagedPolicy',
-        'IAMOpenIDConnectProvider',
-        'IAMSAMLProvider',
-        'IAMServerCertificate',
-        'IotAnalyticsDataset',
-        'IoTEventsDetectorModel',
-        'IoTEventsInput',
-        'KMSKey',
-        'KafkaCluster',
-        'KinesisStream',
-        'KinesisAnalyticsApplication',
-        'MacieClassificationJob',
-        'MacieCustomDataIdentifier',
-        'MacieFindingsFilter',
-        'MacieMember',
-        'OpenSearchServiceDomain',
-        'OrganizationsAccount',
-        'OrganizationsRoot',
-        'QLDBLedger',
-        'RAMResourceShare',
-        'RDSDBCluster',
-        'RDSDBClusterParameterGroup',
-        'RDSDBClusterSnapshot',
-        'RDSDBInstance',
-        'RDSDBParameterGroup',
-        'RDSDBSecurityGroup',
-        'RDSDBSnapshot',
-        'RDSDBSubnetGroup',
-        'RDSEventSubscription',
-        'RDSOptionGroup',
-        'RDSReservedDBInstance',
-        'RedshiftCluster',
-        'RedshiftClusterSubnetGroup',
-        'RedshiftHSMClientCertificate',
-        'ResourceGroupsGroup',
-        'RoboMakerRobotApplication',
-        'RoboMakerSimulationApplication',
-        'RoboMakerSimuationJob',
-        'Route53Domain',
-        'Route53HealthCheck',
-        'Route53ResolverResolverEndpoint',
-        'Route53ResolverResolverRule',
-        'SESConfigurationSet',
-        'SESContactList',
-        'SESDedicatedIpPool',
-        'SESIdentity',
-        'SNSTopic',
-        'SQSQueue',
-        'SSMParameter',
-        'StepFunctionsActivity',
-        'StepFunctionsStateMachine',
-        'StorageGatewayGateway',
-        'WorkspacesWorkspace',
-    ]
+searchresult = tagsearch.checkresource()
     
 class SingleResourceTagger(object):
     # Init each tagger lazy
     # https://zhaoxh.cn/en/post/2018/lazy-load-dict/
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
-        self.taggers: Dict[ResourceList, Any] = {}
+        self.taggers: Dict[searchresult, Any] = {}
 
         # Amazon Mq Resources
         self.taggers['AmazonmqBroker'] = tagservices.mq.service.mqTagger(dryrun, verbose, 'AmazonmqBroker', role=role, region=region)
@@ -359,7 +212,7 @@ class SingleResourceTagger(object):
 
         # Other resources currently
         self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['OpenSearchService'] = tagservices.opensearchservice.service.opensearchserviceTagger(dryrun, verbose, role=role, region=region)
+        
         self.taggers['elasticbenstalkapp'] = tagservices.elasticbeanstalk.service.EBSATagger(dryrun, verbose, role=role, region=region)
         self.taggers['resourcegroup'] = tagservices.resourcegroups.service.ResourceGroupTagger(dryrun, verbose, role=role, region=region)
         self.taggers['snstopic'] = tagservices.sns.service.SNSTopicTagger(dryrun, verbose, role=role, region=region)
@@ -402,8 +255,15 @@ class SingleResourceTagger(object):
             resource_arn = searchresult[0]
         else:
             print(resourcetype)
-            tagger = self.taggers.get(resourcetype)
-            resource_arn = resource_id
+            
+            if searchresult == True:
+                tagger = self.taggers[resourcetype]
+                resource_arn = resource_id
+
+            # We wont need a catch block here because if there is no
+            # tagger the code will be stopped at line 94.
+            
+            pass
         if tagger:
             tagger.tag(resource_arn, tags)
         else:

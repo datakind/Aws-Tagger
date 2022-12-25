@@ -1,5 +1,5 @@
 
-def checkresource(resourcetype):
+def looptagchecker():
     # Define resource list by service+resource
     resourcelist = [
         'AmazonmqBroker',
@@ -149,9 +149,12 @@ def checkresource(resourcetype):
         'StorageGatewayGateway',
         'WorkspacesWorkspace',
     ]
-    # Note: this condition will never equal true since the string of the resource type
-    # can definitionally not equal the string of the entire list
-    if str(resourcetype).lower() == str(resourcelist).lower():
-        return True
-    else:
-        return False
+    return resourcelist
+
+def checkresource(resourcetype):
+    taglist = looptagchecker()
+    for tag in taglist:
+        if str(resourcetype).lower() == str(tag).lower():
+            return True
+    return False
+

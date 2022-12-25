@@ -621,7 +621,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/qldb.html#QLDB.Client.tag_resource
 
-## RAM
+## RAM - WILL LOOK INTO JAY 12/24/22
 ```
 ResourceShare get_resource_shares()
 ```
@@ -631,7 +631,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ram.html#RAM.Client.tag_resource
 
-## RDS
+## RDS - WILL LOOK INTO JAY 12/24/22
 ```
 DBCluster describe_db_clusters()
 ```
@@ -677,7 +677,7 @@ Add tags add_tags_to_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rds.html#RDS.Client.add_tags_to_resource
 
-## Redshift
+## Redshift - WILL LOOK INTO JAY 12/24/22
 ```
 Cluster describe_clusters()
 ```
@@ -695,7 +695,7 @@ Add tags create_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/redshift.html#Redshift.Client.create_tags
 
-## RoboMaker
+## RoboMaker - WILL LOOK INTO JAY 12/24/22
 ```
 RobotApplication describe_robot_application()
 ```
@@ -713,7 +713,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/robomaker.html#RoboMaker.Client.tag_resource
 
-## Route53
+## Route53 - WILL LOOK INTO JAY 12/24/22
 ```
 Domain get_domain_detail() update_tags_for_domain()
 ```
@@ -728,7 +728,7 @@ Add tags change_tags_for_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/route53.html#Route53.Client.change_tags_for_resource
 
-## Route53Resolver
+## Route53Resolver - WILL LOOK INTO JAY 12/24/22
 ```
 ResolverEndpoint get_resolver_endpoint()
 ```
@@ -764,7 +764,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sesv2.html#SESV2.Client.tag_resource
 
-## SQS
+## SQS - WILL LOOK INTO JAY 12/24/22
 ```
 Queue list_queues()
 ```
@@ -774,7 +774,7 @@ Add tags tag_queue()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sqs.html#SQS.Client.tag_queue
 
-## SSM
+## SSM - WILL LOOK INTO JAY 12/24/22
 ```
 Parameter describe_parameters()
 ```
@@ -784,7 +784,7 @@ Add tags add_tags_to_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ssm.html#SSM.Client.add_tags_to_resource
 
-## StepFunctions
+## StepFunctions - WILL LOOK INTO JAY 12/24/22
 ```
 Activity describe_activity()
 ```
@@ -798,7 +798,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/stepfunctions.html#SFN.Client.tag_resource
 
-## StorageGateway
+## StorageGateway - WILL LOOK INTO JAY 12/24/22
 ```
 Gateway describe_gateway_information()
 ```
@@ -808,7 +808,7 @@ Add tags add_tags_to_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/storagegateway.html#StorageGateway.Client.add_tags_to_resource
 
-## Workspaces
+## Workspaces - WILL LOOK INTO JAY 12/24/22
 ```
 Workspace describe_workspaces()
 ```
