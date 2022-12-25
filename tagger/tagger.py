@@ -10,13 +10,13 @@ from . import tagsearch
 from typing import Dict, Literal, Any
 
 #tagservices.appstream.service.AppstreamTagger
-searchresult = tagsearch.looptagchecker()
+tagresults = tagsearch.looptagchecker()
     
 class SingleResourceTagger(object):
     # Init each tagger lazy
     # https://zhaoxh.cn/en/post/2018/lazy-load-dict/
     def __init__(self, dryrun, verbose, resourcetype, role=None, region=None, tag_volumes=False):
-        self.taggers: Dict[searchresult, Any] = {}
+        self.taggers: Dict[tagresults, Any] = {}
 
         # Amazon Mq Resources
         self.taggers['AmazonmqBroker'] = tagservices.mq.service.mqTagger(dryrun, verbose, 'AmazonmqBroker', role=role, region=region)
@@ -254,11 +254,8 @@ class SingleResourceTagger(object):
             tagger = searchresult[1]
             resource_arn = searchresult[0]
         else:
-            print(resourcetype)
-            
-            if searchresult == True:
-                tagger = self.taggers[resourcetype]
-                resource_arn = resource_id
+            tagger = self.taggers.get(resourcetype)
+            resource_arn = resource_id
 
             # We wont need a catch block here because if there is no
             # tagger the code will be stopped at line 94.
