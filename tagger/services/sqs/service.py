@@ -7,23 +7,24 @@ class sqsTagger(object):
     def __init__(self, dryrun, verbose, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
-        self.ami = _client('ec2', role=role, region=region)
+        self.role = role
+        self.region = region
+        self.sqs = _client('sqs', role=role, region=region)
 
-    def tag(self, instance_id, tags):
+    def tag(self, resource_arn, tags):
         aws_tags = _dict_to_aws_tags(tags)
-        print(aws_tags)
-        resource_ids = [instance_id]
+        
         if self.verbose:
-            print("tagging %s with %s" % (", ".join(resource_ids), _format_dict(tags)))
+            print("tagging %s with %s" % (", ".join(resource_arn), _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._ami_create_tags(Resources=resource_ids, Tags=aws_tags)
+                self._sqs_create_tags(QueueUrl=resource_arn, Tags=tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
-                    print("Resource not found: %s" % instance_id)
+                    print("Resource not found: %s" % resource_arn)
                 else:
                     raise exception
 
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
-    def _ami_create_tags(self, **kwargs):
-        return self.ami.create_tags(**kwargs)
+    def _sqs_create_tags(self, **kwargs):
+        return self.sqs.tag_queue(**kwargs)

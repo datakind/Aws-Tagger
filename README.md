@@ -550,6 +550,40 @@ aws-tagger --resource resolver-endpoint/resourceid --tag "App:Foobar" --resource
 aws-tagger --resource resolver-rule/resourceid --tag "App:Foobar" --resourcetype "Route53ResolverResolverRule"
 ```
 
+### SES Configuration Set
+```
+aws-tagger --resource configuration-set/resourceid --tag "App:Foobar" --resourcetype "SESConfigurationSet"
+```
+
+### SES Contact List
+```
+aws-tagger --resource contact-list/resourceid --tag "App:Foobar" --resourcetype "SESContactList"
+```
+
+### SES Dedicated IpPool
+```
+aws-tagger --resource dedicated-ip-pool/resourceid --tag "App:Foobar" --resourcetype "SESDedicatedIpPool"
+```
+
+### SES Identities
+```
+aws-tagger --resource indentity/resourceid --tag "App:Foobar" --resourcetype "SESIdentity"
+```
+
+### StepFunctions Activity
+```
+aws-tagger --resource activity:resourceid --tag "App:Foobar" --resourcetype "StepFunctionsActivity"
+```
+
+### StepFunctions StateMachine
+```
+aws-tagger --resource stateMachine:resourceid --tag "App:Foobar" --resourcetype "StepFunctionsStateMachine"
+```
+
+### Storage Gateways
+```
+aws-tagger --resource gateway/resourceid --tag "App:Foobar" --resourcetype "StorageGatewayGateway"
+```
 
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
@@ -592,6 +626,9 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### IAM Server Certificates --resouretype "IAMServerCertificate" (Not tested)
 ### Route53 Domains --resouretype "Route53Domain" (Not tested)
 ### Route53 HealthCheck --resouretype "Route53HealthCheck" (Not tested)
+### SQS Queue --resouretype "SQSQueue" (Not tested)
+### SSM Parameter --resouretype "SSMParameter" (Not tested)
+### Workspaces --resouretype "WorkspacesWorkspace" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

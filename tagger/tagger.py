@@ -125,6 +125,9 @@ class SingleResourceTagger(object):
         self.taggers['ECSCluster'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSCluster", role=role, region=region)
         self.taggers['ECSTaskDefinition'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSTaskDefinition", role=role, region=region)
 
+        # Elastic File System resources
+        self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
+        
         # Elasticloadbalancing Resources
         self.taggers['ElasticLoadBalancingLoadBalancer'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, "ElasticLoadBalancingLoadBalancer", role=role, region=region)
         self.taggers['ElasticLoadBalancingV2LoadBalancer'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, "ElasticLoadBalancingV2LoadBalancer", role=role, region=region)
@@ -154,6 +157,14 @@ class SingleResourceTagger(object):
         # Fsx Resources
         self.taggers['FSxFileSystem'] = tagservices.fsx.service.fsxTagger(dryrun, verbose, role=role, region=region)
 
+        # Glacier Resources
+        self.taggers['GlacierVault'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)
+
+        # Glue Resources
+        self.taggers['GlueCrawler'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueCrawler', role=role, region=region)
+        self.taggers['GlueJob'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueJob', role=role, region=region)
+        self.taggers['GlueTrigger'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueTrigger', role=role, region=region)
+        
         # GreenGrass Resources
         self.taggers['GreengrassConnectorDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassConnectorDefinition", role=role, region=region)
         self.taggers['GreengrassCoreDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassCoreDefinition", role=role, region=region)
@@ -177,6 +188,9 @@ class SingleResourceTagger(object):
         # IOTEvents Resources
         self.taggers['IoTEventsDetectorModel'] = tagservices.iotevents.service.ioteventsiotanalyticsTagger(dryrun, verbose, "IoTEventsDetectorModel", role=role, region=region)
         self.taggers['IoTEventsInput'] = tagservices.iotevents.service.ioteventsiotanalyticsTagger(dryrun, verbose, "IoTEventsInput", role=role, region=region)
+
+        # Kafka Resources
+        self.taggers['KafkaCluster'] = tagservices.kafka.service.kafkaTagger(dryrun, verbose, role=role, region=region)
 
         # KinesisAnalytics Resources
         self.taggers['KinesisAnalyticsApplication'] = tagservices.kinesisanalytics.service.kinesisanalyticsTagger(dryrun, verbose, role=role, region=region)
@@ -236,40 +250,59 @@ class SingleResourceTagger(object):
         self.taggers['Route53ResolverResolverEndpoint'] = tagservices.route53resolver.service.route53resolverTagger(dryrun, verbose, "Route53ResolverResolverEndpoint", role=role, region=region)
         self.taggers['Route53ResolverResolverRule'] = tagservices.route53resolver.service.route53resolverTagger(dryrun, verbose, "Route53ResolverResolverRule", role=role, region=region)
 
+        # SageMaker Resources
+        self.taggers['SageMakerNotebookInstance'] = tagservices.sagemaker.service.SagemakerNotebookInstanceTagger(dryrun, verbose, role=role, region=region)
+
+        # S3 Resources
+        self.taggers['S3Bucket'] = tagservices.s3.service.S3Tagger(dryrun, verbose, role=role, region=region)
+
+        # SecretManager Resources
+        self.taggers['SecretsManagerSecret'] = tagservices.secretsmanager.service.SecretManagerSecretTagger(dryrun, verbose, role=role, region=region)
+
+        # SES Resources
+        self.taggers['SESConfigurationSet'] = tagservices.ses.service.sesTagger(dryrun, verbose, "SESConfigurationSet", role=role, region=region)
+        self.taggers['SESContactList'] = tagservices.ses.service.sesTagger(dryrun, verbose, "SESContactList", role=role, region=region)
+        self.taggers['SESDedicatedIpPool'] = tagservices.ses.service.sesTagger(dryrun, verbose, "SESDedicatedIpPool", role=role, region=region)
+        self.taggers['SESIdentity'] = tagservices.ses.service.sesTagger(dryrun, verbose, "SESIdentity", role=role, region=region)
+
+        # SNS Resources
+        self.taggers['SNSTopic'] = tagservices.sns.service.SNSTopicTagger(dryrun, verbose, role=role, region=region)
+
+        # SQS Resources
+        self.taggers['SQSQueue'] = tagservices.sqs.service.sqsTagger(dryrun, verbose, role=role, region=region)
+
+        # SSM Resources
+        self.taggers['SSMParameter'] = tagservices.ssm.service.ssmTagger(dryrun, verbose, role=role, region=region)
+
+        # StepFunctions Resources
+        self.taggers['StepFunctionsActivity'] = tagservices.stepfunctions.service.stepfunctionsTagger(dryrun, verbose, "StepFunctionsActivity", role=role, region=region)
+        self.taggers['StepFunctionsStateMachine'] = tagservices.stepfunctions.service.stepfunctionsTagger(dryrun, verbose, "StepFunctionsStateMachine", role=role, region=region)
+        
+
+        # StorageGateWay Resources
+        self.taggers['StorageGatewayGateway'] = tagservices.storagegateway.service.storagegatewayTagger(dryrun, verbose, role=role, region=region)
+
+        # Workspaces Resources
+        self.taggers['WorkspacesWorkspace'] = tagservices.workspaces.service.workspacesTagger(dryrun, verbose, role=role, region=region)
 
 
 
 
 
-
-        # Elastic File System resources
-        self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['GlacierVault'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)
+        
 
 
         # # Other resources currently
-        # self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
-        
         self.taggers['elasticbenstalkapp'] = tagservices.elasticbeanstalk.service.EBSATagger(dryrun, verbose, role=role, region=region)
-        self.taggers['snstopic'] = tagservices.sns.service.SNSTopicTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['secretsmanagersecret'] = tagservices.secretsmanager.service.SecretManagerSecretTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['sagemakernotebookinstance'] = tagservices.sagemaker.service.SagemakerNotebookInstanceTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['s3'] = tagservices.s3.service.S3Tagger(dryrun, verbose, role=role, region=region)
         self.taggers['es'] = tagservices.es.service.ESTagger(dryrun, verbose, role=role, region=region)
         self.taggers['kinesis'] = tagservices.kinesis.service.KinesisTagger(dryrun, verbose, role=role, region=region)
         self.taggers['logs'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['dynamodb'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = tagservices.awslambda.service.LambdaTagger(dryrun, verbose, role=role, region=region)
-    
         self.taggers['cloudformationstack'] = tagservices.cloudformation.service.CloudformationStackTagger(dryrun, verbose, role=role, region=region)
 
-        # Glue Resources
-        self.taggers['GlueCrawler'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueCrawler', role=role, region=region)
-        self.taggers['GlueJob'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueJob', role=role, region=region)
-        self.taggers['GlueTrigger'] = tagservices.glue.service.glueTagger(dryrun, verbose, 'GlueTrigger', role=role, region=region)
+        
 
-        # Kafka Resources
-        self.taggers['KafkaCluster'] = tagservices.kafka.service.kafkaTagger(dryrun, verbose, role=role, region=region)
+        
 
     def tag(self, resource_id, resourcetype, tags, role=None, region=None):
         print(

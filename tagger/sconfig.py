@@ -218,7 +218,7 @@ def resource_finder_by_arn_builder(resourecheck):
                         secretmanagersecretresourecheck = _name_to_arn(resource_name=secretmanagersecretresourecheck,region=region,service=service,account_id=account_id)
                         print(secretmanagersecretresourecheck)
                         client.describe_secret(SecretId=secretmanagersecretresourecheck)
-                        return "secretsmanagersecret"
+                        return "SecretsManagerSecret"
                     except Exception as m:
                         # Finding Cloudformation stack
                         try:
@@ -280,7 +280,7 @@ def resource_finder(resource_name,role,region):
                                 resource_checker = _client("sagemaker",role,region)
                                 try:
                                     resource_checker.describe_notebook_instance(NotebookInstanceName=resource_name)
-                                    return "sagemakernotebookinstance"
+                                    return "SageMakerNotebookInstance"
                                 except Exception as m:
                                     return "No Resource Found"
     # check KMS Key
