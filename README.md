@@ -386,6 +386,11 @@ aws-tagger --resource /greengrass/definition/resources/resourceid --tag "App:Foo
 aws-tagger --resource /greengrass/definition/subscriptions/resourceid --tag "App:Foobar" --resourcetype "GreengrassSubscriptionDefinition"
 ```
 
+### IAM OpenID Connect Providers
+```
+aws-tagger --resource oidc-provider/resourceid --tag "App:Foobar" --resourcetype "IAMOpenIDConnectProvider"
+```
+
 ## AWS Resource Support (by searching)
 AWS Tagger supports the following AWS resource types by searching for the type of resource directly
 
@@ -425,6 +430,7 @@ AWS Tagger supports the following AWS resource types by searching for the type o
 ### Comprehend Document-Classifier --resouretype "ComprehendDocumentClassifier" (Not tested)
 ### Comprehend Entity-Recognizer --resouretype "ComprehendEntityRecognizer" (Not tested)
 ### Config Rules --resouretype "ConfigConfigRule" (Not tested)
+### IAM Server Certificates --resouretype "IAMServerCertificate" (Not tested)
 ```
 aws-tagger --resource resourcename --tag "App:Foobar"  
 

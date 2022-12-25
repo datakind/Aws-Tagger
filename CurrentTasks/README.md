@@ -464,7 +464,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.tag_resource
 
-## Greengrass
+## Greengrass COMPLETED (NOT TESTED)
 ```
 ConnectorDefinition get_connector_definition()
 ```

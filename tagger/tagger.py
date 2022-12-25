@@ -46,8 +46,8 @@ class SingleResourceTagger(object):
         self.taggers['CloudWatchAlarm'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, role=role, region=region)
         
         # CodeArtifact Resources
-        self.taggers['CodeArtifactDomain'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, "CodeArtifactDomain", role=role, region=region)
-        self.taggers['CodeArtifactRepository'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
+        self.taggers['CodeArtifactDomain'] = tagservices.codeartifact.service.codeartifactTagger(dryrun, verbose, "CodeArtifactDomain", role=role, region=region)
+        self.taggers['CodeArtifactRepository'] = tagservices.codeartifact.service.codeartifactTagger(dryrun, verbose, "CodeArtifactRepository", role=role, region=region)
 
         # CodeCommit Resources
         self.taggers['CodeCommitRepository'] = tagservices.codecommit.service.codecommitTagger(dryrun, verbose, role=role, region=region)
@@ -163,6 +163,13 @@ class SingleResourceTagger(object):
         self.taggers['GreengrassResourceDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassResourceDefinition", role=role, region=region)
         self.taggers['GreengrassSubscriptionDefinition'] = tagservices.greengrass.service.greengrassTagger(dryrun, verbose, "GreengrassSubscriptionDefinition", role=role, region=region)
 
+        # IAM Resources
+        self.taggers['IAMInstanceProfile'] = tagservices.iam.service.IamTagger(dryrun, verbose, "IAMInstanceProfile", role=role, region=region)
+        self.taggers['IAMManagedPolicy'] = tagservices.iam.service.IamTagger(dryrun, verbose, "IAMManagedPolicy", role=role, region=region)
+        self.taggers['IAMOpenIDConnectProvider'] = tagservices.iam.service.IamTagger(dryrun, verbose, "IAMOpenIDConnectProvider", role=role, region=region)
+        self.taggers['IAMSAMLProvider'] = tagservices.iam.service.IamTagger(dryrun, verbose, "IAMSAMLProvider", role=role, region=region)
+        self.taggers['IAMServerCertificate'] = tagservices.iam.service.IamTagger(dryrun, verbose, "IAMServerCertificate", role=role, region=region)
+
 
         # Organization resources
         self.taggers['organization'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, role=role, region=region)
@@ -170,6 +177,7 @@ class SingleResourceTagger(object):
         # Elastic File System resources
         self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['GlacierVault'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)
+
 
         # Other resources currently
         self.taggers['rds'] = tagservices.rds.service.RDSTagger(dryrun, verbose, role=role, region=region)
@@ -179,15 +187,11 @@ class SingleResourceTagger(object):
         self.taggers['snstopic'] = tagservices.sns.service.SNSTopicTagger(dryrun, verbose, role=role, region=region)
         self.taggers['secretsmanagersecret'] = tagservices.secretsmanager.service.SecretManagerSecretTagger(dryrun, verbose, role=role, region=region)
         self.taggers['sagemakernotebookinstance'] = tagservices.sagemaker.service.SagemakerNotebookInstanceTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['elasticache'] = tagservices.elasticcache.service.ElasticacheTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['instanceprofile'] = tagservices.iam.service.InstanceProfileTagger(dryrun, verbose, role=role, region=region)
         self.taggers['route53hostedzone'] = tagservices.route53.service.Route53HostedZoneTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['managedpolicy'] = tagservices.iam.service.ManagedPolicyTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['samlprovider'] = tagservices.iam.service.SamlProviderTagger(dryrun, verbose, role=role, region=region)
         self.taggers['s3'] = tagservices.s3.service.S3Tagger(dryrun, verbose, role=role, region=region)
         self.taggers['es'] = tagservices.es.service.ESTagger(dryrun, verbose, role=role, region=region)
         self.taggers['kinesis'] = tagservices.kinesis.service.KinesisTagger(dryrun, verbose, role=role, region=region)
-        self.taggers['logs'] = tagservices.cloudwatch.service.CloudWatchLogsTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['logs'] = tagservices.cloudwatch.service.CloudWatchTagger(dryrun, verbose, role=role, region=region)
         self.taggers['dynamodb'] = tagservices.dynamodb.service.DynamoDBTagger(dryrun, verbose, role=role, region=region)
         self.taggers['lambda'] = tagservices.awslambda.service.LambdaTagger(dryrun, verbose, role=role, region=region)
         self.taggers['redshiftclusergroup'] = tagservices.redshift.service.RedshiftclusterGroupTagger(dryrun, verbose, role=role, region=region)
