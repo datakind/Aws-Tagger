@@ -4,9 +4,10 @@ from retrying import retry
 import boto3
 
 class OrganizationTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, servicetype, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.servicetype = servicetype
         self.org = _client('organizations', role=role, region=region)
 
     def tag(self, instance_id, tags):

@@ -58,10 +58,14 @@ Any EC2 volumes that are attached to the instance will be automatically tagged.
 aws-tagger --resource i-07a9d0e5 --tag "App:Foobar"  
 ```
 
-### Organizations
+### Organizations (Organization unit, Root, or Policy)
 Must specificy the organization identifier (which is orgid/accountnumber - Check Tag Editor in aws for details)
 ```
-aws-tagger --resource o-1234567890/123456789012 --tag "App:Foobar"  
+aws-tagger --resource o-1234567890/123456789012 --tag "App:Foobar" --resourcetype "OrganizationsAccount"  
+or
+aws-tagger --resource r-1234567890/123456789012 --tag "App:Foobar" --resourcetype "OrganizationsRoot"  
+or
+aws-tagger --resource p-1234567890/123456789012 --tag "App:Foobar" --resourcetype "OrganizationsPolicy"  
 ```
 
 ### Snapshots
@@ -389,6 +393,56 @@ aws-tagger --resource /greengrass/definition/subscriptions/resourceid --tag "App
 ### IAM OpenID Connect Providers
 ```
 aws-tagger --resource oidc-provider/resourceid --tag "App:Foobar" --resourcetype "IAMOpenIDConnectProvider"
+```
+
+### IOT Analytics Dataset
+```
+aws-tagger --resource dataset/resourceid --tag "App:Foobar" --resourcetype "IotAnalyticsDataset"
+```
+
+### IOT Events Detector Models
+```
+aws-tagger --resource detectorModel/resourceid --tag "App:Foobar" --resourcetype "IoTEventsDetectorModel"
+```
+
+### IOT Events Inputs
+```
+aws-tagger --resource input/resourceid --tag "App:Foobar" --resourcetype "IoTEventsInput"
+```
+
+### Kinesis Analytics Application
+```
+aws-tagger --resource application/resourceid --tag "App:Foobar" --resourcetype "KinesisAnalyticsApplication"
+```
+
+### Macie Classification Jobs
+```
+aws-tagger --resource classification-job/resourceid --tag "App:Foobar" --resourcetype "MacieClassificationJob"
+```
+
+### Macie Custom Data Identifier
+```
+aws-tagger --resource custom-data-identifier/resourceid --tag "App:Foobar" --resourcetype "MacieCustomDataIdentifier"
+```
+
+### Macie Findings Filters
+```
+aws-tagger --resource findings-filter/resourceid --tag "App:Foobar" --resourcetype "MacieFindingsFilter"
+```
+
+### Macie Members
+```
+aws-tagger --resource member/resourceid --tag "App:Foobar" --resourcetype "MacieMember"
+```
+
+### OpenSearch Domains
+```
+aws-tagger --resource domain/resourceid --tag "App:Foobar" --resourcetype "OpenSearchServiceDomain"
+```
+
+### QLDB Ledgers
+```
+aws-tagger --resource ledger/resourceid --tag "App:Foobar" --resourcetype "QLDBLedger"
 ```
 
 ## AWS Resource Support (by searching)

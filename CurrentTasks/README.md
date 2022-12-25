@@ -502,7 +502,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/greengrass.html#Greengrass.Client.tag_resource
 
-## IAM
+## IAM COMPLETED (THESE SPECIFC RESOURCES HAVE NOT BEEN TESTED BUT OTHERS HAVE)
 ```
 OpenIDConnectProivder get_open_id_connect_provider() tag_open_id_connect_provider()
 ```
@@ -514,7 +514,7 @@ ServerCertificate get_server_certificate() tag_server_certificate()
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iam.html#IAM.Client.get_server_certificate
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iam.html#IAM.Client.tag_server_certificate
 
-## IotAnalytics
+## IotAnalytics COMPLETED (NOT TESTED)
 ```
 Dataset describe_dataset()
 ```
@@ -524,7 +524,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotanalytics.html#IoTAnalytics.Client.tag_resource
 
-## IoTEvents
+## IoTEvents COMPLETED (NOT TESTED)
 ```
 DetectorModel describe_detector_model()
 ```
@@ -538,7 +538,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotevents.html#IoTEvents.Client.tag_resource
 
-## KMS
+## KMS WILL TEST LATER
 ```
 Key - doesn't work or need specific permissions describe_key()
 ```
@@ -559,7 +559,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kafka.html#Kafka.Client.tag_resource
 
-## KinesisAnalytics
+## KinesisAnalytics COMPLETED (NOT TESTED)
 ```
 Application describe_application()
 ```
@@ -569,7 +569,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesisanalytics.html#KinesisAnalytics.Client.tag_resource
 
-## Macie
+## Macie COMPLETED (NOT TESTED)
 ```
 ClassificationJob describe_classification_job()
 ```
@@ -591,7 +591,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/macie2.html#Macie2.Client.tag_resource
 
-## OpenSearchService
+## OpenSearchService COMPLETED (NOT TESTED)
 ```
 Domain describe_domain()
 ```
@@ -601,7 +601,7 @@ Add tags add_tags()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/opensearch.html#OpenSearchService.Client.add_tags
 
-## Organizations
+## Organizations COMPLETED (THE RESOURECES LISTED HERE HAVE NOT BEEN TESTED BUT OTHERS HAVE BEEN TESTED)
 ```
 Root list_roots()
 ```
@@ -611,7 +611,7 @@ Add tags tag_resource()
 ```
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/organizations.html#Organizations.Client.tag_resource
 
-## QLDB
+## QLDB COMPLETED (NOT TESTED)
 ```
 Ledger describe_ledger()
 ```

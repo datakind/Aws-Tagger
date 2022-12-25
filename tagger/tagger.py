@@ -170,10 +170,40 @@ class SingleResourceTagger(object):
         self.taggers['IAMSAMLProvider'] = tagservices.iam.service.IamTagger(dryrun, verbose, "IAMSAMLProvider", role=role, region=region)
         self.taggers['IAMServerCertificate'] = tagservices.iam.service.IamTagger(dryrun, verbose, "IAMServerCertificate", role=role, region=region)
 
+        # IOTAnalytics Resources
+        self.taggers['IotAnalyticsDataset'] = tagservices.iotanalytics.service.iotanalyticsTagger(dryrun, verbose, role=role, region=region)
+
+        # IOTEvents Resources
+        self.taggers['IoTEventsDetectorModel'] = tagservices.iotevents.service.ioteventsiotanalyticsTagger(dryrun, verbose, "IoTEventsDetectorModel", role=role, region=region)
+        self.taggers['IoTEventsInput'] = tagservices.iotevents.service.ioteventsiotanalyticsTagger(dryrun, verbose, "IoTEventsInput", role=role, region=region)
+
+        # KinesisAnalytics Resources
+        self.taggers['KinesisAnalyticsApplication'] = tagservices.kinesisanalytics.service.kinesisanalyticsTagger(dryrun, verbose, role=role, region=region)
+
+        # Macie Resources
+        self.taggers['MacieClassificationJob'] = tagservices.macie.service.macieTagger(dryrun, verbose, "MacieClassificationJob", role=role, region=region)
+        self.taggers['MacieCustomDataIdentifier'] = tagservices.macie.service.macieTagger(dryrun, verbose, "MacieCustomDataIdentifier", role=role, region=region)
+        self.taggers['MacieFindingsFilter'] = tagservices.macie.service.macieTagger(dryrun, verbose, "MacieFindingsFilter", role=role, region=region)
+        self.taggers['MacieMember'] = tagservices.macie.service.macieTagger(dryrun, verbose, "MacieMember", role=role, region=region)
+
+        # OpenSearchService Resources
+        self.taggers['OpenSearchServiceDomain'] = tagservices.opensearchservice.service.opensearchserviceTagger(dryrun, verbose, role=role, region=region)
 
         # Organization resources
-        self.taggers['organization'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['OrganizationsAccount'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, "OrganizationsAccount", role=role, region=region)
+        self.taggers['OrganizationsRoot'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, "OrganizationsRoot", role=role, region=region)
+        self.taggers['OrganizationsPolicy'] = tagservices.organizations.service.OrganizationTagger(dryrun, verbose, "OrganizationsPolicy", role=role, region=region)
         
+        # QLDB Resources
+        self.taggers['QLDBLedger'] = tagservices.qldb.service.qldbTagger(dryrun, verbose, role=role, region=region)
+
+
+
+
+
+
+
+
         # Elastic File System resources
         self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
         self.taggers['GlacierVault'] = tagservices.glacier.service.glacierTagger(dryrun, verbose, role=role, region=region)

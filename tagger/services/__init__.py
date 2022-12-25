@@ -38,6 +38,7 @@ from . import glue
 from . import greengrass
 from . import iam
 from . import iotanalytics
+from . import iotevents
 from . import kafka
 from . import awslambda
 from . import kinesisanalytics

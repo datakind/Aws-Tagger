@@ -112,6 +112,7 @@ def checkresource(resourcetype):
         'OpenSearchServiceDomain',
         'OrganizationsAccount',
         'OrganizationsRoot',
+        'OrganizationsPolicy',
         'QLDBLedger',
         'RAMResourceShare',
         'RDSDBCluster',
