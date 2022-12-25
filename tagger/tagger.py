@@ -10,7 +10,7 @@ from . import tagsearch
 from typing import Dict, Literal, Any
 
 #tagservices.appstream.service.AppstreamTagger
-searchresult = tagsearch.checkresource()
+searchresult = tagsearch.looptagchecker()
     
 class SingleResourceTagger(object):
     # Init each tagger lazy
