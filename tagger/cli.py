@@ -10,18 +10,14 @@ from pprint import pprint
 @click.option('--verbose/--no-verbose', default=False, help='Verbose output.')
 @click.option('--region', help='AWS region.')
 @click.option('--role', help='IAM role to use.')
-# TODO: Perhaps a better description for resource would be 'The unique identifier 
-# associated with your resource, whether that is its name, instance id, etc'. Resource
-# may be too broad a term given that so many different values are associated with any
-#given resource
-@click.option('--resource', multiple=True, help='Resource ID to tag.')
+@click.option('--identifier', multiple=True, help='Resource ID to tag.')
 @click.option('--tag', multiple=True, help='Tag to apply to resource in format "Key:Value".')
 @click.option('--resourcetype', help='Specify the resource type for faster processing')
 @click.option('--csv', help='CSV file to read data from.')
-def cli(dryrun, verbose, region, role, resource, tag, resourcetype, csv):
+def cli(dryrun, verbose, region, role, identifier, tag, resourcetype, csv):
     # print(resourcetype)
-    if csv and (len(resource) > 0 or len(tag) > 0):
-        print("Cannot use --resource or --tag with --csv option")
+    if csv and (len(identifier) > 0 or len(tag) > 0):
+        print("Cannot use --identifier or --tag with --csv option")
         sys.exit(1)
     if csv:
         tagger = CSVResourceTagger(dryrun, verbose, role, region, tag_volumes=True)
@@ -29,7 +25,7 @@ def cli(dryrun, verbose, region, role, resource, tag, resourcetype, csv):
     else:
         tagger = MultipleResourceTagger(dryrun, verbose, resourcetype, role, region, tag_volumes=True)
         tags = _tag_options_to_dict(tag)
-        tagger.tag(resource, resourcetype, tags)
+        tagger.tag(identifier, resourcetype, tags)
 
 def _tag_options_to_dict(tag_options):
     tags = {}
