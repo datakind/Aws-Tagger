@@ -11,7 +11,7 @@ from typing import Dict, Literal, Any
 
 #tagservices.appstream.service.AppstreamTagger
 tagresults = tagsearch.looptagchecker()
-    
+
 class SingleResourceTagger(object):
     # Init each tagger lazy
     # https://zhaoxh.cn/en/post/2018/lazy-load-dict/
@@ -104,6 +104,7 @@ class SingleResourceTagger(object):
 
         # EC2 Resources
         self.taggers['ec2'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['EC2Instance'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ec2', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['ami'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'ami', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['dopt'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'dopt', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['igw'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'igw', role=role, region=region, tag_volumes=tag_volumes)
@@ -114,19 +115,19 @@ class SingleResourceTagger(object):
         self.taggers['sg'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'sg', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['subnet'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'subnet', role=role, region=region, tag_volumes=tag_volumes)
         self.taggers['vpc'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'vpc', role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['Ec2CustomerGateway'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2CustomerGateway', role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['Ec2EIP'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2EIP', role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['Ec2NatGateway'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2NatGateway', role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['Ec2ReservedInstance'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2ReservedInstance', role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['Ec2SpotInstanceRequest'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2SpotInstanceRequest', role=role, region=region, tag_volumes=tag_volumes)
-        self.taggers['Ec2VPNConnection'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2VPNConnection', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['EC2CustomerGateway'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2CustomerGateway', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['EC2EIP'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2EIP', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['EC2NatGateway'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2NatGateway', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['EC2ReservedInstance'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2ReservedInstance', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['EC2SpotInstanceRequest'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2SpotInstanceRequest', role=role, region=region, tag_volumes=tag_volumes)
+        self.taggers['EC2VPNConnection'] = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2VPNConnection', role=role, region=region, tag_volumes=tag_volumes)
         
         # ECS Resources
         self.taggers['ECSCluster'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSCluster", role=role, region=region)
         self.taggers['ECSTaskDefinition'] = tagservices.ecs.service.ecsTagger(dryrun, verbose, "ECSTaskDefinition", role=role, region=region)
 
         # Elastic File System resources
-        self.taggers['elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
+        self.taggers['Elasticfilesystem'] = tagservices.efs.service.EFSTagger(dryrun, verbose, role=role, region=region)
         
         # Elasticloadbalancing Resources
         self.taggers['ElasticLoadBalancingLoadBalancer'] = tagservices.elasticloadbalancing.service.LBTagger(dryrun, verbose, "ElasticLoadBalancingLoadBalancer", role=role, region=region)
@@ -374,13 +375,24 @@ class CSVResourceTagger(object):
 
             for row in reader:
                 if header_row:
+                    
                     header_row = False
                     
                     tag_index = self._parse_header(row)
                     tag_index = { k.replace('Tag: ', ''): v for k, v in tag_index.items() }
+                    tag_index_nums = list(tag_index.keys())
+                    # print(tag_index_nums)
+                    for rci in range(len(tag_index_nums)):
+                        if tag_index_nums[rci] == "Service":
+                            resourceservicetypenum = rci
+                        if tag_index_nums[rci] == "Type":
+                            resourcetypenum = rci
+                    print(resourceservicetypenum)
+                    print(resourcetypenum)
                 else:
-                    print(tag_index, row)
-                    self._tag_resource(tag_index, row)
+                    # print(tag_index, row)
+                    self._tag_resource(tag_index, resourceservicetypenum, resourcetypenum, row)
+                    pass
 
     def _parse_header(self, header_row):
         tag_index = {}
@@ -389,7 +401,7 @@ class CSVResourceTagger(object):
 
         return tag_index
 
-    def _tag_resource(self, tag_index, row):
+    def _tag_resource(self, tag_index, resourceservicetypenum, resourcetypenum, row):
         resource_id = row[tag_index[self.resource_id_column]]
         tags = {}
         for (key, index) in tag_index.items():
@@ -400,12 +412,17 @@ class CSVResourceTagger(object):
                 value != "(not tagged)":
                 tags[key] = value
         print(tags)
-                
-        resourcetype = None #for now
-        tagger = self._lookup_tagger(tag_index, row)
+
+        if "Service" in tags and\
+            "Type" in tags:
+            print("Resource Type: "+tags["Service"]+tags["Type"])
+            resourcetype = tags["Service"]+tags["Type"]
+        else:
+            resourcetype == None
+        tagger = self._lookup_tagger(tag_index, resourcetype, row)
         tagger.tag(resource_id, resourcetype, tags)
 
-    def _lookup_tagger(self, tag_index, row):
+    def _lookup_tagger(self, tag_index, resourcetype, row):
         region = self.region
         region_index = tag_index.get(self.region_column)
 
@@ -416,8 +433,6 @@ class CSVResourceTagger(object):
 
         tagger = self.regional_tagger.get(region)
         if tagger is None:
-            resourcetype = None #for now
             tagger = SingleResourceTagger(self.dryrun, self.verbose, resourcetype, role=self.role, region=region, tag_volumes=self.tag_volumes)
             self.regional_tagger[region] = tagger
-
         return tagger
