@@ -65,8 +65,7 @@ def killdata():
 
 
 @socketio.event
-def runTool():
-
+def runTool(unpw):
     # Creating the upload folder
     UPLOAD_FOLDER = os.path.join(path, 'upload', session['number'])
     uploadedfile = os.path.join(UPLOAD_FOLDER, os.listdir(UPLOAD_FOLDER)[0])
@@ -76,8 +75,7 @@ def runTool():
         emit('clearoutput')
         print("starting clearoutput2")
         # starting realtime pipe to websocket
-        # ADD YOUR PYTHON SCRIPT FILE IN THE <ADD FILE HERE> SECTION IN LINE 70
-        with subprocess.Popen(["aws-tagger", "--csv", uploadedfile], stdout=subprocess.PIPE, shell=False, bufsize=1, universal_newlines=True) as process:
+        with subprocess.Popen(["aws-tagger", "--csv", uploadedfile, "--accesskey", unpw["un"], "--secretaccesskey", unpw["pw"]], stdout=subprocess.PIPE, shell=False, bufsize=1, universal_newlines=True) as process:
             for linestdout in process.stdout:
                 linestdout = linestdout.rstrip()
                 try:

@@ -13,7 +13,16 @@
 
 
 <body id="main">
-    
+    <div class="credfields">
+        <form class="my-creds">
+            <p class="largetext" style="justify-content: left;">Credentials</p>
+            <input id="credun"  autocomplete="on"> Access Key Id
+            <br>
+            <input id="credpw"  autocomplete="on"> secretaccesskey
+        </form>
+        <a>REQUIRED</a>
+        <a>Note: We do not save your Credentials. Your credentials are ONLY to start the boto3 module. For more information on how boto3 works click here: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html</a>
+    </div>
     <main>
         <section class="droparea" id="droparea">
             <div style="padding-top:48px; padding-bottom:24px; justify-content:left; width:33%">
@@ -29,6 +38,7 @@
                     <input type="button" id="runTool" value="Run Tool" style="background: rgb(194, 189, 189);")">
                 </form>
             </div>
+            
         </section>
         <section id="logger">
             <h2 style="text-align: center;">AWS-Tagger Terminal</h2>

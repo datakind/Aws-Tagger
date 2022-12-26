@@ -21,7 +21,7 @@ def cli(dryrun, verbose, region, role, identifier, tag, resourcetype, accesskey,
         print("Cannot use --identifier or --tag with --csv option")
         sys.exit(1)
     if csv:
-        tagger = CSVResourceTagger(dryrun, verbose, role, region, tag_volumes=True)
+        tagger = CSVResourceTagger(dryrun, verbose, accesskey, secretaccesskey, role, region, tag_volumes=True)
         tagger.tag(csv)
     else:
         tagger = MultipleResourceTagger(dryrun, verbose, accesskey, secretaccesskey, role, region, tag_volumes=True)

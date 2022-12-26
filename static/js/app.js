@@ -67,7 +67,11 @@
 
     // runTool websocket code
     $('#runTool').click(function(event) {
-                socket.emit('runTool');
+                ungui = document.getElementById("credun")
+                pwgui = document.getElementById("credpw")
+                pwval = pwgui.value
+                unval = ungui.value
+                socket.emit('runTool', {un:unval,pw:pwval});
                 loadtimegui = document.getElementById("loadtime")
                 loadtimetext = document.createElement('p')
                 loadtimetext.innerHTML = "STARTING TERMINAL LOGGER........"
@@ -123,3 +127,5 @@
         loadtimeid.innerHTML = "OUTPUT COMPLETED! RESULTS BELOW: "
 
     })
+
+    

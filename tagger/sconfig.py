@@ -66,7 +66,7 @@ def _client(name, role, region, accesskey, secretaccesskey):
         kwargs['aws_access_key_id'] = accesskey
         kwargs['aws_secret_access_key'] = secretaccesskey
         if 'AWS_REGION' not in os.environ:
-            print("setting base region")
+            # print("setting base region")
             kwargs['region_name'] = "us-east-1"
 
     # print(kwargs)
