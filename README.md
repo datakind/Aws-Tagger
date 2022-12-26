@@ -1,29 +1,45 @@
-# TEMPLATE INSTRUCTIONS!
+# Flask-Aws-Tagger
 
 ## Features:
+1. Built in websocket functionatily for flask web app. 
+2. Wraps Newest version of Datakind's AWS-Tagger into a flask webapp
 
-1. Built in websocket functionatily for flask web app. This is desgined for developers who have built a CLI tool or script and want a graphical front end user interface very quickly for testing purposes.
-2. Dynamic readme that adds the github repo name into readme upon creation of this repo. (.github/workflows/readmeupdate.yml)
-3. Lint features with Autopep8 and Black using Github actions (.github/workflows/lint.yml)
-4. Push to our dockerhub repo using Github actions (.github/workflows/push_to_docker.yml)
-
-## NOTE: Remove everything above this part of the readme.
+## For instructions on installing aws-tagger only click on this link: https://github.com/datakind/aws-tagger/tree/main/tagger
 ---
 
-# Introduction for <reponame>
+# What is Flask-Aws-Tagger?
 
---INSERT AN INTRODUCTION FOR YOUR APP; EXPAINING WHAT IS THE PURPOSE OF YOUR APP AND ITS BENIFITS--
+Its a Webapp designed to help bulk tagging of different resources. The Tag editor from the aws websconsole lets you download csv files of your different resources but it doesn't let you upload csv files; this webapp does just that. (STILL WIP, USE Aws-Tagger cli for now in https://github.com/datakind/aws-tagger/tree/main/tagger)
 
-## Running <reponame> on Docker locally
---NOTE: THIS CAN BE CHANGED TO WHICH ENVIRONMENT WORKS FOR YOUR WEBAPP--
+## Running Flask-aws-tagger on Docker locally
+
 ### Prerequisites
 
---LIST AND EXPLAIN ANY PREREQUISTES THAT REQUIRE YOUR WEBAPP TO WORK--
+Docker
 
 ### How to build the Docker Environment
+Step1
+```
+git clone https://github.com/datakind/aws-tagger.git
+cd "aws-tagger"
+```
+Step 1a (FOR MAC m1)
+```
+export DOCKER_DEFAULT_PLATFORM=linux/arm64
+NOTE - IF YOU DON'T RUN THIS COMMAND THE WEBSOCKET WILL NOT WORK ON MAC M1
+```
+Step 2 
+```
+docker build . -t aws-tagger
+docker run -p 5000:5000 -t aws-tagger
+```
+Step 3
 
---EXPLAIN HOW TO BUILD THE DOCKER ENVIRONMENT FOR YOUR WEBAPP--
+Go your browser and type:
+```
+http://localhost:5000
+```
 
-## How to use <reponoame>
+## How to use
 
---EXPLAIN HOW TO USE <reponoame> SO OTHERS CAN USE YOUR APP. THIS MAYBE AN EXAMPLE ON HOW TO USE THE WEBAPP--
+Enter your access_key_id, secret_key, and region you want to use. (if you don't choose a region, you can only use csv upload and your csv upload must contain the same region column that you get from the tag editor in aws web console. )

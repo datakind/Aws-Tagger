@@ -3,10 +3,12 @@ import botocore
 from retrying import retry
 
 class KinesisTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
-        self.kinesis = _client('kinesis', role=role, region=region)
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
+        self.kinesis = _client('kinesis', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags):
         if self.verbose:

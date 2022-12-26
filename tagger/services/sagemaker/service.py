@@ -4,16 +4,18 @@ from retrying import retry
 import boto3
 
 class SagemakerNotebookInstanceTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
-        self.sagemakernotebookinstance = _client('sagemaker', role=role, region=region)
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
+        self.sagemakernotebookinstance = _client('sagemaker', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags,role=None, region=None):
         my_session = boto3.session.Session()
         region = my_session.region_name
 
-        self.sts = _client('sts', role=role, region=region)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=region)
         account_id = self.sts.get_caller_identity()["Account"]
         service = "sagemaker"
         resource_arn = "notebook-instance/"+resource_arn

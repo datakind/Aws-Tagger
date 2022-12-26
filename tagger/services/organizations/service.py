@@ -4,11 +4,13 @@ from retrying import retry
 import boto3
 
 class OrganizationTagger(object):
-    def __init__(self, dryrun, verbose, servicetype, role=None, region=None):
+    def __init__(self, dryrun, verbose, servicetype, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
         self.servicetype = servicetype
-        self.org = _client('organizations', role=role, region=region)
+        self.org = _client('organizations', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, instance_id, tags):
         aws_tags = _dict_to_aws_tags(tags)

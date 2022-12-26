@@ -4,11 +4,13 @@ from retrying import retry
 import boto3
 
 class EC2Tagger(object):
-    def __init__(self, dryrun, verbose, servicetype, role=None, region=None, tag_volumes=False):
+    def __init__(self, dryrun, verbose, servicetype, accesskey, secretaccesskey, role=None, region=None, tag_volumes=False):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
 
-        self.ec2 = _client('ec2', role=role, region=region)
+        self.ec2 = _client('ec2', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
         self.servicetype = servicetype
         if self.servicetype == 'ec2':
             self.volume_cache = {}

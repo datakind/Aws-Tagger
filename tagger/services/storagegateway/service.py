@@ -4,18 +4,20 @@ from retrying import retry
 import boto3
 
 class storagegatewayTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
         self.role = role
         self.region = region
-        self.storagegateway = _client('storagegateway', role=role, region=region)
+        self.storagegateway = _client('storagegateway', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags):
         my_session = boto3.session.Session()
         region = my_session.region_name
 
-        self.sts = _client('sts', role=self.role, region=region)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=self.role, region=region)
         account_id = self.sts.get_caller_identity()["Account"]
         service = 'storagegateway'
         resource_arn = f'gateway/{resource_arn}'

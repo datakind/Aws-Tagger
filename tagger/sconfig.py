@@ -49,7 +49,7 @@ def _fetch_temporary_credentials(role):
     session_token = response.get('Credentials', {}).get('SessionToken', None)
     return access_key_id, secret_access_key, session_token
     
-def _client(name, role, region):
+def _client(name, role, region, accesskey, secretaccesskey):
     kwargs = {}
 
     if region:
@@ -57,12 +57,24 @@ def _client(name, role, region):
     elif os.environ.get('AWS_REGION'):
         kwargs['region_name'] = os.environ['AWS_REGION']
 
+    # print(role)
+    # print(region)
+    # print(accesskey)
+    # print(secretaccesskey)
+    # print(role)
     if role:
         access_key_id, secret_access_key, session_token = _fetch_temporary_credentials(role)
         kwargs['aws_access_key_id'] = access_key_id
         kwargs['aws_secret_access_key'] = secret_access_key
         kwargs['aws_session_token'] = session_token
+    if accesskey and secretaccesskey:
+        kwargs['aws_access_key_id'] = accesskey
+        kwargs['aws_secret_access_key'] = secretaccesskey
+        if 'AWS_REGION' not in os.environ:
+            print("setting base region")
+            kwargs['region_name'] = "us-east-1"
 
+    # print(kwargs)
     return boto3.client(name, **kwargs)
 
 def _parse_arn( resource_arn):

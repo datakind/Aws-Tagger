@@ -3,15 +3,17 @@ import botocore
 from retrying import retry
 
 class IamTagger(object):
-    def __init__(self, dryrun, verbose, servicetype, role=None, region=None):
+    def __init__(self, dryrun, verbose, servicetype, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
         self.servicetype = servicetype
-        self.instanceprofile = _client('iam', role=role, region=region)
+        self.instanceprofile = _client('iam', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
     
     def tag(self, resource_arn, tags):
         region = None
-        self.sts = _client('sts', role=None, region=None)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=None, region=None)
         account_id = self.sts.get_caller_identity()["Account"]
 
         aws_tags = _dict_to_aws_tags(tags)

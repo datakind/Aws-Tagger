@@ -3,10 +3,12 @@ import botocore
 from retrying import retry
 
 class EFSTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
-        self.efs = _client('efs', role=role, region=region)
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
+        self.efs = _client('efs', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags):
         file_system_id = _arn_to_name(resource_arn)

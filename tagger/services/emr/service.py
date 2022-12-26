@@ -4,12 +4,14 @@ from retrying import retry
 import boto3
 
 class emrTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
         self.role = role
         self.region = region
-        self.emr = _client('emr', role=role, region=region)
+        self.emr = _client('emr', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags):
         

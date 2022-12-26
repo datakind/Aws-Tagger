@@ -3,10 +3,12 @@ import botocore
 from retrying import retry
 
 class S3Tagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None):
+    def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None):
         self.dryrun = dryrun
         self.verbose = verbose
-        self.s3 = _client('s3', role=role, region=region)
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
+        self.s3 = _client('s3', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, bucket_name, tags):
         try:
