@@ -57,11 +57,6 @@ def _client(name, role, region, accesskey, secretaccesskey):
     elif os.environ.get('AWS_REGION'):
         kwargs['region_name'] = os.environ['AWS_REGION']
 
-    # print(role)
-    # print(region)
-    # print(accesskey)
-    # print(secretaccesskey)
-    # print(role)
     if role:
         access_key_id, secret_access_key, session_token = _fetch_temporary_credentials(role)
         kwargs['aws_access_key_id'] = access_key_id

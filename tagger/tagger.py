@@ -351,8 +351,6 @@ class SingleResourceTagger(object):
 
 class MultipleResourceTagger(object):
     def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None, tag_volumes=False):
-        print(accesskey)
-        print("this is a test")
         self.tagger = SingleResourceTagger(dryrun, verbose, role=role, region=region, accesskey=accesskey, secretaccesskey=secretaccesskey, tag_volumes=tag_volumes)
 
     def tag(self, resource_ids, resourcetype, tags):
@@ -360,9 +358,11 @@ class MultipleResourceTagger(object):
             self.tagger.tag(resource_id, resourcetype, tags)
 
 class CSVResourceTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
+    def __init__(self, dryrun, verbose, accesskey, secretaccesskey, role=None, region=None, tag_volumes=False):
         self.dryrun = dryrun
         self.verbose = verbose
+        self.accesskey = accesskey
+        self.secretaccesskey = secretaccesskey
         self.tag_volumes = tag_volumes
         self.role = role
         self.region = region
@@ -390,8 +390,6 @@ class CSVResourceTagger(object):
                             resourceservicetypenum = rci
                         if tag_index_nums[rci] == "Type":
                             resourcetypenum = rci
-                    print(resourceservicetypenum)
-                    print(resourcetypenum)
                 else:
                     # print(tag_index, row)
                     self._tag_resource(tag_index, resourceservicetypenum, resourcetypenum, row)
@@ -436,6 +434,6 @@ class CSVResourceTagger(object):
 
         tagger = self.regional_tagger.get(region)
         if tagger is None:
-            tagger = SingleResourceTagger(self.dryrun, self.verbose, resourcetype, role=self.role, region=region, tag_volumes=self.tag_volumes)
+            tagger = SingleResourceTagger(self.dryrun, self.verbose, role=self.role, region=region, accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, tag_volumes=self.tag_volumes)
             self.regional_tagger[region] = tagger
         return tagger
