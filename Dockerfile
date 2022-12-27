@@ -18,4 +18,4 @@ COPY . /app
 RUN pip install .
 
 # CMD gunicorn -k eventlet -w 1 app:app -b 0.0.0.0:$PORT
-CMD gunicorn -k eventlet -w 1 app:app -b 0.0.0.0:5000
+CMD gunicorn -k eventlet -w 1 app:app -b 0.0.0.0
