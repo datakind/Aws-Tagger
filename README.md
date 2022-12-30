@@ -1,10 +1,14 @@
 # Flask-Aws-Tagger
 
+Website: https://aws-tagger.datakind.org/https
+
 ## Features:
-1. Built in websocket functionatily for flask web app. 
+
+1. Built in websocket functionatily for flask web app.
 2. Wraps Newest version of Datakind's AWS-Tagger into a flask webapp
 
-## For instructions on installing aws-tagger only click on this link: https://github.com/datakind/aws-tagger/tree/main/tagger
+For instructions on installing aws-tagger only click on this link: https://github.com/datakind/aws-tagger/tree/main/tagger
+
 ---
 
 # What is Flask-Aws-Tagger?
@@ -18,24 +22,32 @@ Its a Webapp designed to help bulk tagging of different resources. The Tag edito
 Docker
 
 ### How to build the Docker Environment
+
 Step1
+
 ```
 git clone https://github.com/datakind/aws-tagger.git
 cd "aws-tagger"
 ```
+
 Step 1a (FOR MAC m1)
+
 ```
 export DOCKER_DEFAULT_PLATFORM=linux/arm64
 NOTE - IF YOU DON'T RUN THIS COMMAND THE WEBSOCKET WILL NOT WORK ON MAC M1
 ```
-Step 2 
+
+Step 2
+
 ```
 docker build . -t aws-tagger
 docker run -p 5000:5000 -t aws-tagger
 ```
+
 Step 3
 
 Go your browser and type:
+
 ```
 http://localhost:5000
 ```
