@@ -166,6 +166,7 @@ def checkresource(resourcetype):
     return False
 
 def tagselect(resourcetype,dryrun,verbose,accesskey,secretaccesskey,role,region,tag_volumes):
+    
     # Amazon Mq Resources 
     if resourcetype == "AmazonmqBroker":
         tagger = tagservices.mq.service.mqTagger(dryrun, verbose, servicetype='AmazonmqBroker', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
@@ -311,9 +312,36 @@ def tagselect(resourcetype,dryrun,verbose,accesskey,secretaccesskey,role,region,
     if resourcetype == "subnet":
         tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'subnet', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
     if resourcetype == "vpc":
-        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'vpc', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2VPC', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2VPC":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2VPC', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2VPNGateway":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2VPNGateway', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2Snapshot":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2Snapshot', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2Subnet":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2Subnet', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2SecurityGroup":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2SecurityGroup', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2Volume":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2Volume', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EFSFileSystem":
+        tagger = tagservices.efs.service.EFSTagger(dryrun, verbose, accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    
     if resourcetype == "EC2CustomerGateway":
         tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2CustomerGateway', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2Image":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2Image', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2InternetGateway":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2InternetGateway', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2NetworkInterface":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2NetworkInterface', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2NetworkAcl":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2NetworkAcl', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2RouteTable":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2RouteTable', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
+    if resourcetype == "EC2DHCPOptions":
+        tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'EC2DHCPOptions', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
     if resourcetype == "EC2EIP":
         tagger = tagservices.ec2.service.EC2Tagger(dryrun, verbose, 'Ec2EIP', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region, tag_volumes=tag_volumes)
     if resourcetype == "EC2NatGateway":

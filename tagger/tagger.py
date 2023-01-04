@@ -48,8 +48,7 @@ class SingleResourceTagger(object):
             resource_arn = searchresult[0]
         else:
             # tagger = self.taggers.get(resourcetype)
-
-            tagger = tagsearch.tagselect(resourcetype, self.dryrun, self.verbose, self.accesskey, self.secretaccesskey, role, region, self.tag_volumes)
+            tagger = tagsearch.tagselect(resourcetype, self.dryrun, self.verbose, self.accesskey, self.secretaccesskey, role, region=region, tag_volumes=self.tag_volumes)
             resource_arn = resource_id
 
         if tagger:
@@ -92,6 +91,7 @@ class CSVResourceTagger(object):
         self.resource_id_column = 'Identifier'
         self.region_column = 'Region'
 
+        
     def tag(self, filename):
         with open(filename, 'rU') as csv_file:
             reader = csv.reader(csv_file)
@@ -143,10 +143,7 @@ class CSVResourceTagger(object):
         else:
             resourcetype == None
         tagger = self._lookup_tagger(tag_index, resourcetype, row)
-        tagger.tag(resource_id, resourcetype, tags)
 
-    def _lookup_tagger(self, tag_index, resourcetype, row):
-        region = self.region
         region_index = tag_index.get(self.region_column)
 
         if region_index is not None:
@@ -154,6 +151,18 @@ class CSVResourceTagger(object):
         if region == '':
             region = None
 
+        tagger.tag(resource_id, resourcetype, tags,region=region)
+
+    def _lookup_tagger(self, tag_index, resourcetype, row):
+
+        region_index = tag_index.get(self.region_column)
+
+        if region_index is not None:
+            region = row[region_index]
+        if region == '':
+            region = None
+
+        print(region)
         tagger = self.regional_tagger.get(region)
         if tagger is None:
             tagger = SingleResourceTagger(self.dryrun, self.verbose, role=self.role, region=region, accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, tag_volumes=self.tag_volumes)
