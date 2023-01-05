@@ -9,6 +9,7 @@ class ssmTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.role = role
         self.region = region
         self.ssm = _client('ssm', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)

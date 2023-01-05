@@ -9,6 +9,7 @@ class OrganizationTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.servicetype = servicetype
         self.org = _client('organizations', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 

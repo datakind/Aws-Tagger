@@ -9,6 +9,7 @@ class codepipelineTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.servicetype = servicetype
         self.codepipeline = _client('codepipeline', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 

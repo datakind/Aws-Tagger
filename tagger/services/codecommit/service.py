@@ -9,6 +9,7 @@ class codecommitTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.codecommit = _client('codecommit', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags):

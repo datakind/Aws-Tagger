@@ -9,6 +9,7 @@ class sqsTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.role = role
         self.region = region
         self.sqs = _client('sqs', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)

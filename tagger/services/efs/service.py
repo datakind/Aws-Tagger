@@ -8,6 +8,7 @@ class EFSTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.efs = _client('efs', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags):

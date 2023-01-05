@@ -9,6 +9,7 @@ class glacierTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.glacier = _client('glacier', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, instance_id, tags):

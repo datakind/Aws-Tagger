@@ -9,13 +9,14 @@ class cloudtrailTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
-        self.cloudtrail = _client('ec2', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
+        self.region = region
+        self.cloudtrail = _client('cloudtrail', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags,role=None, region=None):
         my_session = boto3.session.Session()
         region = my_session.region_name
 
-        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=region)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=self.region)
         account_id = self.sts.get_caller_identity()["Account"]
         service = "cloudtrail"
         resource_arn = "trail/"+resource_arn
@@ -27,7 +28,7 @@ class cloudtrailTagger(object):
             print("tagging %s with %s" % (", ".join(file_system_id), _format_dict(tags)))
         if not self.dryrun:
             try:
-                self._cloudtrail_create_tags(ResourceId=file_system_id, Tags=aws_tags)
+                self._cloudtrail_create_tags(ResourceId=file_system_id, TagsList=aws_tags)
             except botocore.exceptions.ClientError as exception:
                 if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
                     print("Resource not found: %s" % file_system_id)

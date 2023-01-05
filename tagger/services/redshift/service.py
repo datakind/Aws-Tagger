@@ -9,6 +9,7 @@ class RedshiftclusterGroupTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.servicetype = servicetype
         self.redshiftcg = _client('redshift', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
@@ -16,7 +17,7 @@ class RedshiftclusterGroupTagger(object):
         my_session = boto3.session.Session()
         region = my_session.region_name
 
-        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=region)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=self.region)
         account_id = self.sts.get_caller_identity()["Account"]
         service = "redshift"
         if self.servicetype == 'RedshiftCluster':
@@ -25,7 +26,7 @@ class RedshiftclusterGroupTagger(object):
             resource_arn = "subnetgroup:"+resource_arn
         if self.servicetype == 'RedshiftHSMClientCertificate':
             resource_arn = "hsmclientcertificate:"+resource_arn
-        if self.servicetype == "RedshiftParameterGroup":
+        if self.servicetype == "RedshiftClusterParameterGroup":
             resource_arn = "parametergroup:"+resource_arn
         file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
         aws_tags = _dict_to_aws_tags(tags)

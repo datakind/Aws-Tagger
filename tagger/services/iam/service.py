@@ -8,12 +8,13 @@ class IamTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.servicetype = servicetype
         self.instanceprofile = _client('iam', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
     
     def tag(self, resource_arn, tags):
         region = None
-        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=None, region=None)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=None, region=self.region)
         account_id = self.sts.get_caller_identity()["Account"]
 
         aws_tags = _dict_to_aws_tags(tags)
@@ -24,7 +25,7 @@ class IamTagger(object):
                 print("tagging %s with %s" % (", ".join(resource_arn), _format_dict(tags)))
             if not self.dryrun:
                 try:
-                    self._InstanceProfile_create_tags(InstanceProfileName=resource_arn, TagsToAdd=aws_tags)
+                    self._InstanceProfile_create_tags(InstanceProfileName=resource_arn, Tags=aws_tags)
                 except botocore.exceptions.ClientError as exception:
                     if exception.response["Error"]["Code"] in ['InvalidSnapshot.NotFound', 'InvalidVolume.NotFound', 'InvalidInstanceID.NotFound']:
                         print("IAM Instance Profile not found: %s" % resource_arn)
@@ -96,11 +97,11 @@ class IamTagger(object):
 
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _ManagedPolicy_create_tags(self, **kwargs):
-        return self.ManagedPolicy.tag_policy(**kwargs)
+        return self.instanceprofile.tag_policy(**kwargs)
     
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _samlprovider_create_tags(self, **kwargs):
-        return self.samlprovider.tag_saml_provider(**kwargs)
+        return self.instanceprofile.tag_saml_provider(**kwargs)
 
     @retry(retry_on_exception=_is_retryable_exception, stop_max_delay=30000, wait_exponential_multiplier=1000)
     def _openidconnect_create_tags(self, **kwargs):

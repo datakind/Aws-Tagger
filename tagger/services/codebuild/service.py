@@ -9,6 +9,7 @@ class codebuildTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.ami = _client('ec2', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, instance_id, tags):

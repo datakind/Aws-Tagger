@@ -9,6 +9,7 @@ class Route53Tagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.servicetype = servicetype
         self.route53 = _client('route53', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 

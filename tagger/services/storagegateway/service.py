@@ -9,6 +9,7 @@ class storagegatewayTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.role = role
         self.region = region
         self.storagegateway = _client('storagegateway', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)

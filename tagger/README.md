@@ -28,6 +28,8 @@ aws-tagger --role arn:aws:iam::11111111111:role/MyRole --identifier i-07a9d0e5 -
 
 ## Usage
 
+NOTE: DO NOT PUT DOLLAR SIGNS IN YOUR TAGS $$$
+
 ### Tag individual resource with a single tag
 ```
 aws-tagger --identifier i-07a9d0e5 --tag "App:Foobar"  
@@ -158,9 +160,9 @@ aws-tagger --identifier resourceid --tag "App:Foobar" --resourcetype "Ec2VPNConn
 aws-tagger --identifier my-bucket --tag "App:Foobar"  
 ```
 
-### Cloudformation Stacks
+### Cloudformation Stacks - CURRENTLY DOESN'T WORK! NEED TO FIX
 ```
-aws-tagger --identifier mystackname/asdf1234-as12-df34-gh56-qwerty012345 --tag "App:Foobar"  
+aws-tagger --identifier mystackname/asdf1234-as12-df34-gh56-qwerty012345 --tag "App:Foobar"   
 ```
 
 ### Kafka Cluster

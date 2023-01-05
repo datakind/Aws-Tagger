@@ -9,6 +9,7 @@ class DynamoDBTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.role = role
         self.region = region
         self.dynamodb = _client('dynamodb', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)

@@ -9,6 +9,7 @@ class kinesisanalyticsTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.role = role
         self.region = region
         self.kinesisanalytics = _client('kinesisanalytics', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)

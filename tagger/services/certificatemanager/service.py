@@ -9,17 +9,16 @@ class certificatemanagerTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.acm = _client('acm', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags,role=None, region=None):
-        my_session = boto3.session.Session()
-        region = my_session.region_name
 
-        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=region)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=self.region)
         account_id = self.sts.get_caller_identity()["Account"]
         service = "acm"
         resource_arn = "certificate/"+resource_arn
-        file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        file_system_id = _name_to_arn(resource_name=resource_arn,region=self.region,service=service,account_id=account_id)
 
         aws_tags = _dict_to_aws_tags(tags)
         print(aws_tags)

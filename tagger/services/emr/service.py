@@ -9,6 +9,7 @@ class emrTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.role = role
         self.region = region
         self.emr = _client('emr', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)

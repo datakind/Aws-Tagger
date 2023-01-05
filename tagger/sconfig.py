@@ -53,7 +53,6 @@ def _client(name, role, region, accesskey, secretaccesskey):
     kwargs = {}
 
     if region:
-        print("boto print: "+region)
         kwargs['region_name'] = region
     elif os.environ.get('AWS_REGION'):
         kwargs['region_name'] = os.environ['AWS_REGION']
@@ -66,7 +65,8 @@ def _client(name, role, region, accesskey, secretaccesskey):
     if accesskey and secretaccesskey:
         kwargs['aws_access_key_id'] = accesskey
         kwargs['aws_secret_access_key'] = secretaccesskey
-        if 'AWS_REGION' not in os.environ and region == None:
+        print("boto print: "+region)
+        if 'AWS_REGION' not in os.environ and region is None:
             # print("setting base region")
             kwargs['region_name'] = "us-east-1"
 

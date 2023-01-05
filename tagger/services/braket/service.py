@@ -10,11 +10,12 @@ class braketTagger(object):
         self.verbose = verbose
         self.accesskey = accesskey
         self.secretaccesskey = secretaccesskey
+        self.region = region
         self.braket = _client('braket', accesskey=accesskey, secretaccesskey=secretaccesskey, role=role, region=region)
 
     def tag(self, resource_arn, tags,role=None, region=None):
 
-        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=region)
+        self.sts = _client('sts', accesskey=self.accesskey, secretaccesskey=self.secretaccesskey, role=role, region=self.region)
         account_id = self.sts.get_caller_identity()["Account"]
         service = "braket"
         resource_arn = "device/quantum-simulator/amazon/"+resource_arn
