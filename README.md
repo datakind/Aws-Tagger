@@ -43,7 +43,7 @@ Step 2
 
 ```
 docker build . -t aws-tagger
-docker run -p 5000:5000 -t aws-tagger
+docker run -p 8080:8080 -t aws-tagger
 ```
 
 Step 3
@@ -51,7 +51,7 @@ Step 3
 Go your browser and type:
 
 ```
-http://localhost:5000
+http://localhost:8080
 ```
 
 ## How to use

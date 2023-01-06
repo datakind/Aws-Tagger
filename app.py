@@ -1,12 +1,14 @@
 # importing in modules
 import os
 import shutil
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, send_from_directory, request, render_template, redirect, url_for
 from flask import send_from_directory, Response, send_file
 from flask import session, request, copy_current_request_context
 from flask_socketio import SocketIO, emit, disconnect
 from flask_session import Session
 from werkzeug.utils import secure_filename
+from flask_restful import Api, Resource, reqparse
+from flask_cors import CORS # Comment this on deployment
 import sys
 from datetime import datetime
 from time import sleep
@@ -16,7 +18,7 @@ import csv
 import json
 
 # Setting Variables
-app = Flask(__name__, static_folder="static/", template_folder="templates/")
+app = Flask(__name__, static_folder="static/frontend", template_folder="templates/")
 SESSION_TYPE = 'filesystem'
 app.config.from_object(__name__)
 socketio = SocketIO(app, logger=False, engineio_logger=False)
@@ -25,6 +27,10 @@ app.secret_key = "secret key"
 ALLOWED_EXTENSIONS = set(['csv'])
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 path = os.getcwd()
+parser = reqparse.RequestParser()
+parser.add_argument('task')
+api = Api(app)
+CORS(app)
 
 # Parsing the filename and returning data back
 
@@ -54,6 +60,13 @@ def index():
     else:
         session['number'] = str(uuid4())
     return render_template('index.html', async_mode=socketio.async_mode), 200
+
+@app.route("/data")
+def get_time(): 
+  return {
+    'Name': "Christian Helgeson",
+    'Age': "22"
+  }
 
 
 # A Websocket to remove that tmp and upload folder after the code is finished.
