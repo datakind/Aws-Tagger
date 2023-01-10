@@ -69,7 +69,10 @@ def _client(name, role, region, accesskey, secretaccesskey):
         if 'AWS_REGION' not in os.environ and region is None:
             # print("setting base region")
             kwargs['region_name'] = "us-east-1"
-
+    elif os.environ.get('AWS_ACCESS_KEY_ID') and os.environ.get('AWS_SECRET_ACCESS_KEY'):
+      kwargs['aws_access_key_id'] = os.environ.get('AWS_ACCESS_KEY_ID')
+      kwargs['aws_secret_access_key'] = os.environ.get('AWS_SECRET_ACCESS_KEY')
+      
     print(kwargs)
     return boto3.client(name, **kwargs)
 
