@@ -3,12 +3,11 @@ import boto3
 import botocore.exceptions
 import os
 import uuid
-from tagger.testHelpers import runBasicCLICommand, generateGenericTestTags
+from tagger.testHelpers import runBasicCLICommand, generateGenericTestTags, tagStringsToDict
 
 def runGlacierCLICommand(identifier, tag):
   runBasicCLICommand(identifier=identifier, tag=tag, resourcetype="glaciervault")
   
-
 def test_glacier_vault_tagged():
   #Set up new vault
   glacierClient = boto3.client('glacier', 
@@ -25,13 +24,11 @@ def test_glacier_vault_tagged():
     assert False, f'Exception raised {exc}'
   #Tag vault using existing cli tools
   numTags = 3
-  tags = generateGenericTestTags('glacier', numTags)
+  tagStrings = generateGenericTestTags('glacier', numTags)
   tagDict = {}
-  for n in range(len(tags)): 
-    runGlacierCLICommand(identifier=vaultName, tag=tags[n])
-    keyValuePair = tags[n].split(":")
-    tagDict[keyValuePair[0]] = keyValuePair[1]
-  print(tagDict)
+  for n in range(len(tagStrings)): 
+    runGlacierCLICommand(identifier=vaultName, tag=tagStrings[n])
+  tagStringsToDict(tagStrings, tagDict)
   response = glacierClient.list_tags_for_vault(vaultName=vaultName)
   print(response['Tags'])
   assert response['Tags'] == tagDict
