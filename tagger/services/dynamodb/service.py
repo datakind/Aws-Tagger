@@ -23,6 +23,8 @@ class DynamoDBTagger(object):
         service = 'dynamodb'
         resource_arn = f'table/{resource_arn}'
         file_system_id = _name_to_arn(resource_name=resource_arn,region=region,service=service,account_id=account_id)
+        print("File System ID")
+        print(file_system_id)
         aws_tags = _dict_to_aws_tags(tags)
         
         if self.verbose:

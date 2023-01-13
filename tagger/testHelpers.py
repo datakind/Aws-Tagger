@@ -3,7 +3,7 @@ import subprocess
 def runBasicCLICommand(identifier, tag, resourcetype):
   subprocess.run([
     'aws-tagger', '--identifier', identifier, '--tag', tag,
-    '--resourcetype', 'glaciervault'
+    '--resourcetype', resourcetype
   ], shell=True)
 
 def generateGenericTestTags(resourceName, iterations): 

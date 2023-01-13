@@ -33,6 +33,10 @@ def _name_to_arn(resource_name,service,region,account_id):
     if not region == None:
         arnstring = "arn:aws:"+service+":"+region+":"+account_id+":"+resource_name
         return arnstring
+    elif os.environ.get("AWS_REGION"):
+      envRegion = os.environ.get("AWS_REGION")
+      arnstring = "arn:aws:"+service+":"+envRegion+":"+account_id+":"+resource_name
+      return arnstring
     else:
         if service != "braket":
             arnstring = "arn:aws:"+service+"::"+account_id+":"+resource_name
@@ -103,16 +107,13 @@ def resourcesearch(taggers,resource_id, role=None, region=None):
         #     tagger = self.taggers['s3']
 
 
-        if resource_id.startswith('i-'):
+        if (
+          resource_id.startswith('i-')
+          or resource_id.startswith('vol-')
+          or resource_id.startswith('snap-')
+        ):
             tagger = taggers['ec2']
             resource_arn = resource_id
-        elif resource_id.startswith('vol-'):
-            tagger = taggers['ec2']
-            resource_arn = resource_id
-        elif resource_id.startswith('snap-'):
-            tagger = taggers['ec2']
-            resource_arn = resource_id
-
         if resource_id.startswith('ami-'):
             tagger = taggers['ami']
             resource_arn = resource_id
@@ -172,6 +173,56 @@ def resourcesearch(taggers,resource_id, role=None, region=None):
                     resource_arn = resource_id
         return resource_arn, tagger
 
+def arnResourceSearch(resource_id, role=None, region=None):
+  print(f'Searching for resource with identifier: {resource_id}')
+  tagger = None
+  resource_arn = resource_id
+  if resource_id.startswith('arn:'):
+    print("Parsing ARN for Resource Type")
+    product, resource_id = _parse_arn(resource_id)
+    print(f'Product: ${product}, resource_id: ${resource_id}')
+
+  if (
+    resource_id.startswith('i-')
+    or resource_id.startswith('vol-')
+    or resource_id.startswith('snap-')
+  ):
+    resource_arn = resource_id
+  if resource_id.startswith('ami-'):
+    resource_arn = resource_id
+  if resource_id.startswith('dopt-'):
+    resource_arn = resource_id
+  if resource_id.startswith('igw-'):
+    resource_arn = resource_id
+  if resource_id.startswith('acl-'):
+    resource_arn = resource_id
+  if resource_id.startswith('eni-'):
+    resource_arn = resource_id
+  if resource_id.startswith('rtb-'):
+    resource_arn = resource_id
+  if resource_id.startswith('sg-'):
+    resource_arn = resource_id
+  if resource_id.startswith('subnet-'):
+    resource_arn = resource_id
+  if resource_id.startswith('vpc-'):
+      resource_arn = resource_id
+  if resource_id.startswith('vpc-'):
+    resource_arn = resource_id
+  if resource_id.startswith('o-') and "/" in resource_id:
+    resource_arn = resource_id
+
+  if tagger == None:
+      resourecheck = resource_finder(resource_id,role=role, region=region)
+      if not resourecheck == "No Resource Found":
+          print(resourecheck)
+          resource_arn = resource_id
+      else:
+          print("checking by arn builder")
+          resourecheck = resource_finder_by_arn_builder(resource_id)
+          if resourecheck != "No Resource Found":
+              print(resourecheck)
+              resource_arn = resource_id
+  return resource_arn
 
 def resource_finder_by_arn_builder(resourecheck):
     # Finding ManagedPolicies
